@@ -60,6 +60,19 @@ private loadOrders(): void {
       })
   }
 
+  deleteOrder(id: number) {
+    this.http.delete(`http://localhost:8080/orders/${id}`)
+    .pipe(take(1))
+    .subscribe({
+      next: () => {
+        this.getUserOrders()
+      },
+      error: () => {
+        this.showError('Failed to cancel order')
+      }
+    })
+    }
+
   public getOrders(): Order[] {
     return this.orders
   }

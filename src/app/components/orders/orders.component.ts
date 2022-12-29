@@ -8,7 +8,7 @@ import { OrdersService } from 'src/app/services/orders/orders.service';
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent {
-  constructor(private orderService: OrdersService) {
+  constructor(public orderService: OrdersService) {
   }
 
   displayedColumns: string[] = ['id', 'userId', 'date', 'products'];
@@ -18,6 +18,13 @@ export class OrdersComponent {
   testDataSource = Order_Data
   dataSource = this.orderService.getOrders()
   dataSource2 = this.orderService.getUserOrders()
+  public transactionPanelOpenState = false
+
+  public id: number = -1
+
+  public selectId(id:number): void {
+    this.id = id
+  }
 }
 
 export interface PeriodicElement {
