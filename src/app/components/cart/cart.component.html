@@ -1,51 +1,55 @@
-<ng-container *ngIf="true">
-    <div class="container">
-        <div class ="card-table">
-            <div class="cart-product">
-                <table class="table table-responsive">
-                    <thead>
-                        <tr>
-                            <th>Sr.No</th>
-                            <th>Product Name</th>
-                            <th>Product Image</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Iphone</td>
-                            <td>SomeImage</td>
-                            <td>This is hardcode</td>
-                            <th>50,000</th>
-                            <td>1</td>
-                            <td>50,000</td>
-                            <td><button class="btn btn-danger">Edit</button> <button class="btn btn-danger">Delete</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+<!--"products.length !=0"-->
+<ng-container *ngIf="false">
+    <div class="center">
+        <div class="container">
+            <div class ="card-table" >
+                <div class="cart-product">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Sr.No</th>
+                                <th>Product Name</th>
+                                <th>Product Image</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Iphone</td>
+                                <td>SomeImage</td>
+                                <td>This is hardcode</td>
+                                <th>50,000</th>
+                                <td>1</td>
+                                <td>50,000</td>
+                                <td><button class="btn btn-danger">Edit</button> <button class="btn btn-danger">Delete</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </ng-container>
 
+<!-- "products.length ==0" -->
 <ng-container *ngIf="true"> 
     <div class ="container">
         <div class="card">
-            <h3 class="card-title"> My Cart</h3>
+            <h2 class="card-title"> My Cart</h2>
         </div>
         <div class="center">
-            <h4> Your cart is empty!</h4>
-            <h5> Have an account? Sign in to see your cart </h5>
-            <h5><button> Sign In </button></h5>
-            <img src = "https://via.placeHolder.com/150" alt="">
+            <h3> Your cart is empty!</h3>
+            <h4> Have an account? Sign in to see your cart </h4>
+            <h4><button> Sign In </button></h4>
+            <img src = "https://cdn.pixabay.com/photo/2014/04/02/10/53/shopping-cart-304843_960_720.png" alt="cart">
         </div>
     </div>
-    <button (click)="cart.viewToolbar()">Go back PlaceHolder</button>
 </ng-container>
 
+<button (click)="cart.viewToolbar()">Go back PlaceHolder</button>
 
