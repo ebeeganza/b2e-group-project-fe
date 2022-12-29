@@ -1,13 +1,138 @@
-<p>{{product?.price}}</p>
+<p>{{product?.name}}</p>
+<p>{{product?.price | currency}}</p>
 <p><!--TODO: Get current sale price from scheduledPrices[]--></p>
-<p>{{product?.description}}</p>
+<p>Description: {{product?.description}}</p>
 <p *ngIf="product?.discontinued">Item no longer available.</p>
 <p>Categories:</p>
 <p *ngFor="let category of product?.categories">{{category.name}}</p>
 
 <!--TODO: Only show button if the user is a shopkeeper-->
-<button (click)="editProduct()">Edit Product</button>
+<button (click)="edit = true">Edit Product</button>
 
+<!--Make all date inputs type date-->
 <div *ngIf="edit">
+
+    <button *ngIf="!changeName">Change Product Name</button>
+    <div *ngIf="changeName">
+
+        <mat-form-field>
+            <mat-label>New Product Name</mat-label>
+            <input matInput [(ngModel)]="name">
+        </mat-form-field>
+
+        <button (click)="updateName()">Apply</button>
+        <button (click)="changeName = false">Cancel</button>
+    </div>
+
+    <button *ngIf="!changePrice">Change Price</button>
+    <div *ngIf="changePrice">
+
+        <mat-form-field>
+            <mat-label>New Default Product Price</mat-label>
+            <input matInput type="number" [(ngModel)]="price">
+        </mat-form-field>
+
+        <button (click)="updatePrice()">Apply</button>
+        <button (click)="changePrice = false">Cancel</button>
+    </div>
+
+    <button *ngIf="!changeAvail">Change Availability</button>
+    <div *ngIf="changeAvail">
+
+        <mat-form-field>
+            <mat-label>New Date Available</mat-label>
+            <input matInput [(ngModel)]="available">
+        </mat-form-field>
+
+        <button (click)="updateAvail()">Apply</button>
+        <button (click)="changeAvail = false">Cancel</button>
+    </div>
+
+    <button *ngIf="!changeDesc">Change Description</button>
+    <div *ngIf="changeDesc">
+
+        <mat-form-field>
+            <mat-label>New Description</mat-label>
+            <input matInput [(ngModel)]="description">
+        </mat-form-field>
+
+        <button (click)="updateDescription()">Apply</button>
+        <button (click)="changeDesc = false">Cancel</button>
+    </div>
+
+    <button *ngIf="!addIm">Add Image</button>
+    <div *ngIf="addIm">
+
+        <mat-form-field>
+            <mat-label>Image URL</mat-label>
+            <input matInput [(ngModel)]="imageURL">
+        </mat-form-field>
+
+        <button (click)="addImage()">Apply</button>
+        <button (click)="addIm = false">Cancel</button>
+    </div>
+
+    <button *ngIf="!addCat">Add Category</button>
+    <div *ngIf="addCat">
+        <!--TODO: Show categories NOT ALREADY LINKED TO PRODUCT-->
+        <button (click)="addCat = false">Cancel</button>
+    </div>
+
+    <button *ngIf="!schedMAP">Schedule MAP</button>
+    <div *ngIf="schedMAP">
+
+        <mat-form-field>
+            <mat-label>Price Limit</mat-label>
+            <input matInput type="number" [(ngModel)]="priceVal">
+            <mat-label>End Date</mat-label>
+            <input matInput [(ngModel)]="dateVal">
+        </mat-form-field>
+
+        <button (click)="addScheduledMAP()">Apply</button>
+        <button (click)="schedMAP = false">Cancel</button>
+    </div>
+
+    <button *ngIf="!schedPrice">Schedule Price</button>
+    <div *ngIf="schedPrice">
+
+        <mat-form-field>
+            <mat-label>Price</mat-label>
+            <input matInput type="number" [(ngModel)]="priceVal">
+            <mat-label>End Date</mat-label>
+            <input matInput [(ngModel)]="dateVal">
+        </mat-form-field>
+
+        <button (click)="schedPrice = false">Cancel</button>
+    </div>
+
+    <button *ngIf="!schedSale">Schedule Sale</button>
+    <div *ngIf="schedSale">
+
+        <mat-form-field>
+            <mat-label>Sale Price</mat-label>
+            <input matInput type="number" [(ngModel)]="priceVal">
+            <mat-label>End Date</mat-label>
+            <input matInput [(ngModel)]="dateVal">
+        </mat-form-field>
+
+        <button (click)="schedSale = false">Cancel</button>
+    </div>
+
+    <button *ngIf="!addShip">Add Shipment</button>
+    <div *ngIf="addShip">
+
+        <mat-form-field>
+            <mat-label>Product Quantity </mat-label>
+            <input matInput type="number" [(ngModel)]="shipQuantity">
+            <mat-label>Cost</mat-label>
+            <input matInput type="number" [(ngModel)]="shipCost">
+        </mat-form-field>
+
+        <button (click)="addShipment()">Apply</button>
+        <button (click)="addShip = false">Cancel</button>
+    </div>
+
+    <button (click)="saveProduct()">Save</button>
+    <button (click)="edit = false;">Cancel</button>
 
 </div>
