@@ -9,7 +9,7 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class AccountComponent {
 
-  @Input() user: User | undefined;
+  @Input() account: User | undefined;
 
   constructor(public accountService: AccountService){}
 

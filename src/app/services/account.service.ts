@@ -1,12 +1,16 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, Observable, take, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, Subject, take, throwError } from 'rxjs';
 import { User } from '../data/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
+
+
+  public account: User[] = []
+  private accountSubject: Subject<User[]> = new Subject()
 
   public displayLogin: boolean = false
   public displayRegister: boolean = false
@@ -80,5 +84,18 @@ export class AccountService {
     this.displayLogin = false
   }
 
+  updateAccount(): void {
+    this.http
+      .get<User[]>('http://localhost:8080/user')
+      .pipe(take(1))
+      .subscribe(account => {
+        console.log(account)
+        this.account = account
+        this.accountSubject.next(this.account)
+      })
+  }
 
+  whenAccountUpdated(): Observable<User[]> {
+    return this.accountSubject.asObservable()
+  }
 }
