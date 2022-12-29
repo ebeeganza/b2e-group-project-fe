@@ -3,11 +3,11 @@
     <div class="form-fields">
         <mat-form-field>
             <mat-label>Email</mat-label>
-            <input matInput [(ngModel)]="email" type="text" placeholder="example@example.com" required>
+            <input matInput [(ngModel)]="email" name="email" type="text" placeholder="example@example.com" required>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Password</mat-label>
-            <input matInput [(ngModel)]="password"  [type]="hide ? 'password' : 'text' " required>
+            <input matInput [(ngModel)]="password" name="password" [type]="hide ? 'password' : 'text' " required>
             <button mat-icon-button matSuffix (click)="hide = !hide" type="button">
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility' }} </mat-icon>
             </button>
@@ -15,8 +15,8 @@
     </div>
     <div class="form-buttons">
         <button mat-raised-button type="submit" color="accent" style="margin-top: 10px;">Login</button>
-        <button mat-raised-button type="button" color="primary" style="margin-top: 10px">New User? Register Here</button>
-        <button mat-raised-button type="button" style="margin-top: 10px; margin-bottom: 10px;"> Go Back</button>
+        <button mat-raised-button type="button" color="primary" style="margin-top: 10px" (click)="this.accountService.changeToRegister()">New User? Register Here</button>
+        <button mat-raised-button type="button" style="margin-top: 10px; margin-bottom: 10px;" (click)="this.accountService.resetDisplay()"> Go Back</button>
     </div>
 
 
