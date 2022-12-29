@@ -12,8 +12,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatBadgeModule } from '@angular/material/badge';
 import { ProductComponent } from './components/product/product.component';
+import { OrdersComponent } from './components/orders/orders.component';
 import { CartComponent } from './components/cart/cart.component';
-
 
 
 @NgModule({
@@ -21,6 +21,7 @@ import { CartComponent } from './components/cart/cart.component';
     AppComponent,
     ToolbarComponent,
     ProductComponent,
+    OrdersComponent,
     CartComponent
   ],
   imports: [
