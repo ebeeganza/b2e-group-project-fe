@@ -1,1 +1,6 @@
-<p>product works!</p>
+<p>{{product?.price}}</p>
+<p>{{<!--Get current sale price-->}}</p>
+<p>{{product?.description}}</p>
+<p *ngIf="product?.discontinued">Item no longer available.</p>
+<p>Categories:</p>
+<p *ngFor="let category of product?.categories">{{category.name}}</p>
