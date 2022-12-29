@@ -10,4 +10,5 @@ export class Shipment {
         this.quantity = quantity,
         this.cost = cost
     }
+    
 }
