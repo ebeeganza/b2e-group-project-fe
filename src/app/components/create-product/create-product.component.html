@@ -1,0 +1,12 @@
+<mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="name">
+    <mat-label>Price</mat-label>
+    <input matInput type="number" [(ngModel)]="price">
+    <mat-label>Availability Date</mat-label>
+    <input matInput [(ngModel)]="available">
+    <mat-label>Description</mat-label>
+    <input matInput [(ngModel)]="description">
+    <!--Add checkbox for category-->
+</mat-form-field>
+<button (click)="createProduct(name,price,available,description)">Create Product</button>

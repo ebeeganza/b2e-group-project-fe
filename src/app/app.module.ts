@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -14,7 +15,8 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { ProductComponent } from './components/product/product.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { CartComponent } from './components/cart/cart.component';
-
+import { CreateProductComponent } from './components/create-product/create-product.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { CartComponent } from './components/cart/cart.component';
     ToolbarComponent,
     ProductComponent,
     OrdersComponent,
-    CartComponent
+    CartComponent,
+    CreateProductComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,9 @@ import { CartComponent } from './components/cart/cart.component';
     MatButtonModule,
     MatTooltipModule,
     MatSidenavModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatFormFieldModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
