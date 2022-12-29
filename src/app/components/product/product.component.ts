@@ -10,4 +10,14 @@ export class ProductComponent {
 
   @Input() product: Product | null = null;
 
+  public edit = false;
+
+  editProduct(){
+    this.edit = true;
+  }
+
+  updateProduct(){
+    // use service to update the product
+  }
+
 }
