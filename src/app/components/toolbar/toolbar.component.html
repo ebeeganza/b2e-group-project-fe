@@ -1,0 +1,30 @@
+<mat-toolbar color="primary">
+    <button mat-icon-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
+    <span class="spacer"></span>
+    <button mat-button class="title">Dukes of York</button>
+    <span class="spacer"></span>
+    <!-- <button mat-icon-button matTooltip="Logout"><mat-icon>logout</mat-icon></button> -->
+    <button mat-icon-button matTooltip="Login"><mat-icon>login</mat-icon></button>
+    <button mat-icon-button  matTooltip="My Cart"><mat-icon matBadge="0" matBadgeSize="small" matBadgeColor="warn">shopping_cart</mat-icon></button>
+    <button mat-icon-button matTooltip="View Account Details"><mat-icon>settings</mat-icon></button>
+</mat-toolbar>
+<mat-toolbar color="accent" style="height: 20px;">
+    <span id="date"></span>
+    <span class="spacer"></span>
+    <span class="user">Welcome, User</span>
+</mat-toolbar>
+<mat-drawer-container hasBackdrop="true">
+    <mat-drawer #drawer mode="side">
+        <mat-toolbar color="accent">
+            <span>Welcome, User</span>
+            <span class="spacer"></span>
+            <button mat-icon-button><mat-icon>account_box</mat-icon></button>
+        </mat-toolbar>
+        <h2>View All Items</h2>
+        <h2>Shop by Category</h2>
+        <button mat-button>Clothing</button>
+        <h2>Manage Accounts</h2>
+    </mat-drawer>
+</mat-drawer-container>
+
+
