@@ -24,8 +24,16 @@ import { OrdersComponent } from './components/orders/orders.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CreateProductComponent } from './components/create-product/create-product.component';
 
+import { MatCardModule } from '@angular/material/card'
+
+import { AccountComponent } from './components/account/account.component';
+import { AccountListComponent } from './components/account-list/account-list.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ProductsListComponent } from './components/products-list/products-list.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -36,7 +44,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     RegisterComponent,
     OrdersComponent,
     CartComponent,
-    CreateProductComponent
+    CreateProductComponent,
+    AccountComponent,
+    AccountListComponent,
+    ProductsListComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +63,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    MatCardModule,
+    MatSnackBarModule,
+    MatExpansionModule,
     MatSelectModule
   ],
   providers: [],

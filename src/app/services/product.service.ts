@@ -10,7 +10,13 @@ export class ProductService {
 
   private products : Product[] = []
 
+  public creatingProduct = false;
+
   constructor(private http: HttpClient) { }
+
+  getProducts(){
+    return this.products;
+  }
 
   updateProducts(){
     this.http.get<Product[]>("http://localhost:8080/products")
@@ -32,6 +38,7 @@ export class ProductService {
     .subscribe({
       next: () => {
         this.updateProducts();
+        this.creatingProduct = false;
       },
       error: (error) => {
         //TODO: print error message
@@ -39,5 +46,30 @@ export class ProductService {
     })
   }
 
+  deleteProduct(product: Product){
+    this.http.delete("http://localhost:8080/products/${product.id}")
+    .pipe(take(1))
+    .subscribe({
+      next: () => {
+        this.updateProducts();
+      },
+      error: (error) => {
+        // print error to user
+      }
+    })
+  }
+
+  updateProduct(product: Product){
+    this.http.put("http://localhost:8080/products", product)
+    .pipe(take(1))
+    .subscribe({
+      next: () => {
+        this.updateProducts();
+      },
+      error: (error) => {
+        // print error
+      }
+    })
+  }
 
 }
