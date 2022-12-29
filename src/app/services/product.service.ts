@@ -10,7 +10,13 @@ export class ProductService {
 
   private products : Product[] = []
 
+  public creatingProduct = false;
+
   constructor(private http: HttpClient) { }
+
+  getProducts(){
+    return this.products;
+  }
 
   updateProducts(){
     this.http.get<Product[]>("http://localhost:8080/products")
@@ -32,6 +38,7 @@ export class ProductService {
     .subscribe({
       next: () => {
         this.updateProducts();
+        this.creatingProduct = false;
       },
       error: (error) => {
         //TODO: print error message

@@ -28,10 +28,10 @@ import { AccountComponent } from './components/account/account.component';
 import { AccountListComponent } from './components/account-list/account-list.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ProductsListComponent } from './components/products-list/products-list.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSelectModule} from '@angular/material/select';
-
 
 @NgModule({
   declarations: [
@@ -44,7 +44,8 @@ import {MatSelectModule} from '@angular/material/select';
     CartComponent,
     CreateProductComponent,
     AccountComponent,
-    AccountListComponent
+    AccountListComponent,
+    ProductsListComponent
   ],
   imports: [
     BrowserModule,
