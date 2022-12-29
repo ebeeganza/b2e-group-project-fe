@@ -11,15 +11,9 @@ export class LoginComponent {
   public email: string = ''
   public password: string = ''
 
-  constructor(public accountService: AccountService){}
+  constructor(public accountService: AccountService) { }
 
   loginUser() {
-    try {
-      this.accountService.tryLogin(this.email,this.password)
-    } catch (error) {
-      console.log("invalid login");
-      
-    }
-    
-    }
+      this.accountService.tryLogin(this.email, this.password)
+  }
 }

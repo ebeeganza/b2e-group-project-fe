@@ -1,2 +1,3 @@
 <app-toolbar></app-toolbar>
-<app-login *ngIf="accountService.displayLogin"></app-login>
+<app-login *ngIf="this.accountService.displayLogin"></app-login>
+<app-register *ngIf="this.accountService.displayRegister"></app-register>
