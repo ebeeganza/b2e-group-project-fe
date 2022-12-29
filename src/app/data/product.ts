@@ -11,12 +11,12 @@ export class Product {
     public description: string
     public images: string[]
     public categories: Categories[]
-    public schedulesMAPS: Price[]
-    public scheduledPrices: Price[]
-    public scheduledSales: Price[]
-    public shipments: Shipment[]
+    public schedulesMAPS: Price[];
+    public scheduledPrices: Price[];
+    public scheduledSales: Price[];
+    public shipments: Shipment[];
 
-    constructor(name: string, price: number, discontinued: boolean, availability: Date, description: string, images: string[], categories: Categories[], scheduledMAPS: Price[], scheduledPrices[]: Price[], scheduledSales[]: Price[], shipments: Shipment[]){
+    constructor(name: string, price: number, discontinued: boolean, availability: Date, description: string, images: string[], categories: Categories[], scheduledMAPS: Price[], scheduledPrices: Price[], scheduledSales: Price[], shipments: Shipment[]){
         this.name = name
         this.price = price
         this.discontinued = discontinued
