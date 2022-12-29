@@ -24,6 +24,7 @@ import { CreateProductComponent } from './components/create-product/create-produ
 
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ProductsListComponent } from './components/products-list/products-list.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     RegisterComponent,
     OrdersComponent,
     CartComponent,
-    CreateProductComponent
+    CreateProductComponent,
+    ProductsListComponent
   ],
   imports: [
     BrowserModule,

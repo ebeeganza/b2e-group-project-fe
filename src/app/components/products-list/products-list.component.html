@@ -1,0 +1,5 @@
+<!--Only show below button if user is a shopkeeper-->
+<button (click)="service.creatingProduct = true">Create New Product</button>
+<app-create-product *ngIf="service.creatingProduct"></app-create-product>
+
+<app-product *ngFor="let product of service.getProducts()" [product]="product"></app-product>
