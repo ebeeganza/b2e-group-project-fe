@@ -1,4 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { CartServiceService } from 'src/app/services/cart.service.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -7,6 +8,7 @@ import { AfterViewInit, Component } from '@angular/core';
 })
 export class ToolbarComponent implements AfterViewInit{
   
+  constructor(public cart: CartServiceService){}
   
   ngAfterViewInit(): void {
     const dateElement = document.getElementById("date")

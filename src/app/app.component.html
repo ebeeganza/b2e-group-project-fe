@@ -1,1 +1,2 @@
-<app-toolbar></app-toolbar>
+<app-toolbar *ngIf="cart.openToolbar()"></app-toolbar>
+<app-cart *ngIf="cart.openCart()"></app-cart>
