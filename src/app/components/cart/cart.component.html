@@ -1,38 +1,51 @@
-<mat-toolbar color="primary">
-    <button mat-icon-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
-    <span class="spacer"></span>
-    <button mat-button class="title">Cart placeholder</button>
-    <span class="spacer"></span>
-    <!-- <button mat-icon-button matTooltip="Logout"><mat-icon>logout</mat-icon></button> -->
-    <button mat-icon-button matTooltip="Login"><mat-icon>login</mat-icon></button>
-    <button (click)="cart.viewCart()" mat-icon-button  matTooltip="My Cart"><mat-icon matBadge="0" matBadgeSize="small" matBadgeColor="warn">shopping_cart</mat-icon></button>
-    <button mat-icon-button matTooltip="View Account Details"><mat-icon>settings</mat-icon></button>
-</mat-toolbar>
-<mat-toolbar color="accent" style="height: 20px;">
-    <span id="date"></span>
-    <span class="spacer"></span>
-    <span class="user">Welcome, User</span>
-</mat-toolbar>
-<mat-drawer-container hasBackdrop="true">
-    <mat-drawer #drawer mode="side">
-        <mat-toolbar color="accent">
-            <span>Welcome, User</span>
-            <span class="spacer"></span>
-            <button mat-icon-button><mat-icon>account_box</mat-icon></button>
-        </mat-toolbar>
-        <h2>View All Items</h2>
-        <h2>Shop by Category</h2>
-        <button mat-button>Clothing</button>
-        <h2>Manage Accounts</h2>
-    </mat-drawer>
-</mat-drawer-container>
+<ng-container *ngIf="true">
+    <div class="container">
+        <div class ="card-table">
+            <div class="cart-product">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>Product Name</th>
+                            <th>Product Image</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Iphone</td>
+                            <td>SomeImage</td>
+                            <td>This is hardcode</td>
+                            <th>50,000</th>
+                            <td>1</td>
+                            <td>50,000</td>
+                            <td><button class="btn btn-danger">Edit</button> <button class="btn btn-danger">Delete</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="true"> 
+    <div class ="container">
+        <div class="card">
+            <h3 class="card-title"> My Cart</h3>
+        </div>
+        <div class="center">
+            <h4> Your cart is empty!</h4>
+            <h5> Have an account? Sign in to see your cart </h5>
+            <h5><button> Sign In </button></h5>
+            <img src = "https://via.placeHolder.com/150" alt="">
+        </div>
+    </div>
+    <button (click)="cart.viewToolbar()">Go back PlaceHolder</button>
+</ng-container>
 
 
-<button (click)="cart.viewToolbar()">Go back PlaceHolder</button>
-
-<div> this is yo cart </div>
-
-<div> You currently have nothing in it</div>
-
-
-<button>Check Out PlaceHolder</button> 
