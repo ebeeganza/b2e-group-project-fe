@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Product } from 'src/app/data/product';
+import { OrdersService } from 'src/app/services/orders/orders.service';
 
 @Component({
   selector: 'app-orders',
@@ -6,27 +8,34 @@ import { Component } from '@angular/core';
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent {
+  constructor(private orderService: OrdersService) {
+  }
+
   displayedColumns: string[] = ['id', 'userId', 'date', 'products'];
-  dataSource = Order_Data;
-  
+  displayedColumns2: string[] = ['id', 'date', 'products'];
+
+  userRole = localStorage.getItem('role')
+  testDataSource = Order_Data
+  dataSource = this.orderService.getOrders()
+  dataSource2 = this.orderService.getUserOrders()
 }
 
 export interface PeriodicElement {
-  userId: string;
+  userId: number;
   id: number;
-  date: number;
-  products: string;
+  date: Date;
+  products: Product[];
 }
 
 const Order_Data: PeriodicElement[] = [
-  {id: 1, userId: 'Hydrogen', date: 1.0079, products: 'H'},
-  {id: 2, userId: 'Helium', date: 4.0026, products: 'He'},
-  {id: 3, userId: 'Lithium', date: 6.941, products: 'Li'},
-  {id: 4, userId: 'Beryllium', date: 9.0122, products: 'Be'},
-  {id: 5, userId: 'Boron', date: 10.811, products: 'B'},
-  {id: 6, userId: 'Carbon', date: 12.0107, products: 'C'},
-  {id: 7, userId: 'Nitrogen', date: 14.0067, products: 'N'},
-  {id: 8, userId: 'Oxygen', date: 15.9994, products: 'O'},
-  {id: 9, userId: 'Fluorine', date: 18.9984, products: 'F'},
-  {id: 10, userId: 'Neon', date: 20.1797, products: 'Ne'},
+  {id: 1, userId: 11, date: new Date("12-12-2021"), products: []},
+  {id: 2, userId: 12, date: new Date("1-12-2022"), products: []},
+  {id: 3, userId: 13, date: new Date("12-1-2022"), products: []},
+  {id: 4, userId: 14, date: new Date("12-12-2022"), products: []},
+  {id: 5, userId: 15, date: new Date("12-12-2000"), products: []},
+  {id: 6, userId: 16, date: new Date("12-12-2022"), products: []},
+  {id: 7, userId: 17, date: new Date("12-12-2022"), products: []},
+  {id: 8, userId: 18, date: new Date("12-12-2022"), products: []},
+  {id: 9, userId: 19, date: new Date("12-12-2022"), products: []},
+  {id: 10, userId: 20, date: new Date("12-12-2022"), products: []},
 ];

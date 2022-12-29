@@ -21,9 +21,10 @@ import { RegisterComponent } from './components/register/register.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CreateProductComponent } from './components/create-product/create-product.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-
 import { MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { MatTableModule } from '@angular/material/table';
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
