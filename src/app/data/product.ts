@@ -1,4 +1,6 @@
 import { Categories } from "./categories";
+import { Price } from "./price";
+import { Shipment } from "./shipments";
 
 export class Product {
     public id : number | null = null;
