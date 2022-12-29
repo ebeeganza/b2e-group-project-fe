@@ -1,4 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -6,6 +7,11 @@ import { AfterViewInit, Component } from '@angular/core';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements AfterViewInit{
+
+  constructor(public accountService: AccountService) {
+
+  }
+
   
   
   ngAfterViewInit(): void {
