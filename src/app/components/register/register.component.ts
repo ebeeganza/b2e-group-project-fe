@@ -14,8 +14,7 @@ export class RegisterComponent {
 
   constructor(public accountService: AccountService) { }
 
-  registerUser() {
+  registerUser() {  
     this.accountService.registerUser(this.newUser)
   }
-
 }

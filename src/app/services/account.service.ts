@@ -15,12 +15,20 @@ export class AccountService {
   public displayLogin: boolean = false
   public displayRegister: boolean = false
   public isLoggedIn: boolean = false
+  public currentUser: BehaviorSubject<User> = new BehaviorSubject<User>(new User(-1,'','','Guest','',-1))
 
   constructor(private http: HttpClient) {
     this.isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"))
+    if(this.isLoggedIn){
+      var userString = localStorage.getItem("user")
+      if(userString){
+        var user = JSON.parse(userString)
+        this.currentUser.next(user)
+      }
+    }
   }
 
-  tryLogin(email: string, password: string) {
+  tryLogin(email: string, password: string): void {
     let queryParams = new HttpParams()
     queryParams = queryParams.append("email", email)
     queryParams = queryParams.append("password", password)
@@ -28,36 +36,30 @@ export class AccountService {
       .pipe(take(1))
       .subscribe({
         next: (user) => {
-          localStorage.setItem("isLoggedIn", "true")
-          switch(user.role){
-            case 0: // Customer
-              localStorage.setItem("role","customer")
-              break
-            case 1: // Shopkeeper
-              localStorage.setItem("role","shopkeeper")
-              break
-            case 2: // Admin
-              localStorage.setItem("role","admin")
-              break
-            default: // Guest
-              localStorage.setItem("role", "guest")
-          }
+          this.successfulLogin(user)
         },
         error: (err) => {
+          // Demo Code
+          localStorage.setItem("isLoggedIn","true")
+          localStorage.setItem("fname","Connor")
+
           console.log(err);
         }
       })
 
   }
 
-  registerUser(newUser: User) {
+  registerUser(newUser: User): void {
     this.http.post<User>('http://localhost:8080/user', newUser)
       .pipe(take(1))
       .subscribe({
-        next: () => {
-          localStorage.setItem("isLoggedIn", "true")
+        next: (user) => {
+          this.successfulLogin(user)
         },
         error: (err) => {
+          // For Demo Purposes
+          this.successfulLogin(newUser)
+
           console.log("An error occured while registering account");
         }
       })
@@ -67,8 +69,18 @@ export class AccountService {
     localStorage.clear()
   }
 
+  successfulLogin(user: User) {
+    localStorage.setItem("isLoggedIn","true")
+    localStorage.setItem("user",JSON.stringify(user))
+  }
 
+  getCurrentUser(){
+    return this.currentUser.asObservable()
+  }
 
+  getCurrentUserFname() {
+    return this.currentUser.value.fname
+  }
 
   public changeToLogin() {
     this.resetDisplay()
