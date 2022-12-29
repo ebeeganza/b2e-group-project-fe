@@ -1,3 +1,4 @@
 <app-toolbar></app-toolbar>
+<app-login *ngIf="this.accountService.displayLogin"></app-login>
+<app-register *ngIf="this.accountService.displayRegister"></app-register>
 <app-cart *ngIf="cart.openCart()"></app-cart>
-<app-login *ngIf="accountService.displayLogin"></app-login>
