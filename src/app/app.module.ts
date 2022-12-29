@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatBadgeModule } from '@angular/material/badge';
 import { ProductComponent } from './components/product/product.component';
+import { OrdersComponent } from './components/orders/orders.component';
 
 
 
@@ -19,7 +20,8 @@ import { ProductComponent } from './components/product/product.component';
   declarations: [
     AppComponent,
     ToolbarComponent,
-    ProductComponent
+    ProductComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,
