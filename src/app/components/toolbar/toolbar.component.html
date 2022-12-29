@@ -5,7 +5,7 @@
     <span class="spacer"></span>
     <!-- <button mat-icon-button matTooltip="Logout"><mat-icon>logout</mat-icon></button> -->
     <button mat-icon-button matTooltip="Login" (click)="this.accountService.changeToLogin()"><mat-icon>login</mat-icon></button>
-    <button mat-icon-button  matTooltip="My Cart"><mat-icon matBadge="0" matBadgeSize="small" matBadgeColor="warn">shopping_cart</mat-icon></button>
+    <button (click)="cart.viewCart()" mat-icon-button  matTooltip="My Cart"><mat-icon matBadge="0" matBadgeSize="small" matBadgeColor="warn">shopping_cart</mat-icon></button>
     <button mat-icon-button matTooltip="View Account Details"><mat-icon>settings</mat-icon></button>
 </mat-toolbar>
 <mat-toolbar color="accent" style="height: 20px;">
