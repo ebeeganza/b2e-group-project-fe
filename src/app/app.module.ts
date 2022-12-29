@@ -25,6 +25,8 @@ import { CreateProductComponent } from './components/create-product/create-produ
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -52,7 +54,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
