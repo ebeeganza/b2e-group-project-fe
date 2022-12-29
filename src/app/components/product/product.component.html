@@ -1,6 +1,13 @@
 <p>{{product?.price}}</p>
-<p>{{<!--Get current sale price-->}}</p>
+<p><!--TODO: Get current sale price from scheduledPrices[]--></p>
 <p>{{product?.description}}</p>
 <p *ngIf="product?.discontinued">Item no longer available.</p>
 <p>Categories:</p>
 <p *ngFor="let category of product?.categories">{{category.name}}</p>
+
+<!--TODO: Only show button if the user is a shopkeeper-->
+<button (click)="editProduct()">Edit Product</button>
+
+<div *ngIf="edit">
+
+</div>
