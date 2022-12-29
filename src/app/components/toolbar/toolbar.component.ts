@@ -8,9 +8,8 @@ import { AccountService } from 'src/app/services/account.service';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements AfterViewInit{
-
+  
   constructor(public accountService: AccountService, public cart: CartServiceService) {
-
   }
   
   ngAfterViewInit(): void {

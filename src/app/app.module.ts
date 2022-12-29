@@ -14,6 +14,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+
 
 import { ProductComponent } from './components/product/product.component';
 import { LoginComponent } from './components/login/login.component';
@@ -49,7 +51,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
