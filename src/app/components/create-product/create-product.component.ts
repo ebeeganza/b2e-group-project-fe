@@ -13,7 +13,7 @@ export class CreateProductComponent {
   public available: Date = new Date()
   public description = ''
 
-  constructor(private service: ProductService){}
+  constructor(public service: ProductService){}
 
   createProduct(name: string, price: number, available: Date, description: string){
     this.service.createProduct(name, price, available, description);
