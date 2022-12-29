@@ -7,12 +7,12 @@
 <p *ngFor="let category of product?.categories">{{category.name}}</p>
 
 <!--TODO: Only show button if the user is a shopkeeper-->
-<button (click)="edit = true">Edit Product</button>
+<button *ngIf="!edit" (click)="edit = true">Edit Product</button>
 
 <!--Make all date inputs type date-->
 <div *ngIf="edit">
 
-    <button *ngIf="!changeName">Change Product Name</button>
+    <button *ngIf="!changeName" (click)="changeName = true">Change Product Name</button>
     <div *ngIf="changeName">
 
         <mat-form-field>
@@ -24,7 +24,7 @@
         <button (click)="changeName = false">Cancel</button>
     </div>
 
-    <button *ngIf="!changePrice">Change Price</button>
+    <button *ngIf="!changePrice" (click)="changePrice = true">Change Price</button>
     <div *ngIf="changePrice">
 
         <mat-form-field>
@@ -36,7 +36,7 @@
         <button (click)="changePrice = false">Cancel</button>
     </div>
 
-    <button *ngIf="!changeAvail">Change Availability</button>
+    <button *ngIf="!changeAvail" (click)="changeAvail = true">Change Availability</button>
     <div *ngIf="changeAvail">
 
         <mat-form-field>
@@ -48,7 +48,7 @@
         <button (click)="changeAvail = false">Cancel</button>
     </div>
 
-    <button *ngIf="!changeDesc">Change Description</button>
+    <button *ngIf="!changeDesc" (click)="changeDesc = true">Change Description</button>
     <div *ngIf="changeDesc">
 
         <mat-form-field>
@@ -60,7 +60,7 @@
         <button (click)="changeDesc = false">Cancel</button>
     </div>
 
-    <button *ngIf="!addIm">Add Image</button>
+    <button *ngIf="!addIm" (click)="addIm = true">Add Image</button>
     <div *ngIf="addIm">
 
         <mat-form-field>
@@ -72,13 +72,13 @@
         <button (click)="addIm = false">Cancel</button>
     </div>
 
-    <button *ngIf="!addCat">Add Category</button>
+    <button *ngIf="!addCat" (click)="addCat = true">Add Category</button>
     <div *ngIf="addCat">
         <!--TODO: Show categories NOT ALREADY LINKED TO PRODUCT-->
         <button (click)="addCat = false">Cancel</button>
     </div>
 
-    <button *ngIf="!schedMAP">Schedule MAP</button>
+    <button *ngIf="!schedMAP" (click)="schedMAP = true">Schedule MAP</button>
     <div *ngIf="schedMAP">
 
         <mat-form-field>
@@ -92,7 +92,7 @@
         <button (click)="schedMAP = false">Cancel</button>
     </div>
 
-    <button *ngIf="!schedPrice">Schedule Price</button>
+    <button *ngIf="!schedPrice" (click)="schedPrice = true">Schedule Price</button>
     <div *ngIf="schedPrice">
 
         <mat-form-field>
@@ -105,7 +105,7 @@
         <button (click)="schedPrice = false">Cancel</button>
     </div>
 
-    <button *ngIf="!schedSale">Schedule Sale</button>
+    <button *ngIf="!schedSale" (click)="schedSale = true">Schedule Sale</button>
     <div *ngIf="schedSale">
 
         <mat-form-field>
@@ -118,7 +118,7 @@
         <button (click)="schedSale = false">Cancel</button>
     </div>
 
-    <button *ngIf="!addShip">Add Shipment</button>
+    <button *ngIf="!addShip" (click)="addShip = true">Add Shipment</button>
     <div *ngIf="addShip">
 
         <mat-form-field>
