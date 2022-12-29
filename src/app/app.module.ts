@@ -19,6 +19,8 @@ import { MatInputModule } from '@angular/material/input';
 import { ProductComponent } from './components/product/product.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { OrdersComponent } from './components/orders/orders.component';
+import { CartComponent } from './components/cart/cart.component';
 
 
 
@@ -28,7 +30,9 @@ import { RegisterComponent } from './components/register/register.component';
     ToolbarComponent,
     ProductComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    OrdersComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
