@@ -10,5 +10,4 @@ export class ProductComponent {
 
   @Input() product: Product | null = null;
 
-
 }
