@@ -25,6 +25,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { CreateProductComponent } from './components/create-product/create-product.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatTooltipModule,
     MatSidenavModule,
     MatBadgeModule,
+    MatTableModule,
     MatFormFieldModule,
     MatInputModule,
     FormsModule
