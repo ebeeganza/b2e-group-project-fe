@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-create-product',
@@ -8,12 +9,14 @@ import { Component } from '@angular/core';
 export class CreateProductComponent {
 
   public name = ''
-  public price: number | null = null
-  public available: Date | null = null
+  public price: number = 0
+  public available: Date = new Date()
   public description = ''
 
-  createProduct(name: string, price: number | null, available: Date | null, description: string){
-    // use service to create product
+  constructor(private service: ProductService){}
+
+  createProduct(name: string, price: number, available: Date, description: string){
+    this.service.createProduct(name, price, available, description);
   }
 
 }
