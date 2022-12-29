@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CartServiceService } from './services/cart.service.service';
 import { AccountService } from './services/account.service';
 
 @Component({
@@ -8,6 +9,7 @@ import { AccountService } from './services/account.service';
 })
 export class AppComponent {
   title = 'optum-fs-java-dukes_of_york-1';
+  
+  constructor(public cart: CartServiceService, public accountService: AccountService) {}
 
-  constructor(public accountService: AccountService){}
 }
