@@ -19,5 +19,4 @@ export class ProductComponent {
   updateProduct(){
     // use service to update the product
   }
-
 }

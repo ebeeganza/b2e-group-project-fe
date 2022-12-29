@@ -12,7 +12,7 @@ export class CartServiceService {
   public openToolbar():boolean {
     return this.showToolbar
   }
-  public openCart (): boolean {
+  public openCart(): boolean {
     return this.showCart
   }
 
