@@ -14,9 +14,10 @@ export class ProductService {
   public creatingProduct = false;
 
   constructor(private http: HttpClient) { 
-    
+    /*
     //test product
     this.products.push(new Product("Soup",false,new Date(),"Yummy savory chicken noodle soup",[],[],[],[],[],[]));
+    */
     
   }
 

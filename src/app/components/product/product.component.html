@@ -8,16 +8,18 @@
         </div>
         <p>Description: {{product?.description}}</p>
         <p *ngIf="product?.discontinued">Item no longer available.</p>
-        <p>Categories:</p>
-        <p *ngFor="let category of product?.categories">{{category.name}}</p>
+        <div *ngIf="product && product.categories && product.categories.length > 0">
+            <p>Categories:</p>
+            <p *ngFor="let category of product?.categories">{{category.name}}</p>
+        </div>
 
-        <!--button *ngIf="accountService.currentUser.getValue().role === 1 && !edit" (click)="edit = true">Edit Product</button>-->
-        <button mat-raised-button color="primary" *ngIf="!edit" (click)="edit = true" class="execute-button">Edit</button>
+        <button mat-raised-button color="primary" *ngIf="accountService.currentUser.getValue().role === 1 && !edit" (click)="edit = true" class="execute-button">Edit</button>
 
         <!--TODO: Make all date inputs type=date-->
         <div *ngIf="edit" class="container">
 
-            <button mat-raised-button color="primary" *ngIf="!changeName" (click)="resetVals(); changeName = true" class="edit-button">Change Product Name</button>
+            <button mat-raised-button color="primary" *ngIf="!changeName" (click)="resetVals(); changeName = true"
+                class="edit-button">Change Product Name</button>
             <div *ngIf="changeName" class="edit-form">
 
                 <mat-form-field appearance="fill">
@@ -26,10 +28,12 @@
                 </mat-form-field>
 
                 <button mat-raised-button (click)="updateName()" color="primary" class="execute-button">Apply</button>
-                <button mat-raised-button (click)="changeName = false" color="warn" class="execute-button">Cancel</button>
+                <button mat-raised-button (click)="changeName = false" color="warn"
+                    class="execute-button">Cancel</button>
             </div>
 
-            <button mat-raised-button color="primary" *ngIf="!changeAvail" (click)="resetVals(); changeAvail = true" class="edit-button">Change Availability</button>
+            <button mat-raised-button color="primary" *ngIf="!changeAvail" (click)="resetVals(); changeAvail = true"
+                class="edit-button">Change Availability</button>
             <div *ngIf="changeAvail" class="edit-form">
 
                 <mat-form-field>
@@ -38,10 +42,12 @@
                 </mat-form-field>
 
                 <button mat-raised-button (click)="updateAvail()" color="primary" class="execute-button">Apply</button>
-                <button mat-raised-button (click)="changeAvail = false" color="warn" class="execute-button">Cancel</button>
+                <button mat-raised-button (click)="changeAvail = false" color="warn"
+                    class="execute-button">Cancel</button>
             </div>
 
-            <button mat-raised-button color="primary" *ngIf="!changeDesc" (click)="resetVals(); changeDesc = true" class="edit-button">Change Description</button>
+            <button mat-raised-button color="primary" *ngIf="!changeDesc" (click)="resetVals(); changeDesc = true"
+                class="edit-button">Change Description</button>
             <div *ngIf="changeDesc" class="edit-form">
 
                 <mat-form-field>
@@ -49,11 +55,14 @@
                     <input matInput [(ngModel)]="description">
                 </mat-form-field>
 
-                <button mat-raised-button (click)="updateDescription()" color="primary" class="execute-button">Apply</button>
-                <button mat-raised-button (click)="changeDesc = false" color="warn" class="execute-button">Cancel</button>
+                <button mat-raised-button (click)="updateDescription()" color="primary"
+                    class="execute-button">Apply</button>
+                <button mat-raised-button (click)="changeDesc = false" color="warn"
+                    class="execute-button">Cancel</button>
             </div>
 
-            <button mat-raised-button color="primary" *ngIf="!addIm" (click)="resetVals(); addIm = true" class="edit-button">Add Image</button>
+            <button mat-raised-button color="primary" *ngIf="!addIm" (click)="resetVals(); addIm = true"
+                class="edit-button">Add Image</button>
             <div *ngIf="addIm" class="edit-form">
 
                 <mat-form-field>
@@ -65,61 +74,77 @@
                 <button mat-raised-button (click)="addIm = false" color="warn" class="execute-button">Cancel</button>
             </div>
 
-            <button mat-raised-button color="primary" *ngIf="!addCat" (click)="resetVals(); addCat = true" class="edit-button">Add Category</button>
+            <button mat-raised-button color="primary" *ngIf="!addCat" (click)="resetVals(); addCat = true"
+                class="edit-button">Add Category</button>
             <div *ngIf="addCat" class="edit-form">
                 <!--TODO: Show categories NOT ALREADY LINKED TO PRODUCT-->
                 <button (click)="addCat = false">Cancel</button>
             </div>
 
-            <button mat-raised-button color="primary" *ngIf="!schedMAP" (click)="resetVals(); schedMAP = true" class="edit-button">Schedule MAP</button>
+            <button mat-raised-button color="primary" *ngIf="!schedMAP" (click)="resetVals(); schedMAP = true"
+                class="edit-button">Schedule MAP</button>
             <div *ngIf="schedMAP" class="edit-form">
 
                 <mat-form-field>
                     <mat-label>Price Limit</mat-label>
                     <input matInput type="number" [(ngModel)]="priceVal">
+                </mat-form-field>
+                <mat-form-field>
                     <mat-label>End Date</mat-label>
                     <input matInput [(ngModel)]="dateVal">
                 </mat-form-field>
 
-                <button mat-raised-button (click)="addScheduledMAP()" color="primary" class="execute-button">Apply</button>
+                <button mat-raised-button (click)="addScheduledMAP()" color="primary"
+                    class="execute-button">Apply</button>
                 <button mat-raised-button (click)="schedMAP = false" color="warn" class="execute-button">Cancel</button>
             </div>
 
-            <button mat-raised-button color="primary" *ngIf="!schedPrice" (click)="resetVals(); schedPrice = true" class="edit-button">Schedule Price</button>
+            <button mat-raised-button color="primary" *ngIf="!schedPrice" (click)="resetVals(); schedPrice = true"
+                class="edit-button">Schedule Price</button>
             <div *ngIf="schedPrice" class="edit-form">
 
                 <mat-form-field>
                     <mat-label>Price</mat-label>
                     <input matInput type="number" [(ngModel)]="priceVal">
+                </mat-form-field>
+                <mat-form-field>
                     <mat-label>Start Date</mat-label>
                     <input matInput [(ngModel)]="dateVal">
                 </mat-form-field>
 
-                <button mat-raised-button (click)="addScheduledPrice()" color="primary" class="execute-button"></button>
-                <button mat-raised-button (click)="schedPrice = false" color="warn" class="execute-button">Cancel</button>
+                <button mat-raised-button (click)="addScheduledPrice()" color="primary" class="execute-button">Apply</button>
+                <button mat-raised-button (click)="schedPrice = false" color="warn"
+                    class="execute-button">Cancel</button>
             </div>
 
-            <button mat-raised-button color="primary" *ngIf="!schedSale" (click)="resetVals(); schedSale = true" class="edit-button">Schedule Sale</button>
+            <button mat-raised-button color="primary" *ngIf="!schedSale" (click)="resetVals(); schedSale = true"
+                class="edit-button">Schedule Sale</button>
             <div *ngIf="schedSale" class="edit-form">
 
                 <mat-form-field>
                     <mat-label>Sale Price</mat-label>
                     <input matInput type="number" [(ngModel)]="priceVal">
+                </mat-form-field>
+                <mat-form-field>
                     <mat-label>Start Date</mat-label>
                     <input matInput [(ngModel)]="dateVal">
                 </mat-form-field>
 
-                <button mat-raised-button (click)="addScheduledSale()" color="primary" class="execute-button"></button>
-                <button mat-raised-button (click)="schedSale = false" color="warn" class="execute-button">Cancel</button>
+                <button mat-raised-button (click)="addScheduledSale()" color="primary" class="execute-button">Apply</button>
+                <button mat-raised-button (click)="schedSale = false" color="warn"
+                    class="execute-button">Cancel</button>
             </div>
 
-            <button mat-raised-button color="primary" *ngIf="!addShip" (click)="resetVals(); addShip = true" class="edit-button">Add Shipment</button>
+            <button mat-raised-button color="primary" *ngIf="!addShip" (click)="resetVals(); addShip = true"
+                class="edit-button">Add Shipment</button>
             <div *ngIf="addShip" class="edit-form">
 
                 <mat-form-field>
                     <mat-label>Product Quantity </mat-label>
                     <input matInput type="number" [(ngModel)]="shipQuantity">
-                    
+                </mat-form-field>
+
+                <mat-form-field>
                     <mat-label>Cost</mat-label>
                     <input matInput type="number" [(ngModel)]="shipCost">
                 </mat-form-field>
