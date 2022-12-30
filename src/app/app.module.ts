@@ -33,6 +33,7 @@ import { ProductsListComponent } from './components/products-list/products-list.
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { CouponComponent } from './components/coupon/coupon.component';
+import { CategoryListComponent } from './components/category-list/category-list.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { CouponComponent } from './components/coupon/coupon.component';
     AccountComponent,
     AccountListComponent,
     ProductsListComponent,
-    CouponComponent
+    CouponComponent,
+    CategoryListComponent
   ],
   imports: [
     BrowserModule,
