@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Categories } from 'src/app/data/categories';
 import { Price } from 'src/app/data/price';
 import { Product } from 'src/app/data/product';
 import { Shipment } from 'src/app/data/shipments';
+import { AccountService } from 'src/app/services/account.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -10,9 +11,12 @@ import { ProductService } from 'src/app/services/product.service';
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css']
 })
-export class ProductComponent {
+export class ProductComponent implements OnInit {
 
   @Input() product: Product | null = null;
+
+  public defaultPrice = 0;
+  public currentPrice = 0;
 
   public todayDate = new Date();
 
@@ -38,7 +42,25 @@ export class ProductComponent {
   public addIm = false;
   public addCat = false;
 
-  constructor(private service: ProductService) { }
+  constructor(private productService: ProductService, public accountService : AccountService) { }
+
+  ngOnInit(): void {
+    // update the product's default price and current price
+    if(this.product){
+      let currDate = this.product.availability;
+      for(let price of this.product?.scheduledPrices){
+        if (price.date === this.product.availability){
+          this.defaultPrice = price.price;
+          this.currentPrice = price.price;
+        }
+        if(price.date > currDate && price.date <= this.todayDate) {
+          currDate = price.date
+          this.currentPrice = price.price;
+        }
+      }
+    }
+  }
+
 
   updateName() {
     if (this.product) {
@@ -51,13 +73,6 @@ export class ProductComponent {
     if (this.product) {
       this.product.description = this.description;
       this.changeDesc = false;
-    }
-  }
-
-  updatePrice() {
-    if (this.product) {
-      this.product.price = this.price;
-      this.changePrice = false;
     }
   }
 
@@ -114,7 +129,7 @@ export class ProductComponent {
   // save the modified product to the backend
   saveProduct() {
     if (this.product) {
-      this.service.updateProduct(this.product);
+      this.productService.updateProduct(this.product);
       this.edit = false;
     }
   }

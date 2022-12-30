@@ -1,15 +1,14 @@
 <p>{{product?.name}}</p>
-<p>{{product?.price | currency}}</p>
-<p><!--TODO: Get current sale price from scheduledPrices[]--></p>
+<p>{{defaultPrice | currency}}</p>
+<p>{{currentPrice}}</p>
 <p>Description: {{product?.description}}</p>
 <p *ngIf="product?.discontinued">Item no longer available.</p>
 <p>Categories:</p>
 <p *ngFor="let category of product?.categories">{{category.name}}</p>
 
-<!--TODO: Only show button if the user is a shopkeeper-->
-<button *ngIf="!edit" (click)="edit = true">Edit Product</button>
+<button *ngIf="accountService.currentUser.getValue().role === 1 && !edit" (click)="edit = true">Edit Product</button>
 
-<!--Make all date inputs type date-->
+<!--TODO: Make all date inputs type=date-->
 <div *ngIf="edit">
 
     <button *ngIf="!changeName" (click)="changeName = true">Change Product Name</button>
@@ -22,18 +21,6 @@
 
         <button (click)="updateName()">Apply</button>
         <button (click)="changeName = false">Cancel</button>
-    </div>
-
-    <button *ngIf="!changePrice" (click)="changePrice = true">Change Price</button>
-    <div *ngIf="changePrice">
-
-        <mat-form-field>
-            <mat-label>New Default Product Price</mat-label>
-            <input matInput type="number" [(ngModel)]="price">
-        </mat-form-field>
-
-        <button (click)="updatePrice()">Apply</button>
-        <button (click)="changePrice = false">Cancel</button>
     </div>
 
     <button *ngIf="!changeAvail" (click)="changeAvail = true">Change Availability</button>
