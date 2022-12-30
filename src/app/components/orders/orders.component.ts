@@ -1,20 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Order } from 'src/app/data/orders';
 import { Product } from 'src/app/data/product';
 import { AccountService } from 'src/app/services/account.service';
 import { OrdersService } from 'src/app/services/orders/orders.service';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.css']
 })
-export class OrdersComponent {
+export class OrdersComponent implements OnInit{
   constructor(public orderService: OrdersService,
-              public accountService: AccountService) {
+              public accountService: AccountService,
+              public productService: ProductService) {
+  }
+  ngOnInit(): void {
+    console.log(this.orderService.orders)
   }
 
-  displayedColumns: string[] = ['id', 'userId', 'date', 'products'];
+  displayedColumns: string[] = ['id', 'userId', 'date', 'products', 'totals'];
   displayedColumns2: string[] = ['id', 'date', 'products'];
 
   userRole = localStorage.getItem('role')
@@ -29,9 +34,11 @@ export class OrdersComponent {
     this.id = id
   }
 
-  // public total(data: Order) {
-  //   return data.products.reduce((acc, obj) => acc + obj., 0)
-  // } getting the totals, Alex might have a better function.
+  public total(data: Order) {
+    return data.products.reduce((acc, obj) => acc + this.productService.getCurrentPrice(obj), 0)
+  } 
+
+
 
 }
 
