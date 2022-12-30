@@ -14,6 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select'
 
 import { ProductComponent } from './components/product/product.component';
 import { LoginComponent } from './components/login/login.component';
@@ -31,7 +32,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProductsListComponent } from './components/products-list/products-list.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [

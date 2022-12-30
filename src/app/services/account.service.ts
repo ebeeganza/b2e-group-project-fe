@@ -15,7 +15,8 @@ export class AccountService {
   public displayLogin: boolean = false
   public displayRegister: boolean = false
   public isLoggedIn: boolean = false
-  public currentUser: BehaviorSubject<User> = new BehaviorSubject<User>(new User(-1,'','','Guest','',-1))
+  public guestUser: User = new User(-1,'','','Guest','',-1)
+  public currentUser: BehaviorSubject<User> = new BehaviorSubject<User>(this.guestUser)
 
   constructor(private http: HttpClient) {
     this.isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"))
@@ -67,11 +68,16 @@ export class AccountService {
 
   logoutUser() {
     localStorage.clear()
+    this.isLoggedIn = false
+    this.currentUser.next(this.guestUser)
   }
 
   successfulLogin(user: User) {
     localStorage.setItem("isLoggedIn","true")
     localStorage.setItem("user",JSON.stringify(user))
+    this.isLoggedIn = true
+    this.currentUser.next(user)
+    this.resetDisplay()
   }
 
   getCurrentUser(){
