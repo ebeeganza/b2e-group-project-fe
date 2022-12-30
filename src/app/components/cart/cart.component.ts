@@ -10,6 +10,7 @@ export class CartComponent implements OnInit{
 
   public products: any = [];
   public grandTotal : number = 0;
+  couponCode: any;
 
   constructor(public cart:CartServiceService) {}
 

@@ -1,7 +1,7 @@
 export class Coupon {
     constructor(
         public id: number,
-        public code: string,
+        public couponCode: string,
         public Discount: number,
         public StartDate: Date,
         public EndDate : Date,

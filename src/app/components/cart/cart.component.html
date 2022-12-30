@@ -26,7 +26,13 @@
                                 <th>50,000</th>
                                 <td>1</td>
                                 <td>50,000</td>
-                                <td><button class="btn btn-danger">	<mat-icon>edit</mat-icon> </button> <button class="btn btn-danger"><mat-icon>delete</mat-icon></button></td>
+                                <td><button><mat-icon>edit</mat-icon> </button> <button><mat-icon>delete</mat-icon></button></td>
+                            </tr>
+                            <tr>
+                                <td colspan ="4"></td>
+                                <td><label for="coupon-code">Coupon code: </label></td>
+                                <td><input type="text" [(ngModel)]="couponCode"></td>
+                                <td><button type="submit">Apply Coupon</button></td>
                             </tr>
                             <tr> 
                                 <td colspan="4"></td>
