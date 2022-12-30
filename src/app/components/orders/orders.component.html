@@ -63,9 +63,11 @@
       <!-- products Column -->
       <ng-container matColumnDef="products">
         <th mat-header-cell *matHeaderCellDef> Product </th>
-        <td mat-cell *matCellDef="let element"> {{element.products}} </td>
+        <td mat-cell *matCellDef="let element"> <ul> <li *ngFor="let each of element.products">{{each.name}}</li> </ul> </td> 
       </ng-container>
     
+<!-- <ul> <li *ngFor="let each of element.products">{{each.name}}</li> </ul> -->
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
@@ -92,11 +94,13 @@
           <td mat-cell *matCellDef="let element"> {{element.date | date:'MM-dd-yyyy'}} </td>
         </ng-container>
       
-        <!-- products Column -->
-        <ng-container matColumnDef="products">
-          <th mat-header-cell *matHeaderCellDef> Product </th>
-          <td mat-cell *matCellDef="let element"> {{element.products}} </td>
-        </ng-container>
+      <!-- products Column -->
+      <ng-container matColumnDef="products">
+        <th mat-header-cell *matHeaderCellDef> Product </th>
+        <td mat-cell *matCellDef="let element"> <ul> <li *ngFor="let each of element.products">{{each.name}}</li> </ul> </td> 
+      </ng-container>
+    
+<!-- <ul> <li *ngFor="let each of element.products">{{each.name}}</li> </ul> -->
       
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>

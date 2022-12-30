@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Order } from 'src/app/data/orders';
 import { Product } from 'src/app/data/product';
 import { AccountService } from 'src/app/services/account.service';
 import { OrdersService } from 'src/app/services/orders/orders.service';
@@ -27,6 +28,11 @@ export class OrdersComponent {
   public selectId(id:number): void {
     this.id = id
   }
+
+  // public total(data: Order) {
+  //   return data.products.reduce((acc, obj) => acc + obj., 0)
+  // } getting the totals, Alex might have a better function.
+
 }
 
 export interface PeriodicElement {
