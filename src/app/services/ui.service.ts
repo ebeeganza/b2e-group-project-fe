@@ -7,6 +7,8 @@ import { Categories } from '../data/categories';
   providedIn: 'root'
 })
 export class UiService {
+  public displayCategories: boolean = false
+
   // TEMPORARY 
   public categoryList: Categories[] = [
     new Categories(0,'Clothing'),
@@ -15,7 +17,7 @@ export class UiService {
     new Categories(3,'Books'),
     new Categories(4,'Particle Accelerators'),
   ]
-  
+
   public categorySubject: BehaviorSubject<Categories[]> = new BehaviorSubject<Categories[]>([])
 
   constructor(private http: HttpClient) {
@@ -64,6 +66,15 @@ export class UiService {
 
   getCategories(): Observable<Categories[]> {
     return this.categorySubject.asObservable()
+  }
+
+  changeToCategories() {
+    this.resetDisplay()
+    this.displayCategories = true
+    }
+
+  resetDisplay() {
+    this.displayCategories = false
   }
 
 

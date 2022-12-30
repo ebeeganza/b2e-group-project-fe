@@ -2,5 +2,5 @@
 <app-login *ngIf="this.accountService.displayLogin"></app-login>
 <app-register *ngIf="this.accountService.displayRegister"></app-register>
 <app-cart *ngIf="cart.openCart()"></app-cart>
-
+<app-category-list *ngIf="this.ui.displayCategories"></app-category-list>
 <app-products-list></app-products-list>

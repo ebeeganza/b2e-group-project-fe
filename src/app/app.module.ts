@@ -14,7 +14,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select'
+import { MatSelectModule } from '@angular/material/select';
+import {MatSortModule} from '@angular/material/sort';
+
 
 import { ProductComponent } from './components/product/product.component';
 import { LoginComponent } from './components/login/login.component';
@@ -68,7 +70,8 @@ import { CategoryListComponent } from './components/category-list/category-list.
     MatCardModule,
     MatSnackBarModule,
     MatExpansionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]
