@@ -45,34 +45,34 @@ export class ProductComponent implements OnInit {
   constructor(private productService: ProductService, public accountService : AccountService) { }
 
   ngOnInit(): void {
-    // update the product's default price and current price
     if(this.product){
-      let currDate = this.product.availability;
-      for(let price of this.product?.scheduledPrices){
-        if (price.date === this.product.availability){
-          this.defaultPrice = price.price;
-          this.currentPrice = price.price;
+      let currPriceDate = this.product.availability // start looping through dates at the date the item is available
+      let currSaleDate = this.product.availability
+      for(let price of this.product.scheduledPrices){
+        if(price.date > currPriceDate && price.date <= this.todayDate){
+          this.defaultPrice = price.price; // update the product's default price for the current date
         }
-        if(price.date > currDate && price.date <= this.todayDate) {
-          currDate = price.date
-          this.currentPrice = price.price;
+      }
+      for(let price of this.product.scheduledSales){
+        if(price.date > currSaleDate && price.date <= this.todayDate){
+          this.currentPrice = price.price; // update the product's current price for the current date
         }
       }
     }
   }
 
   ngOnChange(): void {
-    // update the product's default price and current price
     if(this.product){
-      let currDate = this.product.availability;
-      for(let price of this.product?.scheduledPrices){
-        if (price.date === this.product.availability){
-          this.defaultPrice = price.price;
-          this.currentPrice = price.price;
+      let currPriceDate = this.product.availability // start looping through dates at the date the item is available
+      let currSaleDate = this.product.availability
+      for(let price of this.product.scheduledPrices){
+        if(price.date > currPriceDate && price.date <= this.todayDate){
+          this.defaultPrice = price.price; // update the product's default price for the current date
         }
-        if(price.date > currDate && price.date <= this.todayDate) {
-          currDate = price.date
-          this.currentPrice = price.price;
+      }
+      for(let price of this.product.scheduledSales){
+        if(price.date > currSaleDate && price.date <= this.todayDate){
+          this.currentPrice = price.price; // update the product's current price for the current date
         }
       }
     }
@@ -107,7 +107,16 @@ export class ProductComponent implements OnInit {
 
   updateAvail() {
     if (this.product) {
+      const oldAvailabilityDate = this.product.availability;
       this.product.availability = this.available;
+
+      // find the price linked to the old availability date and update the price's start date
+      for(let price of this.product.scheduledPrices){
+        if(price.date === oldAvailabilityDate){
+          price.date = this.available
+        }
+      }
+
       this.changeAvail = false;
     }
   }
@@ -150,9 +159,20 @@ export class ProductComponent implements OnInit {
   addShipment() {
     if (this.product) {
       if (this.product.id)
-        this.product.shipments.push(new Shipment(Math.random(), this.product.id, this.shipQuantity, this.shipCost));
+        this.product.shipments.push(new Shipment(Math.random(), this.product.id, this.shipQuantity, this.shipCost, this.dateVal));
     }
+    this.dateVal = this.todayDate;
     this.addShip = false;
+  }
+
+  discontinueItem(){
+    if(this.product)
+    this.product.discontinued = true;
+  }
+
+  rereleaseItem(){
+    if(this.product)
+    this.product.discontinued = false;
   }
 
   // save the modified product to the backend

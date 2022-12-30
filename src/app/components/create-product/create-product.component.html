@@ -14,11 +14,13 @@
 
             <mat-form-field>
                 <mat-label>Availability Date</mat-label>
-                <input matInput [(ngModel)]="available">
+                <input matInput [matDatepicker]="picker" [(ngModel)]="available">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field>
-                <mat-label>Description</mat-label>
+                <mat-label>Product Description</mat-label>
                 <input matInput [(ngModel)]="description">
             </mat-form-field>
 
