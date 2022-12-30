@@ -84,10 +84,6 @@ export class AccountService {
     return this.currentUser.asObservable()
   }
 
-  getCurrentUserFname() {
-    return this.currentUser.value.fname
-  }
-
   public changeToLogin() {
     this.resetDisplay()
     this.displayLogin = true

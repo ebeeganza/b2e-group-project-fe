@@ -1,13 +1,34 @@
-<mat-form-field>
-    <mat-label>Name</mat-label>
-    <input matInput [(ngModel)]="name">
-    <mat-label>Default Price</mat-label>
-    <input matInput type="number" [(ngModel)]="price">
-    <mat-label>Availability Date</mat-label>
-    <input matInput [(ngModel)]="available">
-    <mat-label>Description</mat-label>
-    <input matInput [(ngModel)]="description">
-    <!--Add checkbox for category-->
-</mat-form-field>
-<button (click)="createProduct(name,price,available,description)">Create Product</button>
-<button (click)="service.creatingProduct = false">Cancel</button>
+<mat-card class="product-create">
+    <mat-card-content>
+        <div class="container">
+
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="name">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>List Price</mat-label>
+                <input matInput type="number" [(ngModel)]="price">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Availability Date</mat-label>
+                <input matInput [(ngModel)]="available">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Description</mat-label>
+                <input matInput [(ngModel)]="description">
+            </mat-form-field>
+
+            <!--Add checkbox for category-->
+
+            <button mat-raised-button color="primary" (click)="createProduct(name,price,available,description)"
+                class="execute-button">Create</button>
+            <button mat-raised-button color="warn" (click)="service.creatingProduct = false"
+                class="execute-button">Cancel</button>
+
+        </div>
+    </mat-card-content>
+</mat-card>

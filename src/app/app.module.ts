@@ -32,7 +32,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProductsListComponent } from './components/products-list/products-list.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
+
 import { EditAccountComponent } from './components/edit-account/edit-account.component';
+import { CouponComponent } from './components/coupon/coupon.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,7 @@ import { EditAccountComponent } from './components/edit-account/edit-account.com
     AccountListComponent,
     ProductsListComponent,
     EditAccountComponent
+    CouponComponent
   ],
   imports: [
     BrowserModule,

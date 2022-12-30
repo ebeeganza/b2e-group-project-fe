@@ -15,8 +15,8 @@ export class ProductComponent implements OnInit {
 
   @Input() product: Product | null = null;
 
-  public defaultPrice = 0;
-  public currentPrice = 0;
+  public defaultPrice = 2.50;
+  public currentPrice = 1.99;
 
   public todayDate = new Date();
 
@@ -61,6 +61,35 @@ export class ProductComponent implements OnInit {
     }
   }
 
+  ngOnChange(): void {
+    // update the product's default price and current price
+    if(this.product){
+      let currDate = this.product.availability;
+      for(let price of this.product?.scheduledPrices){
+        if (price.date === this.product.availability){
+          this.defaultPrice = price.price;
+          this.currentPrice = price.price;
+        }
+        if(price.date > currDate && price.date <= this.todayDate) {
+          currDate = price.date
+          this.currentPrice = price.price;
+        }
+      }
+    }
+  }
+
+  resetVals(){
+    this.changeName = false;
+    this.changeDesc = false;
+    this.changePrice = false;
+    this.changeAvail = false;
+    this.schedMAP = false;
+    this.schedPrice = false;
+    this.schedSale = false;
+    this.addShip = false;
+    this.addIm = false;
+    this.addCat = false;
+  }
 
   updateName() {
     if (this.product) {

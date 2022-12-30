@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Product } from 'src/app/data/product';
+import { AccountService } from 'src/app/services/account.service';
 import { OrdersService } from 'src/app/services/orders/orders.service';
 
 @Component({
@@ -8,7 +9,8 @@ import { OrdersService } from 'src/app/services/orders/orders.service';
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent {
-  constructor(public orderService: OrdersService) {
+  constructor(public orderService: OrdersService,
+              public accountService: AccountService) {
   }
 
   displayedColumns: string[] = ['id', 'userId', 'date', 'products'];
