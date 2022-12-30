@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { take } from 'rxjs';
+import { Price } from '../data/price';
 import { Product } from '../data/product';
 
 @Injectable({
@@ -36,8 +37,10 @@ export class ProductService {
     })
   }
 
-  createProduct(name: string, price: number, available: Date, description: string){
-    const product = new Product(name,price,false,available,description,[],[],[],[],[],[]);
+  createProduct(name: string, available: Date, description: string, price: number){
+    const defaultPrice = new Price(Math.random(),price,available);
+    const product = new Product(name,false,available,description,[],[],[],[],[],[]);
+    product.scheduledPrices.push(defaultPrice);
     this.http.put("localhost:8080/products", product)
     .pipe(take(1))
     .subscribe({

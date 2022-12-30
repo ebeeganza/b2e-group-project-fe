@@ -5,7 +5,6 @@ import { Shipment } from "./shipments";
 export class Product {
     public id : number | null = null;
     public name: string
-    public price: number
     public discontinued: boolean
     public availability: Date
     public description: string
@@ -16,9 +15,8 @@ export class Product {
     public scheduledSales: Price[];
     public shipments: Shipment[];
 
-    constructor(name: string, price: number, discontinued: boolean, availability: Date, description: string, images: string[], categories: Categories[], scheduledMAPS: Price[], scheduledPrices: Price[], scheduledSales: Price[], shipments: Shipment[]){
+    constructor(name: string, discontinued: boolean, availability: Date, description: string, images: string[], categories: Categories[], scheduledMAPS: Price[], scheduledPrices: Price[], scheduledSales: Price[], shipments: Shipment[]){
         this.name = name
-        this.price = price
         this.discontinued = discontinued
         this.availability = availability
         this.description = description

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AccountService } from 'src/app/services/account.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -8,5 +9,5 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ProductsListComponent {
 
-  constructor(public service : ProductService){}
+  constructor(public productService : ProductService, public accountService : AccountService){}
 }

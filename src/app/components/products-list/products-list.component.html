@@ -1,5 +1,4 @@
-<!--Only show below button if user is a shopkeeper-->
-<button *ngIf="!service.creatingProduct" (click)="service.creatingProduct = true">Create New Product</button>
-<app-create-product *ngIf="service.creatingProduct"></app-create-product>
+<button *ngIf="accountService.currentUser.getValue().role === 1 && !productService.creatingProduct" (click)="productService.creatingProduct = true">Create New Product</button>
+<app-create-product *ngIf="productService.creatingProduct"></app-create-product>
 
-<app-product *ngFor="let product of service.getProducts()" [product]="product"></app-product>
+<app-product *ngFor="let product of productService.getProducts()" [product]="product"></app-product>
