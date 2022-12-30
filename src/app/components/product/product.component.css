@@ -1,0 +1,39 @@
+.container {
+    display: flex;
+    flex-flow: column;
+}
+
+.product {
+    max-width: 500px;
+    margin: 20px;
+}
+
+.edit-button {
+    margin: 5px;
+    max-width: 250px;
+}
+
+.execute-button {
+    margin: 5px;
+    max-width: 40px;
+}
+
+.inactive {
+    font-size: 14px;
+    color: grey;
+}
+
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.mat-raised-button {
+    max-width: 30px;
+}
