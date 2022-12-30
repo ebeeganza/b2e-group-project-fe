@@ -4,6 +4,7 @@ import { take } from 'rxjs';
 import { Price } from '../data/price';
 import { Product } from '../data/product';
 import { Sale } from '../data/sale';
+import { Shipment } from '../data/shipments';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class ProductService {
     /**
      * TODO: TEST CASE TO BE DELETED LATER
      */
-    
+
     const futureDate = new Date();
     futureDate.setDate(new Date().getDate() + 90)
     console.log(futureDate);
@@ -106,7 +107,7 @@ export class ProductService {
       })
   }
 
-  public getDefaultPrice(product: Product): number {
+  getDefaultPrice(product: Product): number {
     let defaultPrice = 0;
     const todayDate = new Date();
 
@@ -119,7 +120,7 @@ export class ProductService {
     return defaultPrice;
   }
 
-  public getCurrentPrice(product: Product): number {
+  getCurrentPrice(product: Product): number {
     let defaultPrice = this.getDefaultPrice(product);
     const todayDate = new Date();
 
@@ -130,6 +131,34 @@ export class ProductService {
       }
     }
     return defaultPrice;
+  }
+
+  // returns the shipment the products are to be pulled from if purchased, returns null if product is out of stock
+  getCurrentShipment(product: Product) : Shipment | null{
+    let oldestShipment : Shipment | null = null;
+    let oldestDate : Date = new Date();
+    oldestDate.setDate(new Date().getDate() + Infinity);
+
+    // find the oldest shipment with positive quantity
+    for(let shipment of product.shipments){
+      if(oldestDate > shipment.date && shipment.quantity > 0){
+        oldestShipment = shipment;
+      }
+    }
+    return oldestShipment;
+  }
+
+  // updates the product's shipments and returns true if successful, else returns false if the product is out of stock
+  attemptPurchase(product: Product){
+    let shipment = this.getCurrentShipment(product);
+    if(shipment){
+      shipment.quantity--; // remove one of the products from the shipment
+      this.updateProduct(product); // update the product now that its shipment has changed
+      return true;
+    } else {
+      // no shipment was found, so print error to user
+      return false;
+    }
   }
 
 }
