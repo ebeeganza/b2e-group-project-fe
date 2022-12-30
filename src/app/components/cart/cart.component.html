@@ -1,5 +1,5 @@
 <!--"products.length !=0"-->
-<ng-container *ngIf="false">
+<ng-container *ngIf="true">
     <div class="center">
         <div class="container">
             <div class ="card-table" >
@@ -26,18 +26,26 @@
                                 <th>50,000</th>
                                 <td>1</td>
                                 <td>50,000</td>
-                                <td><button class="btn btn-danger">Edit</button> <button class="btn btn-danger">Delete</button></td>
+                                <td><button class="btn btn-danger">	<mat-icon>edit</mat-icon> </button> <button class="btn btn-danger"><mat-icon>delete</mat-icon></button></td>
+                            </tr>
+                            <tr> 
+                                <td colspan="4"></td>
+                                <td><button >Empty Cart</button></td>
+                                <td><button >Shop More</button></td>
+                                <td><button >Checkout</button></td>
+                                <td> <strong> Grand Total: $50,000</strong></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        <div><button (click)="cart.viewToolbar()">Go back </button></div>    
     </div>
 </ng-container>
 
 <!-- "products.length ==0" -->
-<ng-container *ngIf="true"> 
+<ng-container *ngIf="false"> 
     <div class ="container">
         <div class="card">
             <h2 class="card-title"> My Cart</h2>
@@ -47,9 +55,8 @@
             <h4> Have an account? Sign in to see your cart </h4>
             <h4><button> Sign In </button></h4>
             <img src = "https://cdn.pixabay.com/photo/2014/04/02/10/53/shopping-cart-304843_960_720.png" alt="cart">
+            <div><button (click)="cart.viewToolbar()">Go back PlaceHolder</button></div>
         </div>
     </div>
 </ng-container>
-
-<button (click)="cart.viewToolbar()">Go back PlaceHolder</button>
 
