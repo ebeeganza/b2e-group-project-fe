@@ -49,14 +49,14 @@ export class ProductComponent implements OnInit {
   ngOnInit(): void {
     if(this.product){
       this.currentPrice = this.productService.getCurrentPrice(this.product);
-      this.defaultPrice = this.productService.getDefaultPrice(this.product)
+      this.defaultPrice = this.productService.getDefaultPrice(this.product);
     }
   }
 
   ngOnChange(): void {
     if(this.product){
       this.currentPrice = this.productService.getCurrentPrice(this.product);
-      this.defaultPrice = this.productService.getDefaultPrice(this.product)
+      this.defaultPrice = this.productService.getDefaultPrice(this.product);
     }
   }
 

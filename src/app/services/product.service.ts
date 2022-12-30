@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { take } from 'rxjs';
 import { Price } from '../data/price';
 import { Product } from '../data/product';
+import { Sale } from '../data/sale';
+import { Shipment } from '../data/shipments';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +16,35 @@ export class ProductService {
   public creatingProduct = false;
 
   constructor(private http: HttpClient) {
-    //test product
-    this.products.push(new Product("Soup", false, new Date(), "Yummy savory chicken noodle soup with lots of delicious hearty herbs and spices all combined in a warm, porcelain bowl.", 'https://www.thekitchenmagpie.com/wp-content/uploads/images/2019/10/ChickenVegetableSoup2.jpg', [], [], [], [], []));
+    /**
+     * TODO: TEST CASE TO BE DELETED LATER
+     */
 
+    const futureDate = new Date();
+    futureDate.setDate(new Date().getDate() + 90)
+    console.log(futureDate);
 
+    const pastDate = new Date();
+    pastDate.setDate(new Date().getDate() - 90)
+    console.log(pastDate);
+
+    const newerDate = new Date();
+    newerDate.setDate(new Date().getDate() - 80)
+
+    const defaultPrice = new Price(1,5,pastDate);
+    const newerPrice = new Price(2,4,newerDate);
+    const salePrice = new Sale(1,3,pastDate,futureDate);
+
+    const availDate = new Date();
+    availDate.setDate(new Date().getDate() - 100);
+
+    const product = new Product("Soup", false, availDate, "Yummy savory chicken noodle soup with lots of delicious hearty herbs and spices all combined in a warm, porcelain bowl.", 'https://www.thekitchenmagpie.com/wp-content/uploads/images/2019/10/ChickenVegetableSoup2.jpg', [], [], [], [], [])
+
+    product.scheduledPrices.push(defaultPrice);
+    product.scheduledPrices.push(newerPrice);
+    product.scheduledSales.push(salePrice);
+
+    this.products.push(product);
   }
 
   getProducts() {
@@ -80,7 +107,7 @@ export class ProductService {
       })
   }
 
-  public getDefaultPrice(product: Product): number {
+  getDefaultPrice(product: Product): number {
     let defaultPrice = 0;
     const todayDate = new Date();
 
@@ -90,11 +117,10 @@ export class ProductService {
         defaultPrice = price.price; // update the product's default price for the current date
       }
     }
-
     return defaultPrice;
   }
 
-  public getCurrentPrice(product: Product): number {
+  getCurrentPrice(product: Product): number {
     let defaultPrice = this.getDefaultPrice(product);
     const todayDate = new Date();
 
@@ -105,6 +131,34 @@ export class ProductService {
       }
     }
     return defaultPrice;
+  }
+
+  // returns the shipment the products are to be pulled from if purchased, returns null if product is out of stock
+  getCurrentShipment(product: Product) : Shipment | null{
+    let oldestShipment : Shipment | null = null;
+    let oldestDate : Date = new Date();
+    oldestDate.setDate(new Date().getDate() + Infinity);
+
+    // find the oldest shipment with positive quantity
+    for(let shipment of product.shipments){
+      if(oldestDate > shipment.date && shipment.quantity > 0){
+        oldestShipment = shipment;
+      }
+    }
+    return oldestShipment;
+  }
+
+  // updates the product's shipments and returns true if successful, else returns false if the product is out of stock
+  attemptPurchase(product: Product){
+    let shipment = this.getCurrentShipment(product);
+    if(shipment){
+      shipment.quantity--; // remove one of the products from the shipment
+      this.updateProduct(product); // update the product now that its shipment has changed
+      return true;
+    } else {
+      // no shipment was found, so print error to user
+      return false;
+    }
   }
 
 }
