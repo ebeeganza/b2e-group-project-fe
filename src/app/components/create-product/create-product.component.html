@@ -24,9 +24,14 @@
                 <input matInput [(ngModel)]="description">
             </mat-form-field>
 
-            <!--Add checkbox for category-->
+            <mat-form-field>
+                <mat-label>Image URL</mat-label>
+                <input matInput [(ngModel)]="imageURL">
+            </mat-form-field>
 
-            <button mat-raised-button color="primary" (click)="createProduct(name,price,available,description)"
+            <!--TODO: Add checkbox for category-->
+
+            <button mat-raised-button color="primary" (click)="createProduct(name,price,available,description,imageURL)"
                 class="execute-button">Create</button>
             <button mat-raised-button color="warn" (click)="service.creatingProduct = false"
                 class="execute-button">Cancel</button>

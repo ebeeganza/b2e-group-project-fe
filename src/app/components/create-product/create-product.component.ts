@@ -12,12 +12,12 @@ export class CreateProductComponent {
   public price: number = 0
   public available: Date = new Date()
   public description = ''
+  public imageURL = ''
 
   constructor(public service: ProductService){}
 
-  createProduct(name: string, price: number, available: Date, description: string){
-    console.log("Created date " + available);
-    this.service.createProduct(name, available, description, price);
+  createProduct(name: string, price: number, available: Date, description: string, imageURL: string){
+    this.service.createProduct(name, available, description, price, imageURL);
   }
 
 }

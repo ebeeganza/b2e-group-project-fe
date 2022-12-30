@@ -1,12 +1,15 @@
 <mat-card class="product">
     <mat-card-content>
         <p style="font-weight: bold; font-size: 20px">{{product?.name}}</p>
+
+        <img src={{product?.image}}>
+
         <p *ngIf="currentPrice === defaultPrice">{{defaultPrice | currency}}</p>
         <div *ngIf="currentPrice != defaultPrice">
             <p style="color: green">Sale price: {{currentPrice | currency}}</p>
             <p class="inactive">List price: {{defaultPrice | currency}}</p>
         </div>
-        <p>Description: {{product?.description}}</p>
+        <p class="description">Description: {{product?.description}}</p>
         <p *ngIf="product?.discontinued" style="color: red">Item no longer available.</p>
         <div *ngIf="product && product.categories && product.categories.length > 0">
             <p>Categories:</p>
@@ -16,7 +19,6 @@
         <button mat-raised-button color="primary" *ngIf="accountService.currentUser.getValue().role === 1 && !edit"
             (click)="edit = true" class="execute-button">Edit</button>
 
-        <!--TODO: Make all date inputs type=date-->
         <div *ngIf="edit" class="container">
 
             <button mat-raised-button color="primary" *ngIf="!changeName" (click)="resetVals(); changeName = true"

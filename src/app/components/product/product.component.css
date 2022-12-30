@@ -4,7 +4,7 @@
 }
 
 .product {
-    max-width: 500px;
+    width: 700px;
     margin: 20px;
 }
 
@@ -32,4 +32,17 @@
 .edit-form {
     display: flex;
     flex-direction: column;
+}
+
+img {
+    object-fit: cover;
+    width: 230px;
+    height: 230px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.description {
+    max-width: 400px;
 }

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Categories } from 'src/app/data/categories';
 import { Price } from 'src/app/data/price';
 import { Product } from 'src/app/data/product';
+import { Sale } from 'src/app/data/sale';
 import { Shipment } from 'src/app/data/shipments';
 import { AccountService } from 'src/app/services/account.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -26,6 +27,7 @@ export class ProductComponent implements OnInit {
   public available = this.todayDate;
   public priceVal = 0;
   public dateVal = this.todayDate;
+  public dateValEnd = this.todayDate;
   public shipQuantity = 0;
   public shipCost = 0;
   public imageURL = ''
@@ -46,35 +48,15 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.product){
-      let currPriceDate = this.product.availability // start looping through dates at the date the item is available
-      let currSaleDate = this.product.availability
-      for(let price of this.product.scheduledPrices){
-        if(price.date > currPriceDate && price.date <= this.todayDate){
-          this.defaultPrice = price.price; // update the product's default price for the current date
-        }
-      }
-      for(let price of this.product.scheduledSales){
-        if(price.date > currSaleDate && price.date <= this.todayDate){
-          this.currentPrice = price.price; // update the product's current price for the current date
-        }
-      }
+      this.currentPrice = this.productService.getCurrentPrice(this.product);
+      this.defaultPrice = this.productService.getDefaultPrice(this.product)
     }
   }
 
   ngOnChange(): void {
     if(this.product){
-      let currPriceDate = this.product.availability // start looping through dates at the date the item is available
-      let currSaleDate = this.product.availability
-      for(let price of this.product.scheduledPrices){
-        if(price.date > currPriceDate && price.date <= this.todayDate){
-          this.defaultPrice = price.price; // update the product's default price for the current date
-        }
-      }
-      for(let price of this.product.scheduledSales){
-        if(price.date > currSaleDate && price.date <= this.todayDate){
-          this.currentPrice = price.price; // update the product's current price for the current date
-        }
-      }
+      this.currentPrice = this.productService.getCurrentPrice(this.product);
+      this.defaultPrice = this.productService.getDefaultPrice(this.product)
     }
   }
 
@@ -128,7 +110,7 @@ export class ProductComponent implements OnInit {
 
   addImage() {
     if(this.product)
-    this.product.images.push(this.imageURL)
+    this.product.image = this.imageURL
     this.addIm = false;
   }
 
@@ -150,10 +132,11 @@ export class ProductComponent implements OnInit {
 
   addScheduledSale() {
     if(this.product)
-    this.product.scheduledSales.push(new Price(Math.random(), this.priceVal, this.dateVal));
+    this.product.scheduledSales.push(new Sale(Math.random(), this.priceVal, this.dateVal, this.dateValEnd));
     this.schedSale = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;
+    this.dateValEnd = this.todayDate;
   }
 
   addShipment() {
