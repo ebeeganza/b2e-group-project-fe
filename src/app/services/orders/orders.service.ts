@@ -17,7 +17,7 @@ export class OrdersService {
      }
 
   public userId: number | undefined;
-  private orders: Order[] = []
+  public orders: Order[] = []
   private userOrders: Order[] = []
   public userRole: string | undefined
   
@@ -33,7 +33,7 @@ private loadOrders(): void {
     }
   }
 
-  private loadAllOrders(): void {
+  public loadAllOrders(): void {
     this.http.get<Order[]>(`http://localhost:8080/orders`)
       .pipe(take(1))
       .subscribe({
