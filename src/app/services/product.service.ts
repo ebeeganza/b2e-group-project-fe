@@ -16,8 +16,9 @@ export class ProductService {
   constructor(private http: HttpClient) { 
     /*
     //test product
-    this.products.push(new Product("Soup",20,false,new Date(),"Yummy savory chicken noodle soup",[],[],[],[],[],[]));
+    this.products.push(new Product("Soup",false,new Date(),"Yummy savory chicken noodle soup",[],[],[],[],[],[]));
     */
+    
   }
 
   getProducts(){
