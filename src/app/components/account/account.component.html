@@ -15,6 +15,6 @@
     <mat-card-actions align="end">
       <button mat-button color='warn'><mat-icon>edit</mat-icon></button>
       <!-- TODO: Add NgIf that checks for user status, if Admin or Shopkeeper, display -->
-      <button mat-button color='warn'><mat-icon>delete</mat-icon></button>
+      <button mat-button color='warn' (click)="accountService.deleteAccountById(account?.id!)"><mat-icon>delete</mat-icon></button>
     </mat-card-actions>
 </mat-card>

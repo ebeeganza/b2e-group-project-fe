@@ -112,4 +112,18 @@ export class AccountService {
   whenAccountUpdated(): Observable<User[]> {
     return this.accountSubject.asObservable()
   }
+
+  addAccount(profile: User): void {
+    this.http
+      .post('http://localhost:8080/user', profile)
+      .pipe(take(1))
+      .subscribe(() => this.updateAccount())
+  }
+
+  deleteAccountById(id: number): void {
+    this.http
+      .delete(`http://localhost:8080/user/${id}`)
+      .pipe(take(1))
+      .subscribe(() => this.updateAccount())
+  }
 }
