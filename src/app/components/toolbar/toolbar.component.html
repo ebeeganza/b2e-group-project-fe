@@ -23,9 +23,24 @@
             <span class="spacer"></span>
             <button mat-icon-button><mat-icon>account_box</mat-icon></button>
         </mat-toolbar>
-        <h2>View All Items</h2>
+        <h2><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="text-decoration: none;">View All Products</a></h2>
+        <!-- DEFAULT NAVIGATION -->
         <h2>Shop by Category</h2>
-        <button mat-button>Clothing</button>
-        <h2>Manage Accounts</h2>
+        <div *ngFor="let category of this.ui.getCategories() | async">
+            <button mat-button>{{category.name}}</button>
+        </div>
+        <!-- SHOPKEEPER NAVIGATION HERE -->
+        <div *ngIf="this.accountService.currentUser.value.role === 1">
+            <h2 >Store Management</h2>
+            <button mat-button>Manage Categories</button>
+            <button mat-button>Manage Products</button>
+            <button mat-button>Manage Coupons/Sales</button>
+        </div>
+        <!-- ADMIN NAVIGATION HERE -->
+        <div *ngIf="this.accountService.currentUser.value.role === 2">
+            <h2>Admin Functions</h2>
+            <button mat-button>Manage Accounts</button>
+        </div>
+        
     </mat-drawer>
 </mat-drawer-container>
