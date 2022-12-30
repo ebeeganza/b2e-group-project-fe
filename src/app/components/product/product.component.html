@@ -143,6 +143,13 @@
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
 
+                <mat-form-field>
+                    <mat-label>End Date</mat-label>
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="dateValEnd">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
                 <button mat-raised-button (click)="addScheduledSale()" color="primary"
                     class="execute-button">Apply</button>
                 <button mat-raised-button (click)="schedSale = false" color="warn"
