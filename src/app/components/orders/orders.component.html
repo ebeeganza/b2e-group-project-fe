@@ -36,8 +36,8 @@
 
 <!-- Shopkeeper Orders table -->
 
-<div *ngIf="userRole == 'shopkeeper'">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<div *ngIf="this.accountService.currentUser.value.role == 1">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     
       <!--- Note that these columns can be defined in any order.
             The actual rendered columns are set as a property on the row definition" -->
@@ -68,13 +68,13 @@
     
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    </div>
+  </table>
+</div>
     
     
     <!-- customer orders table -->
 
-    <div *ngIf="userRole == 'customer'">
+  <div *ngIf="this.accountService.currentUser.value.role == 0">
     <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
     
         <!--- Note that these columns can be defined in any order.
@@ -127,4 +127,4 @@
         </mat-expansion-panel>
       </mat-accordion>
 
-    </div>
+  </div>

@@ -14,7 +14,6 @@ export class OrdersService {
   constructor(private http: HttpClient,
     private _snackBar: MatSnackBar,
     private accountService: AccountService) {
-      const userRole = localStorage.getItem('role')
      }
 
   public userId: number | undefined;
@@ -27,7 +26,7 @@ export class OrdersService {
   }
 
 private loadOrders(): void {
-    if (this.userRole = "shopkeeper") {
+    if (this.accountService.currentUser.value.role == 1) {
       this.loadAllOrders()
     } else {
       this.loadUserOrders()
@@ -48,7 +47,7 @@ private loadOrders(): void {
   }
 
   private loadUserOrders(): void {
-    this.http.get<Order[]>(`http://localhost:8080/orders?userId=${this.userId}`)
+    this.http.get<Order[]>(`http://localhost:8080/orders?userId=${this.accountService.currentUser.value.id}`)
       .pipe(take(1))
       .subscribe({
         next: orders => {
