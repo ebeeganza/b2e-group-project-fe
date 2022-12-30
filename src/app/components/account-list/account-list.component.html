@@ -1,2 +1,2 @@
-<app-edit-account></app-edit-account>
+<app-edit-account *ngIf="accountService.getShowEdit()"></app-edit-account>
 <app-account *ngFor="let accountData of account" [account]="accountData"></app-account>

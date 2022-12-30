@@ -11,6 +11,7 @@ export class AccountService {
 
   public account: User[] = []
   private accountSubject: Subject<User[]> = new Subject()
+  public displayEdit: boolean = false
 
   public displayLogin: boolean = false
   public displayRegister: boolean = false
@@ -96,6 +97,14 @@ export class AccountService {
   public resetDisplay() {
     this.displayRegister = false
     this.displayLogin = false
+  }
+
+  getShowEdit() {
+    this.displayEdit = true;
+  }
+
+  displayAccountEdit() {
+    this.getShowEdit
   }
 
   updateAccount(): void {
