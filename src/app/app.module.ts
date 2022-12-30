@@ -49,7 +49,7 @@ import { CouponComponent } from './components/coupon/coupon.component';
     AccountComponent,
     AccountListComponent,
     ProductsListComponent,
-    EditAccountComponent
+    EditAccountComponent,
     CouponComponent
   ],
   imports: [
