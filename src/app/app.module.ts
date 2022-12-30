@@ -15,6 +15,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select'
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 import { ProductComponent } from './components/product/product.component';
 import { LoginComponent } from './components/login/login.component';
@@ -66,7 +68,9 @@ import { CouponComponent } from './components/coupon/coupon.component';
     MatCardModule,
     MatSnackBarModule,
     MatExpansionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

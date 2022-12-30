@@ -16,6 +16,7 @@ export class CreateProductComponent {
   constructor(public service: ProductService){}
 
   createProduct(name: string, price: number, available: Date, description: string){
+    console.log("Created date " + available);
     this.service.createProduct(name, available, description, price);
   }
 
