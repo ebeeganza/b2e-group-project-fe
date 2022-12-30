@@ -1,8 +1,6 @@
-import { PortalHostDirective } from '@angular/cdk/portal';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Product } from '../data/product';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +17,16 @@ export class CartServiceService {
   public openToolbar():boolean {
     return this.showToolbar
   }
-  public openCart(): boolean {
-    return this.showCart
+
+  public openCart(): boolean{
+    return this.showCart;
   }
+
+  public resetDisplay() {
+    this.showCart = false
+    this.showToolbar = false
+  }
+
 
   public viewToolbar():void{
     this.showToolbar = true;

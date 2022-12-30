@@ -32,6 +32,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProductsListComponent } from './components/products-list/products-list.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { CouponComponent } from './components/coupon/coupon.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     CreateProductComponent,
     AccountComponent,
     AccountListComponent,
-    ProductsListComponent
+    ProductsListComponent,
+    CouponComponent
   ],
   imports: [
     BrowserModule,
