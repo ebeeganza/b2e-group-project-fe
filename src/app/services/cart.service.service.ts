@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -74,6 +73,10 @@ export class CartServiceService {
   removeAllCart(){ 
     this.cartItemList = [];
     this.productList.next(this.cartItemList);
+  }
+
+  checkout(){
+    
   }
 
 
