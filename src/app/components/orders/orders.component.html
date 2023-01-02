@@ -6,8 +6,15 @@
 <div>
   <table mat-table [dataSource]="orderService.orders" class="mat-elevation-z8">
     
-      <!--- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Cancel Order</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button matTooltip="Cancel Order" class="iconbutton" color="warn"
+        (click)="orderService.deleteOrder(element.id); orderService.loadAllOrders()">
+            <mat-icon aria-label="Cancel">cancel</mat-icon>
+          </button>
+      </td>
+    </ng-container>
     
       <!-- id Column -->
       <ng-container matColumnDef="id">
@@ -56,9 +63,19 @@
   <div *ngIf="this.accountService.currentUser.value.role == 0">
     <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
     
-        <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef>Edit or Delete </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary">
+              <mat-icon aria-label="Edit">edit</mat-icon>
+            </button>
+          <button mat-icon-button matTooltip="Click to Delete" class="iconbutton" color="warn">
+              <mat-icon aria-label="Delete">delete</mat-icon>
+            </button>
+        </mat-cell>
+      </ng-container>
       
+          
         <!-- id Column -->
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef> Order Id </th>
