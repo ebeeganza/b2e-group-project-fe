@@ -44,6 +44,7 @@ export class ProductService {
     product.scheduledPrices.push(defaultPrice);
     product.scheduledPrices.push(newerPrice);
     product.scheduledSales.push(salePrice);
+    product.scheduledMAPS.push(new Price(6,3.01,pastDate));
 
     this.products.push(product);
   }
