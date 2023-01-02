@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Categories } from 'src/app/data/categories';
 import { ProductService } from 'src/app/services/product.service';
+import { UiService } from 'src/app/services/ui.service';
 
 @Component({
   selector: 'app-create-product',
@@ -13,11 +15,13 @@ export class CreateProductComponent {
   public available: Date = new Date()
   public description = ''
   public imageURL = ''
+  public category = null
+  public MAP = 0
 
-  constructor(public service: ProductService){}
+  constructor(public productService: ProductService, public ui : UiService){}
 
-  createProduct(name: string, price: number, available: Date, description: string, imageURL: string){
-    this.service.createProduct(name, available, description, price, imageURL);
+  createProduct(){
+    this.productService.createProduct(this.name, this.available, this.description, this.price, this.imageURL, this.category, this.MAP);
   }
 
 }
