@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { take } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AccountService } from '../account.service';
+import { Product } from 'src/app/data/product';
 
 
 @Injectable({
@@ -80,4 +81,23 @@ private loadOrders(): void {
     return this.userOrders
   }
 
+  // userId this.accountService.currentUser.value.id 
+  addOrder(userId: number, orderTotal: number, orderDate: Date, products: string) {
+    this.http.post('http://localhost:8080/orders', {
+      id: null,
+      userId,
+      orderTotal,
+      orderDate,
+      products
+    })
+    .pipe(take(1))
+    .subscribe({
+      next: () => {
+        this.getOrders()
+      },
+      error: () => {
+        this.showError('Failed to add order')
+      }
+    })
+  }
 }
