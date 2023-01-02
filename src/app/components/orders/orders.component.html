@@ -6,6 +6,7 @@
 <div>
   <table mat-table [dataSource]="orderService.orders" class="mat-elevation-z8">
     
+      <!-- Cancel Orders column -->
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef>Cancel Order</th>
       <td mat-cell *matCellDef="let element">
@@ -63,16 +64,15 @@
   <div *ngIf="this.accountService.currentUser.value.role == 0">
     <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
     
+      <!-- Cancel Orders column -->
       <ng-container matColumnDef="action">
-        <mat-header-cell *matHeaderCellDef>Edit or Delete </mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary">
-              <mat-icon aria-label="Edit">edit</mat-icon>
+        <th mat-header-cell *matHeaderCellDef>Cancel Order</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button matTooltip="Cancel Order" class="iconbutton" color="warn"
+          (click)="orderService.deleteOrder(element.id); orderService.loadUserOrders()">
+              <mat-icon aria-label="Cancel">cancel</mat-icon>
             </button>
-          <button mat-icon-button matTooltip="Click to Delete" class="iconbutton" color="warn">
-              <mat-icon aria-label="Delete">delete</mat-icon>
-            </button>
-        </mat-cell>
+        </td>
       </ng-container>
       
           
@@ -109,30 +109,5 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
       </table>
-
-    <!-- Cancel Orders -->
-
-    <mat-accordion>
-        <mat-expansion-panel (opened)="transactionPanelOpenState = true"
-                             (closed)="transactionPanelOpenState = false">
-    
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-                Remove a Transaction
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-    
-          <mat-form-field>
-            <mat-label>Transaction Id</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let order of orderService.getUserOrders()" [value]="order" (onSelectionChange)="selectId(order.id)">
-                {{order.id}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-    
-          <button class="button" role="button"  (click)="orderService.deleteOrder(this.id)">Delete Transaction</button>
-        </mat-expansion-panel>
-      </mat-accordion>
 
   </div>

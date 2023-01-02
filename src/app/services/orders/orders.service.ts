@@ -48,7 +48,7 @@ public loadOrders(): void {
       })
   }
 
-  private loadUserOrders(): void {
+  public loadUserOrders(): void {
     this.http.get<Order[]>(`http://localhost:8080/orders?userId=${this.accountService.currentUser.value.id}`)
       .pipe(take(1))
       .subscribe({
@@ -62,7 +62,7 @@ public loadOrders(): void {
       })
   }
 
-  deleteOrder(id: number) {
+  public deleteOrder(id: number) {
     this.http.delete(`http://localhost:8080/orders/${id}`)
     .pipe(take(1))
     .subscribe({
