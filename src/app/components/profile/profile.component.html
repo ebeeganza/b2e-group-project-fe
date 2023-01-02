@@ -1,0 +1,23 @@
+<mat-card class="card">
+    <mat-card-header>
+    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-title> First Name: {{ account?.fname }}</mat-card-title>
+      <mat-card-subtitle> Last Name: {{ account?.lname }} </mat-card-subtitle>
+      <!-- could write a function here to retrieve association (account id) <-> account name -->
+      <mat-card-subtitle type="string"> 
+        Email: 
+        {{ account?.email }}
+      </mat-card-subtitle>
+      <mat-card-subtitle type="string"> 
+        Role: 
+        {{ account?.role }}
+      </mat-card-subtitle>
+    </mat-card-content>
+    <mat-card-actions>
+        <button *ngIf="this.accountService.displayAccountEdit"mat-button>Edit</button>
+        <button (click)="this.accountService.hideProfile()"mat-button>Close</button>
+      </mat-card-actions>
+</mat-card>
+<app-account-list></app-account-list>

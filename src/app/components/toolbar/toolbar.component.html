@@ -9,7 +9,7 @@
         *ngIf="!this.accountService.isLoggedIn"><mat-icon>login</mat-icon></button>
     <button (click)="cart.viewCart()" mat-icon-button matTooltip="My Cart"><mat-icon matBadge="0" matBadgeSize="small"
             matBadgeColor="warn">shopping_cart</mat-icon></button>
-    <button mat-icon-button matTooltip="View Account Details"><mat-icon>settings</mat-icon></button>
+    <button (click)="this.accountService.changeToProfile()" mat-icon-button matTooltip="View Account Details"><mat-icon>settings</mat-icon></button>
 </mat-toolbar>
 <mat-toolbar color="accent" style="height: 20px;">
     <span id="date"></span>
