@@ -1,5 +1,6 @@
 import { Categories } from "./categories";
 import { Price } from "./price";
+import { Sale } from "./sale";
 import { Shipment } from "./shipments";
 
 export class Product {
@@ -8,21 +9,21 @@ export class Product {
     public discontinued: boolean
     public availability: Date
     public description: string
-    public images: string[]
+    public image: string
     public categories: Categories[]
-    public schedulesMAPS: Price[];
-    public scheduledPrices: Price[];
-    public scheduledSales: Price[];
-    public shipments: Shipment[];
+    public scheduledMAPS: Price[]
+    public scheduledPrices: Price[]
+    public scheduledSales: Sale[]
+    public shipments: Shipment[]
 
-    constructor(name: string, discontinued: boolean, availability: Date, description: string, images: string[], categories: Categories[], scheduledMAPS: Price[], scheduledPrices: Price[], scheduledSales: Price[], shipments: Shipment[]){
+    constructor(name: string, discontinued: boolean, availability: Date, description: string, image: string, categories: Categories[], scheduledMAPS: Price[], scheduledPrices: Price[], scheduledSales: Sale[], shipments: Shipment[]){
         this.name = name
         this.discontinued = discontinued
         this.availability = availability
         this.description = description
-        this.images = images
+        this.image = image
         this.categories = categories
-        this.schedulesMAPS = scheduledMAPS
+        this.scheduledMAPS = scheduledMAPS
         this.scheduledPrices = scheduledPrices
         this.scheduledSales = scheduledSales
         this.shipments = shipments

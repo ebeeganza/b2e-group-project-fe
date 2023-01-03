@@ -6,7 +6,5 @@ export class User {
         public fname: string,
         public lname: string,
         public role: number
-    ){
-
-    }
+    ){}
 }

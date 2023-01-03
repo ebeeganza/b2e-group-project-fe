@@ -1,0 +1,7 @@
+<input type='text' #fname (keyup)="updateFirstName(fname.value)"/>
+<input type='text' #lname (keyup)="updateLastName(lname.value)"/>
+<input type='text' #email (keyup)="updateEmail(email.value)"/>
+<input type='text' #password (keyup)="updatePassword(password.value)"/>
+<input type='number' #role (keyup)="updateRole(+role.value)"/>
+<button (click)="onApply()">Apply</button>
+<button (click)="onCancel()">Cancel</button>

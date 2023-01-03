@@ -10,11 +10,12 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class AccountListComponent implements OnInit {
 
-  public account: User[]
+  public account: User[] = []
   private accountSubscription: Subscription
   
   constructor(public accountService: AccountService){
-    this.account = accountService.account
+    // TODO: remove dummy data
+    this.account.push(accountService.guestUser)
     const accountUpdateEvent = accountService.whenAccountUpdated()
     this.accountSubscription = accountUpdateEvent.subscribe(account => this.account = account)
   }

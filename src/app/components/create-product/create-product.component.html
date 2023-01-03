@@ -13,20 +13,39 @@
             </mat-form-field>
 
             <mat-form-field>
-                <mat-label>Availability Date</mat-label>
-                <input matInput [(ngModel)]="available">
+                <mat-label>Initial MAP Price</mat-label>
+                <input matInput type="number" [(ngModel)]="MAP">
             </mat-form-field>
 
             <mat-form-field>
-                <mat-label>Description</mat-label>
+                <mat-label>Availability Date</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="available">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Product Description</mat-label>
                 <input matInput [(ngModel)]="description">
             </mat-form-field>
 
-            <!--Add checkbox for category-->
+            <mat-form-field>
+                <mat-label>Image URL</mat-label>
+                <input matInput [(ngModel)]="imageURL">
+            </mat-form-field>
 
-            <button mat-raised-button color="primary" (click)="createProduct(name,price,available,description)"
+            <mat-form-field appearance="fill">
+                <mat-label>Category</mat-label>
+                <mat-select [(ngModel)]="category">
+                  <mat-option *ngFor="let cat of ui.categorySubject.getValue()" [value]="cat">
+                    {{cat.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+            <button mat-raised-button color="primary" (click)="createProduct()"
                 class="execute-button">Create</button>
-            <button mat-raised-button color="warn" (click)="service.creatingProduct = false"
+            <button mat-raised-button color="warn" (click)="productService.creatingProduct = false"
                 class="execute-button">Cancel</button>
 
         </div>

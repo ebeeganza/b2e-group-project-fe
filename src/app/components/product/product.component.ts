@@ -2,8 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Categories } from 'src/app/data/categories';
 import { Price } from 'src/app/data/price';
 import { Product } from 'src/app/data/product';
+import { Sale } from 'src/app/data/sale';
 import { Shipment } from 'src/app/data/shipments';
 import { AccountService } from 'src/app/services/account.service';
+import { CartServiceService } from 'src/app/services/cart.service.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -26,6 +28,7 @@ export class ProductComponent implements OnInit {
   public available = this.todayDate;
   public priceVal = 0;
   public dateVal = this.todayDate;
+  public dateValEnd = this.todayDate;
   public shipQuantity = 0;
   public shipCost = 0;
   public imageURL = ''
@@ -42,39 +45,19 @@ export class ProductComponent implements OnInit {
   public addIm = false;
   public addCat = false;
 
-  constructor(private productService: ProductService, public accountService : AccountService) { }
+  constructor(public productService: ProductService, public accountService : AccountService, public cartService : CartServiceService) { }
 
   ngOnInit(): void {
-    // update the product's default price and current price
     if(this.product){
-      let currDate = this.product.availability;
-      for(let price of this.product?.scheduledPrices){
-        if (price.date === this.product.availability){
-          this.defaultPrice = price.price;
-          this.currentPrice = price.price;
-        }
-        if(price.date > currDate && price.date <= this.todayDate) {
-          currDate = price.date
-          this.currentPrice = price.price;
-        }
-      }
+      this.currentPrice = this.productService.getCurrentPrice(this.product);
+      this.defaultPrice = this.productService.getDefaultPrice(this.product);
     }
   }
 
   ngOnChange(): void {
-    // update the product's default price and current price
     if(this.product){
-      let currDate = this.product.availability;
-      for(let price of this.product?.scheduledPrices){
-        if (price.date === this.product.availability){
-          this.defaultPrice = price.price;
-          this.currentPrice = price.price;
-        }
-        if(price.date > currDate && price.date <= this.todayDate) {
-          currDate = price.date
-          this.currentPrice = price.price;
-        }
-      }
+      this.currentPrice = this.productService.getCurrentPrice(this.product);
+      this.defaultPrice = this.productService.getDefaultPrice(this.product);
     }
   }
 
@@ -107,7 +90,16 @@ export class ProductComponent implements OnInit {
 
   updateAvail() {
     if (this.product) {
+      const oldAvailabilityDate = this.product.availability;
       this.product.availability = this.available;
+
+      // find the price linked to the old availability date and update the price's start date
+      for(let price of this.product.scheduledPrices){
+        if(price.date === oldAvailabilityDate){
+          price.date = this.available
+        }
+      }
+
       this.changeAvail = false;
     }
   }
@@ -119,13 +111,13 @@ export class ProductComponent implements OnInit {
 
   addImage() {
     if(this.product)
-    this.product.images.push(this.imageURL)
+    this.product.image = this.imageURL
     this.addIm = false;
   }
 
   addScheduledMAP() {
     if(this.product)
-    this.product.schedulesMAPS.push(new Price(Math.random(), this.priceVal, this.dateVal))
+    this.product.scheduledMAPS.push(new Price(Math.random(), this.priceVal, this.dateVal))
     this.schedMAP = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;
@@ -141,18 +133,30 @@ export class ProductComponent implements OnInit {
 
   addScheduledSale() {
     if(this.product)
-    this.product.scheduledSales.push(new Price(Math.random(), this.priceVal, this.dateVal));
+    this.product.scheduledSales.push(new Sale(Math.random(), this.priceVal, this.dateVal, this.dateValEnd));
     this.schedSale = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;
+    this.dateValEnd = this.todayDate;
   }
 
   addShipment() {
     if (this.product) {
       if (this.product.id)
-        this.product.shipments.push(new Shipment(Math.random(), this.product.id, this.shipQuantity, this.shipCost));
+        this.product.shipments.push(new Shipment(Math.random(), this.product.id, this.shipQuantity, Math.ceil(this.shipCost / this.shipQuantity), this.dateVal));
     }
+    this.dateVal = this.todayDate;
     this.addShip = false;
+  }
+
+  discontinueItem(){
+    if(this.product)
+    this.product.discontinued = true;
+  }
+
+  rereleaseItem(){
+    if(this.product)
+    this.product.discontinued = false;
   }
 
   // save the modified product to the backend

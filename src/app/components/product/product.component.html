@@ -1,21 +1,32 @@
-<mat-card class="product">
+<mat-card *ngIf="accountService.currentUser" class="product">
     <mat-card-content>
         <p style="font-weight: bold; font-size: 20px">{{product?.name}}</p>
+
+        <img src={{product?.image}}>
+
         <p *ngIf="currentPrice === defaultPrice">{{defaultPrice | currency}}</p>
         <div *ngIf="currentPrice != defaultPrice">
             <p style="color: green">Sale price: {{currentPrice | currency}}</p>
-            <p class="inactive">List price: {{defaultPrice | currency}}</p>
+            <p class="inactive">List price: <s>{{defaultPrice | currency}}</s></p>
         </div>
-        <p>Description: {{product?.description}}</p>
-        <p *ngIf="product?.discontinued">Item no longer available.</p>
+        <p *ngIf="accountService.currentUser.getValue().role === 1">Available on {{product?.availability | date}}</p>
+        <p class="description">Description: {{product?.description}}</p>
+        <p *ngIf="product?.discontinued" style="color: red">Item not available.</p>
         <div *ngIf="product && product.categories && product.categories.length > 0">
-            <p>Categories:</p>
+            <p>Departments:</p>
             <p *ngFor="let category of product?.categories">{{category.name}}</p>
         </div>
 
-        <button mat-raised-button color="primary" *ngIf="accountService.currentUser.getValue().role === 1 && !edit" (click)="edit = true" class="execute-button">Edit</button>
+        <button mat-raised-button color="primary"
+            *ngIf="(accountService.currentUser.getValue().role === 0 || accountService.currentUser.getValue().role === -1) && !product?.discontinued" (click)="cartService.addToCart(this.product)">Add
+            to Cart</button>
 
-        <!--TODO: Make all date inputs type=date-->
+        <button mat-raised-button color="warn" *ngIf="accountService.currentUser.getValue().role === 1"
+            (click)="productService.deleteProduct(product)" class="execute-button">Delete</button>
+
+        <button mat-raised-button color="primary" *ngIf="accountService.currentUser.getValue().role === 1 && !edit"
+            (click)="edit = true" class="execute-button">Edit</button>
+
         <div *ngIf="edit" class="container">
 
             <button mat-raised-button color="primary" *ngIf="!changeName" (click)="resetVals(); changeName = true"
@@ -38,7 +49,9 @@
 
                 <mat-form-field>
                     <mat-label>New Date Available</mat-label>
-                    <input matInput [(ngModel)]="available">
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="available">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
 
                 <button mat-raised-button (click)="updateAvail()" color="primary" class="execute-button">Apply</button>
@@ -89,9 +102,12 @@
                     <mat-label>Price Limit</mat-label>
                     <input matInput type="number" [(ngModel)]="priceVal">
                 </mat-form-field>
+
                 <mat-form-field>
                     <mat-label>End Date</mat-label>
-                    <input matInput [(ngModel)]="dateVal">
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="dateVal">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
 
                 <button mat-raised-button (click)="addScheduledMAP()" color="primary"
@@ -109,10 +125,13 @@
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Start Date</mat-label>
-                    <input matInput [(ngModel)]="dateVal">
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="dateVal">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
 
-                <button mat-raised-button (click)="addScheduledPrice()" color="primary" class="execute-button">Apply</button>
+                <button mat-raised-button (click)="addScheduledPrice()" color="primary"
+                    class="execute-button">Apply</button>
                 <button mat-raised-button (click)="schedPrice = false" color="warn"
                     class="execute-button">Cancel</button>
             </div>
@@ -127,10 +146,20 @@
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Start Date</mat-label>
-                    <input matInput [(ngModel)]="dateVal">
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="dateVal">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
 
-                <button mat-raised-button (click)="addScheduledSale()" color="primary" class="execute-button">Apply</button>
+                <mat-form-field>
+                    <mat-label>End Date</mat-label>
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="dateValEnd">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <button mat-raised-button (click)="addScheduledSale()" color="primary"
+                    class="execute-button">Apply</button>
                 <button mat-raised-button (click)="schedSale = false" color="warn"
                     class="execute-button">Cancel</button>
             </div>
@@ -149,9 +178,22 @@
                     <input matInput type="number" [(ngModel)]="shipCost">
                 </mat-form-field>
 
+                <mat-form-field>
+                    <mat-label>Date</mat-label>
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="dateVal">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
                 <button mat-raised-button (click)="addShipment()" color="primary" class="execute-button">Apply</button>
                 <button mat-raised-button (click)="addShip = false" color="warn" class="execute-button">Cancel</button>
             </div>
+
+            <button mat-raised-button color="primary" *ngIf="!product?.discontinued"
+                (click)="resetVals(); discontinueItem()" class="edit-button">Discontinue Item</button>
+
+            <button mat-raised-button color="primary" *ngIf="product?.discontinued"
+                (click)="resetVals(); rereleaseItem()" class="edit-button">Rerelease Item</button>
 
             <button mat-raised-button color="primary" (click)="saveProduct()" class="execute-button">Save</button>
             <button mat-raised-button color="warn" (click)="edit = false;" class="execute-button">Cancel</button>

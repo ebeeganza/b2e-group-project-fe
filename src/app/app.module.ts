@@ -16,7 +16,8 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import {MatSortModule} from '@angular/material/sort';
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 import { ProductComponent } from './components/product/product.component';
 import { LoginComponent } from './components/login/login.component';
@@ -34,8 +35,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProductsListComponent } from './components/products-list/products-list.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
+
+import { EditAccountComponent } from './components/edit-account/edit-account.component';
 import { CouponComponent } from './components/coupon/coupon.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { ErrorsComponent } from './components/errors/errors.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +56,11 @@ import { CategoryListComponent } from './components/category-list/category-list.
     AccountListComponent,
     ProductsListComponent,
     CouponComponent,
-    CategoryListComponent
+    CategoryListComponent,
+    EditAccountComponent,
+    CouponComponent,
+    ProfileComponent,
+    ErrorsComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +80,9 @@ import { CategoryListComponent } from './components/category-list/category-list.
     MatSnackBarModule,
     MatExpansionModule,
     MatSelectModule,
-    MatSortModule
+    MatSortModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

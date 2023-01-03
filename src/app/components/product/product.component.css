@@ -4,8 +4,9 @@
 }
 
 .product {
-    max-width: 500px;
+    width: 700px;
     margin: 20px;
+    min-height: 230px;
 }
 
 .edit-button {
@@ -34,6 +35,15 @@
     flex-direction: column;
 }
 
-.mat-raised-button {
-    max-width: 30px;
+img {
+    object-fit: cover;
+    width: 230px;
+    height: 230px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.description {
+    max-width: 400px;
 }
