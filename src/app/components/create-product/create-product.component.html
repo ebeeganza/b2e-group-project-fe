@@ -13,6 +13,11 @@
             </mat-form-field>
 
             <mat-form-field>
+                <mat-label>Initial MAP Price</mat-label>
+                <input matInput type="number" [(ngModel)]="MAP">
+            </mat-form-field>
+
+            <mat-form-field>
                 <mat-label>Availability Date</mat-label>
                 <input matInput [matDatepicker]="picker" [(ngModel)]="available">
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -29,11 +34,18 @@
                 <input matInput [(ngModel)]="imageURL">
             </mat-form-field>
 
-            <!--TODO: Add checkbox for category-->
+            <mat-form-field appearance="fill">
+                <mat-label>Category</mat-label>
+                <mat-select [(ngModel)]="category">
+                  <mat-option *ngFor="let cat of ui.categorySubject.getValue()" [value]="cat">
+                    {{cat.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
 
-            <button mat-raised-button color="primary" (click)="createProduct(name,price,available,description,imageURL)"
+            <button mat-raised-button color="primary" (click)="createProduct()"
                 class="execute-button">Create</button>
-            <button mat-raised-button color="warn" (click)="service.creatingProduct = false"
+            <button mat-raised-button color="warn" (click)="productService.creatingProduct = false"
                 class="execute-button">Cancel</button>
 
         </div>

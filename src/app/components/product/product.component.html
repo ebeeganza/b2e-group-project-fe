@@ -1,4 +1,4 @@
-<mat-card class="product">
+<mat-card *ngIf="accountService.currentUser" class="product">
     <mat-card-content>
         <p style="font-weight: bold; font-size: 20px">{{product?.name}}</p>
 
@@ -7,14 +7,22 @@
         <p *ngIf="currentPrice === defaultPrice">{{defaultPrice | currency}}</p>
         <div *ngIf="currentPrice != defaultPrice">
             <p style="color: green">Sale price: {{currentPrice | currency}}</p>
-            <p class="inactive">List price: {{defaultPrice | currency}}</p>
+            <p class="inactive">List price: <s>{{defaultPrice | currency}}</s></p>
         </div>
+        <p *ngIf="accountService.currentUser.getValue().role === 1">Available on {{product?.availability | date}}</p>
         <p class="description">Description: {{product?.description}}</p>
-        <p *ngIf="product?.discontinued" style="color: red">Item no longer available.</p>
+        <p *ngIf="product?.discontinued" style="color: red">Item not available.</p>
         <div *ngIf="product && product.categories && product.categories.length > 0">
-            <p>Categories:</p>
+            <p>Departments:</p>
             <p *ngFor="let category of product?.categories">{{category.name}}</p>
         </div>
+
+        <button mat-raised-button color="primary"
+            *ngIf="(accountService.currentUser.getValue().role === 0 || accountService.currentUser.getValue().role === -1) && !product?.discontinued" (click)="cartService.addToCart(this.product)">Add
+            to Cart</button>
+
+        <button mat-raised-button color="warn" *ngIf="accountService.currentUser.getValue().role === 1"
+            (click)="productService.deleteProduct(product)" class="execute-button">Delete</button>
 
         <button mat-raised-button color="primary" *ngIf="accountService.currentUser.getValue().role === 1 && !edit"
             (click)="edit = true" class="execute-button">Edit</button>
@@ -181,11 +189,11 @@
                 <button mat-raised-button (click)="addShip = false" color="warn" class="execute-button">Cancel</button>
             </div>
 
-            <button mat-raised-button color="primary" *ngIf="!product?.discontinued" (click)="resetVals(); discontinueItem()"
-                class="edit-button">Discontinue Item</button>
+            <button mat-raised-button color="primary" *ngIf="!product?.discontinued"
+                (click)="resetVals(); discontinueItem()" class="edit-button">Discontinue Item</button>
 
-            <button mat-raised-button color="primary" *ngIf="product?.discontinued" (click)="resetVals(); rereleaseItem()"
-                class="edit-button">Rerelease Item</button>
+            <button mat-raised-button color="primary" *ngIf="product?.discontinued"
+                (click)="resetVals(); rereleaseItem()" class="edit-button">Rerelease Item</button>
 
             <button mat-raised-button color="primary" (click)="saveProduct()" class="execute-button">Save</button>
             <button mat-raised-button color="warn" (click)="edit = false;" class="execute-button">Cancel</button>

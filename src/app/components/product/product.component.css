@@ -6,6 +6,7 @@
 .product {
     width: 700px;
     margin: 20px;
+    min-height: 230px;
 }
 
 .edit-button {

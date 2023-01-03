@@ -5,6 +5,7 @@ import { Product } from 'src/app/data/product';
 import { Sale } from 'src/app/data/sale';
 import { Shipment } from 'src/app/data/shipments';
 import { AccountService } from 'src/app/services/account.service';
+import { CartServiceService } from 'src/app/services/cart.service.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -44,7 +45,7 @@ export class ProductComponent implements OnInit {
   public addIm = false;
   public addCat = false;
 
-  constructor(private productService: ProductService, public accountService : AccountService) { }
+  constructor(public productService: ProductService, public accountService : AccountService, public cartService : CartServiceService) { }
 
   ngOnInit(): void {
     if(this.product){
@@ -116,7 +117,7 @@ export class ProductComponent implements OnInit {
 
   addScheduledMAP() {
     if(this.product)
-    this.product.schedulesMAPS.push(new Price(Math.random(), this.priceVal, this.dateVal))
+    this.product.scheduledMAPS.push(new Price(Math.random(), this.priceVal, this.dateVal))
     this.schedMAP = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;
@@ -142,7 +143,7 @@ export class ProductComponent implements OnInit {
   addShipment() {
     if (this.product) {
       if (this.product.id)
-        this.product.shipments.push(new Shipment(Math.random(), this.product.id, this.shipQuantity, this.shipCost, this.dateVal));
+        this.product.shipments.push(new Shipment(Math.random(), this.product.id, this.shipQuantity, Math.ceil(this.shipCost / this.shipQuantity), this.dateVal));
     }
     this.dateVal = this.todayDate;
     this.addShip = false;
