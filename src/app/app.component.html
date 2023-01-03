@@ -2,6 +2,9 @@
 <app-login *ngIf="accountService.displayLogin"></app-login>
 <app-register *ngIf="accountService.displayRegister"></app-register>
 <app-cart *ngIf="cart.openCart()"></app-cart>
+
+<app-category-list *ngIf="this.ui.displayCategories"></app-category-list>
+
 <app-profile *ngIf="this.accountService.displayProfile"></app-profile>
 
 <div class="container">
