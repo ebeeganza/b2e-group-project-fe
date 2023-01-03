@@ -29,7 +29,7 @@ export class UiService {
    }
   // GET
   updateCategories(): void {
-    this.http.get<Categories[]>('http://localhost8080/categories')
+    this.http.get<Categories[]>('http://localhost:8080/category')
       .pipe(take(1))
       .subscribe({
         next: (categories) => this.categorySubject.next(categories),
