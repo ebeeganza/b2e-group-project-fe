@@ -33,6 +33,7 @@ export class UiService {
     this.displayProducts = false;
     this.displayLogin = false;
     this.displayRegister = false;
+    this.productService.unfilter();
   }
 
   showCart() {
@@ -122,8 +123,8 @@ export class UiService {
 
   filterProducts(category: Categories){
     this.resetValues();
-    this.productService.filterProducts(category)
     this.displayProducts = true;
+    this.productService.filterProducts(category)
   }
 
 

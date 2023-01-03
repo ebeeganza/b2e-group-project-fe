@@ -1,6 +1,5 @@
 import { Categories } from "./categories";
 import { Price } from "./price";
-import { Sale } from "./sale";
 import { Shipment } from "./shipments";
 
 export class Product {
@@ -13,10 +12,10 @@ export class Product {
     public category: Categories | null
     public scheduledMAPS: Price[]
     public scheduledPrices: Price[]
-    public scheduledSales: Sale[]
+    public scheduledSales: Price[]
     public shipments: Shipment[]
 
-    constructor(name: string, discontinued: boolean, availability: Date, description: string, image: string, category: Categories | null, scheduledMAPS: Price[], scheduledPrices: Price[], scheduledSales: Sale[], shipments: Shipment[]){
+    constructor(name: string, discontinued: boolean, availability: Date, description: string, image: string, category: Categories | null, scheduledMAPS: Price[], scheduledPrices: Price[], scheduledSales: Price[], shipments: Shipment[]){
         this.name = name
         this.discontinued = discontinued
         this.availability = availability
