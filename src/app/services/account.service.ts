@@ -9,7 +9,6 @@ import { User } from '../data/user';
 })
 export class AccountService {
 
-
   public account: User[] = []
   private accountSubject: Subject<User[]> = new Subject()
   public displayEdit: boolean = false
@@ -19,6 +18,8 @@ export class AccountService {
   public isLoggedIn: boolean = false
   public guestUser: User = new User(-1,'','','Guest','',-1)
   public currentUser: BehaviorSubject<User> = new BehaviorSubject<User>(this.guestUser)
+
+  public displayProfile: boolean = false
 
   constructor(private http: HttpClient,
     private _snackBar: MatSnackBar,) {
@@ -30,6 +31,10 @@ export class AccountService {
         this.currentUser.next(user)
       }
     }
+
+    // TODO: dummy data
+    const user1 = new User(0, "pass", "email", "Rick", "Astley", 2)
+    this.account.push(user1)
   }
 
     
@@ -107,12 +112,22 @@ export class AccountService {
   }
 
   getShowEdit() {
-    this.displayEdit = true;
+    this.displayEdit = true
+  }
+
+  public changeToProfile() {
+    this.resetDisplay()
+    this.displayProfile = true
+  }
+
+  public hideProfile() {
+    this.displayProfile = false
   }
 
   displayAccountEdit() {
     this.getShowEdit
   }
+
 
   updateAccount(): void {
     this.http

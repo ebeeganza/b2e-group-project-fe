@@ -37,6 +37,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 
 import { EditAccountComponent } from './components/edit-account/edit-account.component';
 import { CouponComponent } from './components/coupon/coupon.component';
+import { ProfileComponent } from './components/profile/profile.component';
 import { ErrorsComponent } from './components/errors/errors.component';
 
 @NgModule({
@@ -54,6 +55,7 @@ import { ErrorsComponent } from './components/errors/errors.component';
     ProductsListComponent,
     EditAccountComponent,
     CouponComponent,
+    ProfileComponent
     ErrorsComponent
   ],
   imports: [
