@@ -5,6 +5,7 @@ import { take } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AccountService } from '../account.service';
 import { Product } from 'src/app/data/product';
+import { ThisReceiver } from '@angular/compiler';
 
 
 @Injectable({
@@ -15,6 +16,7 @@ export class OrdersService {
   constructor(private http: HttpClient,
     private _snackBar: MatSnackBar,
     private accountService: AccountService) {
+    this.loadAllOrders()
      }
 
   public userId: number | undefined;
