@@ -10,6 +10,7 @@ import { ProductService } from './product.service';
 })
 export class UiService {
 
+
   public displayCategories: boolean = false
   public displayProducts: boolean = true;
   public displayCart: boolean = false;
@@ -17,6 +18,7 @@ export class UiService {
   public displayAccount: boolean = false;
   public displayLogin: boolean = false;
   public displayRegister: boolean = false;
+  public displayCoupons: boolean = false;
 
   public categorySubject: BehaviorSubject<Categories[]> = new BehaviorSubject<Categories[]>([])
 
@@ -69,6 +71,11 @@ export class UiService {
     this.resetValues();
     this.displayRegister = true;
   }
+
+  showCoupons() {
+    this.resetValues();
+    this.displayCoupons = true;
+    }
 
   // GET
   updateCategories(): void {

@@ -24,15 +24,15 @@ export class CouponsService {
   ]
 
   constructor(private http:HttpClient) { 
-    this.couponSubject.next(this.couponList)
+    this.updateCoupons()
 
   }
 
   //Creating CRUD for coupons so shopkeep can use
 
   //GET
-  updatedCoupons(): void {
-    this.http.get<Coupon[]>('http://localhost8080/coupon')
+  updateCoupons(): void {
+    this.http.get<Coupon[]>('http://localhost:8080/coupons')
       .pipe(take(1))
       .subscribe({
         next: (coupons) => this.couponSubject.next(coupons),
@@ -40,30 +40,30 @@ export class CouponsService {
       })
   }
   // PUT
-  putCoupons(getCoupons: Coupon): void {
-    this.http.put('http://localhost:8080/coupon', getCoupons)
+  putCoupons(updatedCouponDetails: Coupon): void {
+    this.http.put('http://localhost:8080/coupons', updatedCouponDetails)
       .pipe(take(1))
       .subscribe({
-        next: () => this.getCoupons(),
-        error: (err) => console.log("Error updating category")
+        next: () => this.updateCoupons(),
+        error: (err) => console.log("Error updating coupons")
       })
   }
   // POST
-  createCoupons(newCoupons: Coupon): void {
-    this.http.post('http://localhost:8080/coupon',newCoupons) 
+  createCoupons(newCoupon: Coupon): void {
+    this.http.post('http://localhost:8080/coupons',newCoupon) 
       .pipe(take(1))
       .subscribe({
-        next: () => this.getCoupons(),
-        error: (err) => console.log("Error creating category") 
+        next: () => this.updateCoupons(),
+        error: (err) => console.log("Error creating coupon") 
       })
   }
   // DELETE
-  deleteCategory(couponId: Number): void {
-    this.http.delete(`http://localhost:8080/coupon/${couponId}`)
+  deleteCoupon(couponId: Number): void {
+    this.http.delete(`http://localhost:8080/coupons/${couponId}`)
     .pipe(take(1))
     .subscribe({
       next: () => this.getCoupons(),
-      error: (err) => console.log(`Error deleting category ${couponId}`)
+      error: (err) => console.log(`Error deleting coupon ${couponId}`)
     })
   }
 
