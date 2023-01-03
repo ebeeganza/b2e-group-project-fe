@@ -47,8 +47,8 @@ export class OrdersComponent {
     this.orderService.loadAllOrders()
     this.dataSource.data = this.orderService.orders
 
-    // this.orderService.loadUserOrders()
-    // this.dataSource2.data = this.orderService.userOrders
+    this.orderService.loadUserOrders()
+    this.dataSource2.data = this.orderService.userOrders
   }
 
 }
