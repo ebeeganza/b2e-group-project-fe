@@ -1,2 +1,5 @@
 <app-edit-account *ngIf="accountService.getShowEdit()"></app-edit-account>
+
+<div *ngIf="accountService.currentUser.getValue().role === 2">
 <app-account *ngFor="let accountData of account" [account]="accountData"></app-account>
+</div>

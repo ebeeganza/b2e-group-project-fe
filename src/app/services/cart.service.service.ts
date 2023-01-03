@@ -8,36 +8,11 @@ import { ProductService } from './product.service';
   providedIn: 'root'
 })
 export class CartServiceService {
- private showCart = false;
- private showToolbar = true;
 
  productList = new BehaviorSubject<any>([]);
  cartItemList: any=[]
 
   constructor(private http: HttpClient, private productService : ProductService) { }
-
-  public openToolbar():boolean {
-    return this.showToolbar
-  }
-
-  public openCart(): boolean{
-    return this.showCart;
-  }
-
-  public resetDisplay() {
-    this.showCart = false
-    this.showToolbar = false
-  }
-
-
-  public viewToolbar():void{
-    this.showToolbar = true;
-    this.showCart = false;
-  }
-  public viewCart(): void {
-    this.showToolbar = false;
-    this.showCart = true;
-  }
 
   //get the product
   getProducts() {

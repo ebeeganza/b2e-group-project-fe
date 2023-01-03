@@ -5,11 +5,11 @@
     <span class="spacer"></span>
     <button mat-icon-button matTooltip="Logout" (click)="this.accountService.logoutUser()"
         *ngIf="this.accountService.isLoggedIn"><mat-icon>logout</mat-icon></button>
-    <button mat-icon-button matTooltip="Login" (click)="this.accountService.changeToLogin()"
+    <button mat-icon-button matTooltip="Login" (click)="ui.showLogin()"
         *ngIf="!this.accountService.isLoggedIn"><mat-icon>login</mat-icon></button>
-    <button *ngIf="accountService.currentUser.getValue().role != 1 && accountService.currentUser.getValue().role != 2" (click)="cart.viewCart()" mat-icon-button matTooltip="My Cart"><mat-icon matBadge="0" matBadgeSize="small"
+    <button *ngIf="accountService.currentUser.getValue().role != 1 && accountService.currentUser.getValue().role != 2" (click)="ui.showCart()" mat-icon-button matTooltip="My Cart"><mat-icon matBadge="0" matBadgeSize="small"
             matBadgeColor="warn">shopping_cart</mat-icon></button>
-    <button (click)="this.accountService.changeToProfile()" mat-icon-button matTooltip="View Account Details"><mat-icon>settings</mat-icon></button>
+    <button *ngIf="accountService.currentUser.getValue().role != -1" (click)="ui.showAccount()" mat-icon-button matTooltip="View Account Details"><mat-icon>settings</mat-icon></button>
 </mat-toolbar>
 <mat-toolbar color="accent" style="height: 20px;">
     <span id="date"></span>

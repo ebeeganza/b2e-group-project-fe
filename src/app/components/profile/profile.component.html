@@ -18,6 +18,7 @@
     <mat-card-actions>
         <button *ngIf="this.accountService.displayAccountEdit"mat-button>Edit</button>
         <button (click)="this.accountService.hideProfile()"mat-button>Close</button>
+        <button (click)="ui.showOrders()"mat-button>View Orders</button>
       </mat-card-actions>
 </mat-card>
 <app-account-list></app-account-list>
