@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, take } from 'rxjs';
 import { Categories } from '../data/categories';
+import { Product } from '../data/product';
+import { ProductService } from './product.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,7 @@ export class UiService {
 
   public categorySubject: BehaviorSubject<Categories[]> = new BehaviorSubject<Categories[]>([])
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private productService : ProductService) {
     // Real function for populating categories
      this.updateCategories()
   }
@@ -116,6 +118,12 @@ export class UiService {
 
   resetDisplay() {
     this.displayCategories = false
+  }
+
+  filterProducts(category: Categories){
+    this.resetValues();
+    this.productService.filterProducts(category)
+    this.displayProducts = true;
   }
 
 

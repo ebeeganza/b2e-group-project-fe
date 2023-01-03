@@ -4,7 +4,9 @@
 <app-cart *ngIf="ui.displayCart"></app-cart>
 
 <app-category-list *ngIf="this.ui.displayCategories"></app-category-list>
+
 <app-profile *ngIf="ui.displayAccount"></app-profile>
+<app-orders *ngIf="ui.displayOrders"></app-orders>
 
 <div class="container" *ngIf="ui.displayProducts">
     <app-products-list></app-products-list>

@@ -47,7 +47,7 @@ export class AccountService {
     let queryParams = new HttpParams()
     queryParams = queryParams.append("email", email)
     queryParams = queryParams.append("password", password)
-    this.http.get<User>('http://localhost:8080/user', { params: queryParams })
+    this.http.get<User>('http://localhost:8080/users', { params: queryParams })
       .pipe(take(1))
       .subscribe({
         next: (user) => {
@@ -62,16 +62,13 @@ export class AccountService {
   }
 
   registerUser(newUser: User): void {
-    this.http.post<User>('http://localhost:8080/user', newUser)
+    this.http.post<User>('http://localhost:8080/users', newUser)
       .pipe(take(1))
       .subscribe({
         next: (user) => {
           this.successfulLogin(user)
         },
         error: (err) => {
-          // For Demo Purposes
-          this.successfulLogin(newUser)
-
           console.log("An error occured while registering account");
         }
       })
@@ -130,7 +127,7 @@ export class AccountService {
 
   updateAccount(): void {
     this.http
-      .get<User[]>('http://localhost:8080/user')
+      .get<User[]>('http://localhost:8080/users')
       .pipe(take(1))
       .subscribe({ 
         next: account => {
@@ -150,7 +147,7 @@ export class AccountService {
 
   addAccount(profile: User): void {
     this.http
-      .post('http://localhost:8080/user', profile)
+      .post('http://localhost:8080/users', profile)
       .pipe(take(1))
       .subscribe({
         next: () => {this.updateAccount()
@@ -163,7 +160,7 @@ export class AccountService {
 
   deleteAccountById(id: number): void {
     this.http
-      .delete(`http://localhost:8080/user/${id}`)
+      .delete(`http://localhost:8080/users/${id}`)
       .pipe(take(1))
       .subscribe({
         next: () => {
