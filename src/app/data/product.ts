@@ -11,7 +11,7 @@ export class Product {
     public description: string
     public image: string
     public categories: Categories[]
-    public schedulesMAPS: Price[]
+    public scheduledMAPS: Price[]
     public scheduledPrices: Price[]
     public scheduledSales: Sale[]
     public shipments: Shipment[]
@@ -23,7 +23,7 @@ export class Product {
         this.description = description
         this.image = image
         this.categories = categories
-        this.schedulesMAPS = scheduledMAPS
+        this.scheduledMAPS = scheduledMAPS
         this.scheduledPrices = scheduledPrices
         this.scheduledSales = scheduledSales
         this.shipments = shipments

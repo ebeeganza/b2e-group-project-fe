@@ -26,7 +26,7 @@ export class OrdersService {
     this._snackBar.open(message, undefined, {duration: 10000})
   }
 
-private loadOrders(): void {
+public loadOrders(): void {
     if (this.accountService.currentUser.value.role == 1) {
       this.loadAllOrders()
     } else {
@@ -40,6 +40,7 @@ private loadOrders(): void {
       .subscribe({
         next: orders => {
           this.orders = orders
+          this.getOrders()
         },
         error: () => {
           this.showError('Oops, something went wrong')
@@ -47,12 +48,13 @@ private loadOrders(): void {
       })
   }
 
-  private loadUserOrders(): void {
+  public loadUserOrders(): void {
     this.http.get<Order[]>(`http://localhost:8080/orders?userId=${this.accountService.currentUser.value.id}`)
       .pipe(take(1))
       .subscribe({
         next: orders => {
           this.userOrders = orders
+          this.getUserOrders()
           },
         error: () => {
           this.showError('Oops, something went wrong')
@@ -60,12 +62,12 @@ private loadOrders(): void {
       })
   }
 
-  deleteOrder(id: number) {
+  public deleteOrder(id: number) {
     this.http.delete(`http://localhost:8080/orders/${id}`)
     .pipe(take(1))
     .subscribe({
       next: () => {
-        this.getUserOrders()
+        this.loadAllOrders()
       },
       error: () => {
         this.showError('Failed to cancel order')

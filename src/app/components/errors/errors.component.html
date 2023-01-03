@@ -1,0 +1,13 @@
+<div *ngIf="errorExists">
+    <mat-card class="errors">
+        <mat-card-content>
+            <h2>Warning:</h2>
+            <div *ngFor="let product of this.lossProducts">
+                <p style="color: red">{{product.name}} is currently selling at a loss.</p>
+            </div>
+            <div *ngFor="let product of this.mapProducts">
+                <p style="color: red">{{product.name}} is currently selling at a lower price than its minimum advertised price.</p>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
