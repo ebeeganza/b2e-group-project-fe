@@ -4,7 +4,6 @@ import { take } from 'rxjs';
 import { Categories } from '../data/categories';
 import { Price } from '../data/price';
 import { Product } from '../data/product';
-import { Sale } from '../data/sale';
 import { Shipment } from '../data/shipments';
 
 @Injectable({
@@ -18,6 +17,7 @@ export class ProductService {
   public filtered = false;
 
   constructor(private http: HttpClient) {
+
     /**
      * TODO: TEST CASE TO BE DELETED LATER
      */
@@ -33,21 +33,21 @@ export class ProductService {
     const newerDate = new Date();
     newerDate.setDate(new Date().getDate() - 80)
 
-    const defaultPrice = new Price(1, 5, pastDate);
-    const newerPrice = new Price(2, 4, newerDate);
-    const salePrice = new Sale(1, 3, pastDate, futureDate);
+    const defaultPrice = new Price(1, 5, pastDate, null);
+    const newerPrice = new Price(2, 4, newerDate, null);
+    const salePrice = new Price(1, 3, pastDate, futureDate);
 
     const availDate = new Date();
     availDate.setDate(new Date().getDate() - 100);
 
     const product = new Product("Soup", false, availDate, "Yummy savory chicken noodle soup with lots of delicious hearty herbs and spices all combined in a warm, porcelain bowl.", 'https://www.thekitchenmagpie.com/wp-content/uploads/images/2019/10/ChickenVegetableSoup2.jpg', null, [], [], [], [])
 
-    product.category = new Categories(Math.random(),"Food")
+    product.category = new Categories(1,"Food")
 
     product.scheduledPrices.push(defaultPrice);
     product.scheduledPrices.push(newerPrice);
     product.scheduledSales.push(salePrice);
-    product.scheduledMAPS.push(new Price(6,3.01,pastDate));
+    product.scheduledMAPS.push(new Price(6,3.01,pastDate, null));
 
     this.products.push(product);
   }
@@ -74,8 +74,8 @@ export class ProductService {
     if (category) {
       product.category = category
     }
-    product.scheduledPrices.push(new Price(Math.random(), price, available));
-    product.scheduledMAPS.push(new Price(Math.random(), MAP, available));
+    product.scheduledPrices.push(new Price(Math.random(), price, available, null));
+    product.scheduledMAPS.push(new Price(Math.random(), MAP, available, null));
 
     this.products.push(product);
     this.creatingProduct = false;
@@ -125,7 +125,7 @@ export class ProductService {
 
     let currPriceDate = product.availability // start looping through dates at the date the item is available
     for (let price of product.scheduledPrices) {
-      if (price.date >= currPriceDate && price.date <= todayDate) {
+      if (price.startDate >= currPriceDate && price.startDate <= todayDate) {
         defaultPrice = price.price; // update the product's default price for the current date
       }
     }
@@ -138,7 +138,7 @@ export class ProductService {
 
     // if a sale is going on, return the sale price
     for (let sale of product.scheduledSales) {
-      if (sale.startDate <= todayDate && sale.endDate > todayDate) {
+      if (sale.startDate <= todayDate && sale.endDate && sale.endDate > todayDate) {
         return sale.price
       }
     }
@@ -151,14 +151,14 @@ export class ProductService {
 
     let currMAPDate = product.availability // start looping through MAPS at the date the item is available
     for (let MAP of product.scheduledMAPS) {
-      if (MAP.date >= currMAPDate && MAP.date <= todayDate) {
+      if (MAP.startDate >= currMAPDate && MAP.startDate <= todayDate) {
         defaultMAP = MAP.price; // update the product's MAP for the current date
       }
     }
     return defaultMAP;
   }
 
-  // returns the shipment the products are to be pulled from if purchased, returns null if product is out of stock
+  // returns the oldest shipment with inventory still available, or null if out of stock
   getCurrentShipment(product: Product): Shipment | null {
     let oldestShipment: Shipment | null = null;
     let oldestDate: Date = new Date();
@@ -184,7 +184,7 @@ export class ProductService {
       this.updateProduct(product); // update the product now that its shipment has changed
       return true;
     } else {
-      // no shipment was found, so print error to user
+      product.discontinued = true;
       return false;
     }
   }
@@ -219,6 +219,18 @@ export class ProductService {
 
   filterProducts(category : Categories){
     this.filtered = true;
+    let backupProducts = this.products
+    this.products = []
+    for(let product of backupProducts){
+      if(product.category === category){
+        this.products.push(product)
+      }
+    }
+  }
+
+  unfilter(){
+    this.filtered = false;
+    this.updateProducts();
   }
 
 }
