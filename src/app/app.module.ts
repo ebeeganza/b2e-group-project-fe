@@ -14,7 +14,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select'
+import { MatSelectModule } from '@angular/material/select';
+import {MatSortModule} from '@angular/material/sort';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
@@ -37,6 +38,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 
 import { EditAccountComponent } from './components/edit-account/edit-account.component';
 import { CouponComponent } from './components/coupon/coupon.component';
+import { CategoryListComponent } from './components/category-list/category-list.component';
+import { ProfileComponent } from './components/profile/profile.component';
 import { ErrorsComponent } from './components/errors/errors.component';
 
 @NgModule({
@@ -52,8 +55,11 @@ import { ErrorsComponent } from './components/errors/errors.component';
     AccountComponent,
     AccountListComponent,
     ProductsListComponent,
+    CouponComponent,
+    CategoryListComponent,
     EditAccountComponent,
     CouponComponent,
+    ProfileComponent,
     ErrorsComponent
   ],
   imports: [
@@ -74,6 +80,7 @@ import { ErrorsComponent } from './components/errors/errors.component';
     MatSnackBarModule,
     MatExpansionModule,
     MatSelectModule,
+    MatSortModule,
     MatDatepickerModule,
     MatNativeDateModule
   ],

@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, catchError, Observable, Subject, take, throwError } from 'rxjs';
 import { User } from '../data/user';
 
@@ -7,7 +8,6 @@ import { User } from '../data/user';
   providedIn: 'root'
 })
 export class AccountService {
-
 
   public account: User[] = []
   private accountSubject: Subject<User[]> = new Subject()
@@ -19,7 +19,10 @@ export class AccountService {
   public guestUser: User = new User(-1,'','','Guest','',-1)
   public currentUser: BehaviorSubject<User> = new BehaviorSubject<User>(this.guestUser)
 
-  constructor(private http: HttpClient) {
+  public displayProfile: boolean = false
+
+  constructor(private http: HttpClient,
+    private _snackBar: MatSnackBar,) {
     this.isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"))
     if(this.isLoggedIn){
       var userString = localStorage.getItem("user")
@@ -28,6 +31,15 @@ export class AccountService {
         this.currentUser.next(user)
       }
     }
+
+    // TODO: dummy data
+    const user1 = new User(0, "pass", "email", "Rick", "Astley", 2)
+    this.account.push(user1)
+  }
+
+    
+  private showError(message: string): void {
+    this._snackBar.open(message, undefined, {duration: 10000})
   }
 
   tryLogin(email: string, password: string): void {
@@ -100,22 +112,37 @@ export class AccountService {
   }
 
   getShowEdit() {
-    this.displayEdit = true;
+    this.displayEdit = true
+  }
+
+  public changeToProfile() {
+    this.resetDisplay()
+    this.displayProfile = true
+  }
+
+  public hideProfile() {
+    this.displayProfile = false
   }
 
   displayAccountEdit() {
     this.getShowEdit
   }
 
+
   updateAccount(): void {
     this.http
       .get<User[]>('http://localhost:8080/user')
       .pipe(take(1))
-      .subscribe(account => {
+      .subscribe({ 
+        next: account => {
         console.log(account)
         this.account = account
         this.accountSubject.next(this.account)
-      })
+      },
+      error: () => {
+        this.showError('Failed to update account')
+      }
+    })
   }
 
   whenAccountUpdated(): Observable<User[]> {
@@ -126,13 +153,26 @@ export class AccountService {
     this.http
       .post('http://localhost:8080/user', profile)
       .pipe(take(1))
-      .subscribe(() => this.updateAccount())
+      .subscribe({
+        next: () => {this.updateAccount()
+        },
+        error: () => {
+          this.showError('Failed to add account')
+        }
+      })
   }
 
   deleteAccountById(id: number): void {
     this.http
       .delete(`http://localhost:8080/user/${id}`)
       .pipe(take(1))
-      .subscribe(() => this.updateAccount())
+      .subscribe({
+        next: () => {
+        this.updateAccount()
+        },
+        error: () => {
+          this.showError('Failed to delete account')
+        }
+      })
   }
 }

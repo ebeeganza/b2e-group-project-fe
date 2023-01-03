@@ -5,6 +5,7 @@ export class Order {
        public id: number,
        public userId: number,
        public date: Date,
-       public products: Product[]
+       public products: String,
+       public orderTotal: number
     ) {}
 }
