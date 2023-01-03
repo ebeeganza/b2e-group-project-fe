@@ -34,8 +34,8 @@ export class AccountService {
     }
 
     // TODO: dummy data
-    const user1 = new User(0, "pass", "email", "Rick", "Astley", 2)
-    this.account.push(user1)
+    // const user1 = new User(0, "pass", "email", "Rick", "Astley", 2)
+    // this.account.push(user1)
   }
 
     
