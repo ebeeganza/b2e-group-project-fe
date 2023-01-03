@@ -7,6 +7,7 @@ import { Shipment } from 'src/app/data/shipments';
 import { AccountService } from 'src/app/services/account.service';
 import { CartServiceService } from 'src/app/services/cart.service.service';
 import { ProductService } from 'src/app/services/product.service';
+import { UiService } from 'src/app/services/ui.service';
 
 @Component({
   selector: 'app-product',
@@ -17,14 +18,15 @@ export class ProductComponent implements OnInit {
 
   @Input() product: Product | null = null;
 
-  public defaultPrice = 2.50;
-  public currentPrice = 1.99;
+  public defaultPrice = 0;
+  public currentPrice = 0;
 
   public todayDate = new Date();
 
   public name = ''
   public description = ''
   public price = 0
+  public category : Categories | null = null
   public available = this.todayDate;
   public priceVal = 0;
   public dateVal = this.todayDate;
@@ -45,7 +47,7 @@ export class ProductComponent implements OnInit {
   public addIm = false;
   public addCat = false;
 
-  constructor(public productService: ProductService, public accountService : AccountService, public cartService : CartServiceService) { }
+  constructor(public productService: ProductService, public accountService : AccountService, public cartService : CartServiceService, public ui : UiService) { }
 
   ngOnInit(): void {
     if(this.product){
@@ -104,8 +106,9 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  addCategory(category: Categories) {
-    // TODO: add the category
+  addCategory(category: Categories | null) {
+    if(this.product)
+    this.product.category = category
     this.addCat = false;
   }
 
@@ -165,6 +168,13 @@ export class ProductComponent implements OnInit {
       this.productService.updateProduct(this.product);
       this.edit = false;
     }
+  }
+
+  isAvailable() {
+    const today = new Date();
+    if (this.product)
+      return this.product.availability <= today
+    else return false;
   }
 
 }

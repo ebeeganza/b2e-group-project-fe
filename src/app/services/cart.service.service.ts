@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { AccountService } from './account.service';
+import { ProductService } from './product.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ export class CartServiceService {
  productList = new BehaviorSubject<any>([]);
  cartItemList: any=[]
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private productService : ProductService) { }
 
   public openToolbar():boolean {
     return this.showToolbar
@@ -58,7 +60,7 @@ export class CartServiceService {
   getTotalPrice(): number {
     let grandTotal = 0;
     this.cartItemList.map((a:any) => {
-      grandTotal += a.total;
+      grandTotal += this.productService.getCurrentPrice(a);
       })
       return grandTotal;
     }
