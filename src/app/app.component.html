@@ -3,7 +3,7 @@
 <app-register *ngIf="accountService.displayRegister"></app-register>
 <app-cart *ngIf="cart.openCart()"></app-cart>
 
-<div class="container">
+<div class="container" *ngIf="true">
 <app-products-list></app-products-list>
 <app-errors *ngIf="accountService.currentUser.getValue().role === 1"></app-errors>
 </div>
