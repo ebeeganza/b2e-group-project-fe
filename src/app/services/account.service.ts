@@ -117,7 +117,7 @@ export class AccountService {
   }
 
   public hideProfile() {
-    this.displayProfile = false
+    this.ui.displayAccount = false
   }
 
   displayAccountEdit() {
@@ -172,4 +172,19 @@ export class AccountService {
       })
   }
 
+  deleteProfileById(id: number): void {
+    this.http
+      .delete(`http://localhost:8080/users/${id}`)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+        this.logoutUser()
+        this.hideProfile()
+        this.ui.displayProducts = true;
+        },
+        error: () => {
+          this.showError('Failed to delete account')
+        }
+      })
+  }
 }
