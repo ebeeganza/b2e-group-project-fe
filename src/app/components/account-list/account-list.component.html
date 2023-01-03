@@ -1,5 +1,58 @@
 <app-edit-account *ngIf="accountService.getShowEdit()"></app-edit-account>
 
 <div *ngIf="accountService.currentUser.getValue().role === 2">
-<app-account *ngFor="let accountData of account" [account]="accountData"></app-account>
+<app-account *ngFor="let accountData of accountService.account" [account]="accountData"></app-account>
 </div>
+<button (click)="getData()">Button</button>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    
+    <!-- Cancel Orders column -->
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef>Delete User</th>
+    <td mat-cell *matCellDef="let element">
+        <button mat-icon-button matTooltip="Delete User" class="iconbutton" color="warn"
+        (click)="accountService.deleteAccountById(element.id)">
+          <mat-icon aria-label="Delete">delete</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Edit User" class="iconbutton">
+          <mat-icon aria-label="Edit">edit</mat-icon>
+        </button>
+    </td>
+  </ng-container>
+  
+    <!-- id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> User Id </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+  
+    <!-- password Column -->
+    <ng-container matColumnDef="password">
+      <th mat-header-cell *matHeaderCellDef> Password </th>
+      <td mat-cell *matCellDef="let element"> {{element.password}} </td>
+    </ng-container>
+  
+    <!-- email Column -->
+    <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
+
+    <!-- fname Column -->
+    <ng-container matColumnDef="fname">
+        <th mat-header-cell *matHeaderCellDef> First Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.fname}} </td>
+      </ng-container>
+
+    <!-- lname Column -->
+    <ng-container matColumnDef="lname">
+        <th mat-header-cell *matHeaderCellDef> Last Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.lname}} </td>
+      </ng-container>
+
+      <ng-container>
+      <td>Add Account</td>
+      </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
