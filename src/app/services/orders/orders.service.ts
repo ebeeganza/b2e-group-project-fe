@@ -21,10 +21,10 @@ export class OrdersService {
 
   public userId: number | undefined;
   public orders: Order[] = []
-  private userOrders: Order[] = []
+  public userOrders: Order[] = []
   public userRole: string | undefined
   
-  private showError(message: string): void {
+  public showError(message: string): void {
     this._snackBar.open(message, undefined, {duration: 10000})
   }
 

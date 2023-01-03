@@ -12,23 +12,20 @@ import { ProductService } from 'src/app/services/product.service';
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.css']
 })
-export class OrdersComponent implements AfterViewInit {
+export class OrdersComponent {
 
   constructor(public orderService: OrdersService,
               public accountService: AccountService,
               public productService: ProductService) {
     this.getData;
   }
-ngAfterViewInit(): void {
-  this.orderService.loadAllOrders()
-  console.log(this.dataSource.data)
-}
+
 
   displayedColumns: string[] = ['action','id', 'userId', 'date', 'products', 'totals'];
-  displayedColumns2: string[] = ['action', 'id', 'date', 'products'];
+  displayedColumns2: string[] = ['action', 'id', 'date', 'products', 'totals'];
 
   public dataSource = new MatTableDataSource<Order>()
-  public dataSource2 = this.orderService.getUserOrders()
+  public dataSource2 = new MatTableDataSource<Order>() //this.orderService.getUserOrders()
   public transactionPanelOpenState = false
 
   public id: number = -1
@@ -49,6 +46,9 @@ ngAfterViewInit(): void {
   getData() {
     this.orderService.loadAllOrders()
     this.dataSource.data = this.orderService.orders
+
+    // this.orderService.loadUserOrders()
+    // this.dataSource2.data = this.orderService.userOrders
   }
 
 }

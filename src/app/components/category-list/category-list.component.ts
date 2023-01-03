@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { Categories } from 'src/app/data/categories';
 import { UiService } from 'src/app/services/ui.service';
@@ -12,6 +12,8 @@ import { UiService } from 'src/app/services/ui.service';
   styleUrls: ['./category-list.component.css']
 })
 export class CategoryListComponent implements AfterViewInit, OnDestroy {
+  public displayNewCategory: boolean = false
+  public newCategory: Categories = new Categories(-1,'')
   public newCategoryName = ''
   public columnsToDisplay = ['name', 'delete']
   public dataSource: MatTableDataSource<Categories> = new MatTableDataSource<Categories>([])
@@ -43,13 +45,13 @@ export class CategoryListComponent implements AfterViewInit, OnDestroy {
     this.ui.deleteCategory(id)
   }
 
-  editCategory(name: HTMLSpanElement,edit:MatIconButton, currentName: string): void {
+  editCategory(name: HTMLSpanElement,edit:MatIconButton, currentCategory: Categories): void {
     name.innerHTML = ''
     edit.disabled = true
 
     var nameInput = document.createElement('input')
     nameInput.setAttribute('type', 'text')
-    nameInput.setAttribute('value', currentName)
+    nameInput.setAttribute('value', currentCategory.name)
     name.appendChild(nameInput)
     nameInput.addEventListener('keyup', event => {
       this.newCategoryName = nameInput.value
@@ -59,7 +61,7 @@ export class CategoryListComponent implements AfterViewInit, OnDestroy {
     cancelBtn.innerHTML = "Cancel"
     name.appendChild(cancelBtn)
     cancelBtn.addEventListener('click', () => {
-      name.innerHTML = currentName
+      name.innerHTML = currentCategory.name
       edit.disabled = false
     })
     
@@ -67,5 +69,21 @@ export class CategoryListComponent implements AfterViewInit, OnDestroy {
     var saveBtn = document.createElement('button')
     saveBtn.innerHTML = "Save"
     name.appendChild(saveBtn)
+    saveBtn.addEventListener('click', () => {
+      if(currentCategory.name === this.newCategoryName){
+        name.innerHTML = currentCategory.name
+      }
+      else {
+        currentCategory.name = this.newCategoryName
+        this.ui.updateCategory(currentCategory)
+      }
+    })
+  }
+  addCategory() {
+    this.ui.createCategory(this.newCategory)
+  }
+
+  displayCreateCategory() {
+    this.displayNewCategory= true
   }
 }

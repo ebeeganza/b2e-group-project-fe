@@ -55,9 +55,6 @@ export class AccountService {
         },
         error: (err) => {
           // Demo Code
-          localStorage.setItem("isLoggedIn","true")
-          localStorage.setItem("fname","Connor")
-
           console.log(err);
         }
       })
