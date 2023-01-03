@@ -39,7 +39,7 @@ export class CartServiceService {
 
   //get the product
   getProducts() {
-    return this.productList.asObservable;
+    return this.productList;
   }
 
   setProduct(product:any){
@@ -52,9 +52,10 @@ export class CartServiceService {
     this.cartItemList.push(product)
     this.productList.next(this.cartItemList)
     this.getTotalPrice();
+    console.log(this.cartItemList)
   }
 
-  getTotalPrice(){
+  getTotalPrice(): number {
     let grandTotal = 0;
     this.cartItemList.map((a:any) => {
       grandTotal += a.total;
@@ -67,6 +68,7 @@ export class CartServiceService {
       if(product.id === a.id)
         this.cartItemList.splice(index,1)
     })
+    this.productList.next(this.cartItemList)
   }
   
     //clear Cart if want

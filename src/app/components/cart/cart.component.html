@@ -1,5 +1,5 @@
 <!--"products.length !=0"-->
-<ng-container *ngIf="true"> 
+<ng-container *ngIf="products.length != 0"> 
     <div class="card">
         <div class="container">
             <div class ="card-table" >
@@ -17,16 +17,17 @@
                                 <th>Action: </th>
                             </tr>
                         </thead>
+                         <!-- "https://www.dictionary.com/e/wp-content/uploads/2018/03/rickrolling.jpg" if you want to use rick-->
                         <tbody>
-                            <tr>
-                                <td>99</td>
-                                <td>Ricked</td>
-                                <td><img src ="https://www.dictionary.com/e/wp-content/uploads/2018/03/rickrolling.jpg" style="width: 100px; height: 100px"></td>
-                                <td>Never going to give you up</td>
-                                <th>50,000</th>
-                                <td>1</td>
-                                <td>50,000</td>
-                                <td><button><mat-icon>edit</mat-icon> </button> <button><mat-icon>delete</mat-icon></button></td>
+                            <tr *ngFor=" let product of products; let  i = index">
+                                <td>{{i+1}}</td>
+                                <td>{{product.name}}</td>
+                                <td><img src ={{product.image}} style="width: 100px; height: 100px"></td>
+                                <td>{{product.description}}</td>
+                                <th>{{product.price}}</th>
+                                <td>{{product.shipQuantity}}</td>
+                                <td>{{product.total}}</td>
+                                <td><button><mat-icon>edit</mat-icon> </button> <button (click)="cart.removeCartItem(product)"><mat-icon>delete</mat-icon></button></td>
                             </tr>
                             <tr>
                                 <td colspan ="4"></td>
@@ -39,7 +40,7 @@
                                 <td><button> Empty Cart</button></td>
                                 <td><button> Shop More</button></td>
                                 <td><button> Checkout</button></td>
-                                <td> <strong> Grand Total: $50,000</strong></td>
+                                <td> <strong></strong></td>
                             </tr>
                         </tbody>
                     </table>
@@ -51,7 +52,7 @@
 </ng-container>
 
 <!-- "products.length ==0" -->
-<ng-container *ngIf="false"> 
+<ng-container *ngIf="products.length == 0"> 
     <div class ="container">
         <div class="card">
             <h2 class="card-title"> Shopping Cart</h2>
