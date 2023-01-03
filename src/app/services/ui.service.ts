@@ -9,23 +9,10 @@ import { Categories } from '../data/categories';
 export class UiService {
   public displayCategories: boolean = false
 
-  // TEMPORARY 
-  public categoryList: Categories[] = [
-    new Categories(0,'Clothing'),
-    new Categories(1,'Electronics'),
-    new Categories(2,'Appliances'),
-    new Categories(3,'Books'),
-    new Categories(4,'Particle Accelerators'),
-  ]
-
   public categorySubject: BehaviorSubject<Categories[]> = new BehaviorSubject<Categories[]>([])
 
   constructor(private http: HttpClient) {
-    // Temporary! Populates with static data
-    this.categorySubject.next(this.categoryList)
-
-    // Real function for populating categories
-    // this.updateCategories()
+    this.updateCategories()
    }
   // GET
   updateCategories(): void {
@@ -38,7 +25,7 @@ export class UiService {
   }
   // PUT
   updateCategory(updatedCategory: Categories): void {
-    this.http.put('http://localhost:8080/category', updatedCategory)
+    this.http.put(`http://localhost:8080/category/${updatedCategory.id}`, updatedCategory)
       .pipe(take(1))
       .subscribe({
         next: () => this.updateCategories(),
