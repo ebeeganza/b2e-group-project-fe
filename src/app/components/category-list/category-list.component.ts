@@ -65,7 +65,6 @@ export class CategoryListComponent implements AfterViewInit, OnDestroy {
       edit.disabled = false
     })
     
-
     var saveBtn = document.createElement('button')
     saveBtn.innerHTML = "Save"
     name.appendChild(saveBtn)
