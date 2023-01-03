@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, catchError, Observable, Subject, take, throwError } from 'rxjs';
 import { User } from '../data/user';
+import { UiService } from './ui.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class AccountService {
   public displayProfile: boolean = false
 
   constructor(private http: HttpClient,
-    private _snackBar: MatSnackBar,) {
+    private _snackBar: MatSnackBar, private ui : UiService) {
     this.isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"))
     if(this.isLoggedIn){
       var userString = localStorage.getItem("user")
@@ -87,6 +88,7 @@ export class AccountService {
     localStorage.setItem("user",JSON.stringify(user))
     this.isLoggedIn = true
     this.currentUser.next(user)
+    this.ui.showProducts()
     this.resetDisplay()
   }
 

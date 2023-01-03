@@ -1,12 +1,12 @@
 <app-toolbar></app-toolbar>
-<app-login *ngIf="accountService.displayLogin"></app-login>
-<app-register *ngIf="accountService.displayRegister"></app-register>
-<app-cart *ngIf="cart.openCart()"></app-cart>
+<app-login *ngIf="ui.displayLogin"></app-login>
+<app-register *ngIf="ui.displayRegister"></app-register>
+<app-cart *ngIf="ui.displayCart"></app-cart>
 
-
-<div class="container" *ngIf="true">
 <app-category-list *ngIf="this.ui.displayCategories"></app-category-list>
-<app-profile *ngIf="this.accountService.displayProfile"></app-profile>
-<app-products-list></app-products-list>
-<app-errors *ngIf="accountService.currentUser.getValue().role === 1"></app-errors>
+<app-profile *ngIf="ui.displayAccount"></app-profile>
+
+<div class="container" *ngIf="ui.displayProducts">
+    <app-products-list></app-products-list>
+    <app-errors *ngIf="accountService.currentUser.getValue().role === 1"></app-errors>
 </div>

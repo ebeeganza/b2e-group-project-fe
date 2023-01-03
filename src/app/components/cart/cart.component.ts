@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
 import { CartServiceService } from 'src/app/services/cart.service.service';
+import { UiService } from 'src/app/services/ui.service';
 
 @Component({
   selector: 'app-cart',
@@ -13,7 +14,7 @@ export class CartComponent implements OnInit{
   public grandTotal : number = 0;
   couponCode: any;
 
-  constructor(public cart:CartServiceService, public accountService: AccountService) {}
+  constructor(public cart:CartServiceService, public accountService: AccountService, public ui: UiService) {}
 
   ngOnInit(): void {
     this.cart.getProducts()

@@ -7,13 +7,67 @@ import { Categories } from '../data/categories';
   providedIn: 'root'
 })
 export class UiService {
+
   public displayCategories: boolean = false
+  public displayProducts: boolean = true;
+  public displayCart: boolean = false;
+  public displayOrders: boolean = false;
+  public displayAccount: boolean = false;
+  public displayLogin: boolean = false;
+  public displayRegister: boolean = false;
 
   public categorySubject: BehaviorSubject<Categories[]> = new BehaviorSubject<Categories[]>([])
 
   constructor(private http: HttpClient) {
-    this.updateCategories()
-   }
+    // Real function for populating categories
+     this.updateCategories()
+  }
+
+  resetValues() {
+    this.displayAccount = false;
+    this.displayCategories = false;
+    this.displayCart = false;
+    this.displayOrders = false;
+    this.displayProducts = false;
+    this.displayLogin = false;
+    this.displayRegister = false;
+  }
+
+  showCart() {
+    this.resetValues();
+    this.displayCart = true;
+  }
+
+  showAccount() {
+    this.resetValues();
+    this.displayAccount = true;
+  }
+
+  showCategories() {
+    this.resetValues();
+    this.displayCategories = true;
+  }
+
+  showProducts() {
+    this.resetValues();
+    this.displayProducts = true;
+  }
+
+  showOrders() {
+    this.resetValues();
+    this.displayOrders = true;
+  }
+
+  showLogin() {
+    this.resetValues();
+    this.displayLogin = true;
+  }
+
+  showRegister() {
+    this.resetValues();
+    this.displayRegister = true;
+  }
+
   // GET
   updateCategories(): void {
     this.http.get<Categories[]>('http://localhost:8080/category')
@@ -34,21 +88,21 @@ export class UiService {
   }
   // POST
   createCategory(newCategory: Categories): void {
-    this.http.post('http://localhost:8080/category',newCategory) 
+    this.http.post('http://localhost:8080/category', newCategory)
       .pipe(take(1))
       .subscribe({
         next: () => this.updateCategories(),
-        error: (err) => console.log("Error creating category") 
+        error: (err) => console.log("Error creating category")
       })
   }
   // DELETE
   deleteCategory(categoryId: Number): void {
     this.http.delete(`http://localhost:8080/category/${categoryId}`)
-    .pipe(take(1))
-    .subscribe({
-      next: () => this.updateCategories(),
-      error: (err) => console.log(`Error deleting category ${categoryId}`)
-    })
+      .pipe(take(1))
+      .subscribe({
+        next: () => this.updateCategories(),
+        error: (err) => console.log(`Error deleting category ${categoryId}`)
+      })
   }
 
   getCategories(): Observable<Categories[]> {
@@ -58,7 +112,7 @@ export class UiService {
   changeToCategories() {
     this.resetDisplay()
     this.displayCategories = true
-    }
+  }
 
   resetDisplay() {
     this.displayCategories = false

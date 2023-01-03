@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
+import { UiService } from 'src/app/services/ui.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ export class LoginComponent {
   public email: string = ''
   public password: string = ''
 
-  constructor(public accountService: AccountService) { }
+  constructor(public accountService: AccountService, public ui: UiService) { }
 
   loginUser() {
       this.accountService.tryLogin(this.email, this.password)
