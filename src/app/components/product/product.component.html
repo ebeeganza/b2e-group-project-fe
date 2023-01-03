@@ -1,4 +1,5 @@
-<mat-card *ngIf="accountService.currentUser" class="product">
+<mat-card *ngIf="accountService.currentUser.getValue().role === 1 || (accountService.currentUser.getValue().role != 2 && isAvailable())" class="product">
+
     <mat-card-content>
         <p style="font-weight: bold; font-size: 20px">{{product?.name}}</p>
 
@@ -12,9 +13,17 @@
         <p *ngIf="accountService.currentUser.getValue().role === 1">Available on {{product?.availability | date}}</p>
         <p class="description">Description: {{product?.description}}</p>
         <p *ngIf="product?.discontinued" style="color: red">Item not available.</p>
-        <div *ngIf="product && product.categories && product.categories.length > 0">
-            <p>Departments:</p>
-            <p *ngFor="let category of product?.categories">{{category.name}}</p>
+        <p>Department: {{product?.category?.name}}</p>
+
+        <div *ngIf="accountService.currentUser.getValue().role === 1">
+            <p class="bold">Scheduled Prices:</p>
+            <p *ngFor="let price of product?.scheduledPrices">{{price.price | currency}} starting on {{price.date | date}}</p>
+
+            <p class="bold">Scheduled Minimum Advertised Prices:</p>
+            <p *ngFor="let MAP of product?.scheduledMAPS">{{MAP.price | currency}} starting on {{MAP.date | date}}</p>
+
+            <p class="bold">Scheduled Sales:</p>
+            <p *ngFor="let sale of product?.scheduledSales">{{sale.price | currency}} from {{sale.startDate | date}} to {{sale.endDate | date}}</p>
         </div>
 
         <button mat-raised-button color="primary"
@@ -75,7 +84,7 @@
             </div>
 
             <button mat-raised-button color="primary" *ngIf="!addIm" (click)="resetVals(); addIm = true"
-                class="edit-button">Add Image</button>
+                class="edit-button">Change Image</button>
             <div *ngIf="addIm" class="edit-form">
 
                 <mat-form-field>
@@ -88,10 +97,20 @@
             </div>
 
             <button mat-raised-button color="primary" *ngIf="!addCat" (click)="resetVals(); addCat = true"
-                class="edit-button">Add Category</button>
+                class="edit-button">Change Category</button>
             <div *ngIf="addCat" class="edit-form">
-                <!--TODO: Show categories NOT ALREADY LINKED TO PRODUCT-->
-                <button (click)="addCat = false">Cancel</button>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Category</mat-label>
+                    <mat-select [(ngModel)]="category">
+                      <mat-option *ngFor="let cat of ui.categorySubject.getValue()" [value]="cat">
+                        {{cat.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                <button mat-raised-button (click)="addCategory(category)" color="primary" class="execute-button">Apply</button>
+                <button mat-raised-button (click)="addCat = false" color="warn" class="execute-button">Cancel</button>
             </div>
 
             <button mat-raised-button color="primary" *ngIf="!schedMAP" (click)="resetVals(); schedMAP = true"
@@ -196,7 +215,7 @@
                 (click)="resetVals(); rereleaseItem()" class="edit-button">Rerelease Item</button>
 
             <button mat-raised-button color="primary" (click)="saveProduct()" class="execute-button">Save</button>
-            <button mat-raised-button color="warn" (click)="edit = false;" class="execute-button">Cancel</button>
+            <button mat-raised-button color="warn" (click)="edit = false; productService.updateProducts()" class="execute-button">Cancel</button>
 
         </div>
 

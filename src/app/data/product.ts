@@ -10,19 +10,19 @@ export class Product {
     public availability: Date
     public description: string
     public image: string
-    public categories: Categories[]
+    public category: Categories | null
     public scheduledMAPS: Price[]
     public scheduledPrices: Price[]
     public scheduledSales: Sale[]
     public shipments: Shipment[]
 
-    constructor(name: string, discontinued: boolean, availability: Date, description: string, image: string, categories: Categories[], scheduledMAPS: Price[], scheduledPrices: Price[], scheduledSales: Sale[], shipments: Shipment[]){
+    constructor(name: string, discontinued: boolean, availability: Date, description: string, image: string, category: Categories | null, scheduledMAPS: Price[], scheduledPrices: Price[], scheduledSales: Sale[], shipments: Shipment[]){
         this.name = name
         this.discontinued = discontinued
         this.availability = availability
         this.description = description
         this.image = image
-        this.categories = categories
+        this.category = category
         this.scheduledMAPS = scheduledMAPS
         this.scheduledPrices = scheduledPrices
         this.scheduledSales = scheduledSales

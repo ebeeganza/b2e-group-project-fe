@@ -39,7 +39,9 @@ export class ProductService {
     const availDate = new Date();
     availDate.setDate(new Date().getDate() - 100);
 
-    const product = new Product("Soup", false, availDate, "Yummy savory chicken noodle soup with lots of delicious hearty herbs and spices all combined in a warm, porcelain bowl.", 'https://www.thekitchenmagpie.com/wp-content/uploads/images/2019/10/ChickenVegetableSoup2.jpg', [], [], [], [], [])
+    const product = new Product("Soup", false, availDate, "Yummy savory chicken noodle soup with lots of delicious hearty herbs and spices all combined in a warm, porcelain bowl.", 'https://www.thekitchenmagpie.com/wp-content/uploads/images/2019/10/ChickenVegetableSoup2.jpg', null, [], [], [], [])
+
+    product.category = new Categories(Math.random(),"Food")
 
     product.scheduledPrices.push(defaultPrice);
     product.scheduledPrices.push(newerPrice);
@@ -67,9 +69,10 @@ export class ProductService {
   }
 
   createProduct(name: string, available: Date, description: string, price: number, imageURL: string, category: Categories | null, MAP: number) {
-    const product = new Product(name, false, available, description, imageURL, [], [], [], [], []);
-    if (category)
-      product.categories.push(category);
+    let product = new Product(name, false, available, description, imageURL, null, [], [], [], []);
+    if (category) {
+      product.category = category
+    }
     product.scheduledPrices.push(new Price(Math.random(), price, available));
     product.scheduledMAPS.push(new Price(Math.random(), MAP, available));
 
@@ -174,6 +177,9 @@ export class ProductService {
     let shipment = this.getCurrentShipment(product);
     if (shipment) {
       shipment.quantity--; // remove one of the products from the shipment
+      if (shipment.quantity === 0 && this.getCurrentShipment(product) === null){
+        product.discontinued = true; // update the product to discontinued if there are no more shipments of it
+      }
       this.updateProduct(product); // update the product now that its shipment has changed
       return true;
     } else {
