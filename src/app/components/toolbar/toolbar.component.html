@@ -1,9 +1,9 @@
 <mat-toolbar color="primary">
     <button mat-icon-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
     <span class="spacer"></span>
-    <button mat-button class="title">Dukes of York</button>
+    <button mat-button class="title" (click)="ui.showProducts()">Dukes of York</button>
     <span class="spacer"></span>
-    <button mat-icon-button matTooltip="Logout" (click)="this.accountService.logoutUser()"
+    <button mat-icon-button matTooltip="Logout" (click)="this.accountService.logoutUser(); ui.showProducts()"
         *ngIf="this.accountService.isLoggedIn"><mat-icon>logout</mat-icon></button>
     <button mat-icon-button matTooltip="Login" (click)="ui.showLogin()"
         *ngIf="!this.accountService.isLoggedIn"><mat-icon>login</mat-icon></button>
@@ -23,11 +23,11 @@
             <span class="spacer"></span>
             <button mat-icon-button><mat-icon>account_box</mat-icon></button>
         </mat-toolbar>
-        <h2><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="text-decoration: none;">View All Products</a></h2>
+        <h2><button mat-button (click)="ui.showProducts()">View All Products</button></h2>
         <!-- DEFAULT NAVIGATION -->
         <h2>Shop by Category</h2>
         <div *ngFor="let category of this.ui.getCategories() | async">
-            <button mat-button>{{category.name}}</button>
+            <button mat-button (click)="ui.filterProducts(category)">{{category.name}}</button>
         </div>
         <!-- SHOPKEEPER NAVIGATION HERE -->
         <div *ngIf="this.accountService.currentUser.value.role === 1">

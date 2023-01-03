@@ -15,6 +15,7 @@ export class ProductService {
   private products: Product[] = []
 
   public creatingProduct = false;
+  public filtered = false;
 
   constructor(private http: HttpClient) {
     /**
@@ -214,6 +215,10 @@ export class ProductService {
       }
     }
     return errorProducts;
+  }
+
+  filterProducts(category : Categories){
+    this.filtered = true;
   }
 
 }
