@@ -63,7 +63,7 @@ export class EditAccountComponent {
   onApply(): void {
     // {} - create a new object
     // ... - deconstruct the following thing
-    if (this.role === 2) {
+    if (this.email === this.accountService.currentUser.value.email) {
       this.accountService.updateEditedProfile( {
         ...this.account
       })
