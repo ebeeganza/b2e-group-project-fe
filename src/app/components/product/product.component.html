@@ -101,7 +101,7 @@
             to Cart</button>
 
         <button mat-raised-button color="warn" *ngIf="accountService.currentUser.getValue().role === 1"
-            (click)="productService.deleteProduct(product)">Delete Product Forever</button>
+            (click)="productService.deleteProduct(accountService.currentUser.getValue(), product)">Delete Product Forever</button>
 
         <button mat-raised-button color="primary" *ngIf="accountService.currentUser.getValue().role === 1 && !edit"
             (click)="edit = true" class="execute-button">Edit</button>
