@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { User } from 'src/app/data/user';
 import { AccountService } from 'src/app/services/account.service';
 
@@ -8,11 +8,27 @@ import { AccountService } from 'src/app/services/account.service';
   styleUrls: ['./edit-account.component.css']
 })
 export class EditAccountComponent {
-  public account: User = new User(-1, '', '', 'Guest', '', -1)
+  
+  @Input() account: User
+
+  public id: number
+  public fname: string
+  public lname: string 
+  public email: string
+  public password: string 
+  public role: number 
+  
   private accountService: AccountService
 
   constructor(accountService: AccountService) {
     this.accountService = accountService
+    this.account = this.accountService.currentUser.getValue()
+    this.id = this.accountService.currentUser.value.id
+    this.fname = this.accountService.currentUser.value.fname
+    this.lname = this.accountService.currentUser.value.lname
+    this.email = this.accountService.currentUser.value.email
+    this.password = this.accountService.currentUser.value.password
+    this.role = this.accountService.currentUser.value.role
   }
 
   ngOnInit(): void {
@@ -45,7 +61,7 @@ export class EditAccountComponent {
   onApply(): void {
     // {} - create a new object
     // ... - deconstruct the following thing
-    this.accountService.addAccount(
+    this.accountService.updateEditedAccount(
       {
         ...this.account
       }
@@ -54,6 +70,6 @@ export class EditAccountComponent {
 
   // TODO: Add cancel logic
   onCancel(): void {
-    console.log('cancel')
+    this.accountService.displayEdit = false
   }
 }

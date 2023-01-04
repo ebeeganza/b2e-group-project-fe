@@ -28,4 +28,8 @@ export class ProfileComponent {
     this.password = this.accountService.currentUser.value.password
     this.role = this.accountService.currentUser.value.role
   }
+
+  showValues() {
+    console.log(this.fname)
+  }
 }

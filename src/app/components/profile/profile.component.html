@@ -15,15 +15,22 @@
         {{ role }}
       </mat-card-subtitle>
     </mat-card-content>
-    <mat-card-actions>
-        <button *ngIf="this.accountService.displayAccountEdit"mat-button>Edit</button>
-        <button (click)="ui.resetValues()"mat-button>Close</button>
+    <mat-card-actions align="end">
+        <button (click)="this.accountService.getShowEdit()" mat-button>Edit</button>
         <div *ngIf="this.role === 1">
           <button (click)="ui.showOrders()"mat-button>View Orders</button>
         </div>
         <div *ngIf="this.role !== 2">
           <button (click)="this.accountService.deleteProfileById(id)"mat-button>Delete</button>
         </div>
+        <div>
+          <button (click)="ui.resetValues()"mat-button>Close</button>
+        </div>
         </mat-card-actions>
 </mat-card>
-<app-account-list></app-account-list>
+<div *ngIf="this.role === 2">
+  <app-account-list></app-account-list>
+</div>
+<div>
+  <app-edit-account *ngIf="this.accountService.displayEdit"></app-edit-account>
+</div>

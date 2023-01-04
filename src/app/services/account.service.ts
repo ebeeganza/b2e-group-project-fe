@@ -131,6 +131,16 @@ export class AccountService {
     this.getShowEdit
   }
 
+  updateEditedAccount(updatedAccount: User): void {
+      this.http.put(`http://localhost:8080/user/${updatedAccount.id}`, updatedAccount)
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.updateAccount()
+          },
+          error: (err) => console.log("Error updating category")
+        })
+  }
 
   updateAccount(): void {
     this.http

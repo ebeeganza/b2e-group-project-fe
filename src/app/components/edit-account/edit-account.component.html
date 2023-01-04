@@ -1,7 +1,9 @@
-<input type='text' #fname (keyup)="updateFirstName(fname.value)"/>
-<input type='text' #lname (keyup)="updateLastName(lname.value)"/>
-<input type='text' #email (keyup)="updateEmail(email.value)"/>
-<input type='text' #password (keyup)="updatePassword(password.value)"/>
-<input type='number' #role (keyup)="updateRole(+role.value)"/>
+<input placeholder="{{fname.valueOf()}}" type='text' #firstname (keyup)="updateFirstName(firstname.value)"/>
+<input placeholder="{{lname.valueOf()}}" type='text' #lastname (keyup)="updateLastName(lastname.value)"/>
+<input placeholder="{{email.valueOf()}}" #emails (keyup)="updateEmail(emails.value)"/>
+<input placeholder="{{password.valueOf()}}" #passwords (keyup)="updatePassword(passwords.value)"/>
+<div *ngIf="this.role === 2">
+    <input placeholder="{{role.valueOf()}}" #roles (keyup)="updateRole(+roles.value)"/>
+</div>
 <button (click)="onApply()">Apply</button>
 <button (click)="onCancel()">Cancel</button>
