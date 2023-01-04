@@ -1,4 +1,4 @@
-<app-edit-account *ngIf="accountService.getShowEdit()"></app-edit-account>
+<app-edit-account *ngIf="accountService.displayEdit"></app-edit-account>
 
 <div *ngIf="accountService.currentUser.getValue().role === 2">
 <app-account *ngFor="let accountData of accountService.account" [account]="accountData"></app-account>
@@ -63,7 +63,7 @@
         (click)="accountService.deleteAccountById(element.id)">
           <mat-icon aria-label="Delete">delete</mat-icon>
         </button>
-        <button #edit mat-icon-button matTooltip="Edit User" class="iconbutton">
+        <button (click)="openDialog('0ms', '0ms'); this.accountService.getAccountByEmailandPassword(element.email, element.password)" mat-icon-button matTooltip="Edit User" class="iconbutton">
           <mat-icon aria-label="Edit">edit</mat-icon>
         </button>
     </td>
