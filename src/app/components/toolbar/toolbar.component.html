@@ -14,9 +14,9 @@
 <mat-toolbar color="accent" style="height: 20px;">
     <span id="date"></span>
     <span class="spacer"></span>
-    <span class="user" *ngIf="this.accountService.getCurrentUser() | async as user">Welcome, {{user.fname}}</span>
+    <span class=user *ngIf="this.accountService.getCurrentUser() | async as user">Welcome, {{user.fname}}</span>
 </mat-toolbar>
-<mat-drawer-container hasBackdrop="true">
+<mat-drawer-container hasBackdrop="true" autosize>
     <mat-drawer #drawer mode="side">
         <mat-toolbar color="accent">
             <span *ngIf="this.accountService.getCurrentUser() | async as user">Welcome, {{user.fname}}</span>
@@ -43,6 +43,5 @@
             <h2>Admin Functions</h2>
             <button mat-button>Manage Accounts</button>
         </div>
-        
     </mat-drawer>
 </mat-drawer-container>
