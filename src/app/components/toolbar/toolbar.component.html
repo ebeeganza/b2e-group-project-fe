@@ -15,6 +15,12 @@
 </mat-toolbar>
 <mat-toolbar color="accent" style="height: 20px;">
     <span id="date"></span>
+    <marquee direction="left" behavior="scroll" *ngIf="this.couponService.showMarquee">
+        <span *ngFor="let coupon of this.couponService.getCoupons() | async" >
+            <span>---- Use code "{{coupon.code}}" for {{coupon.discount | currency}} off of an order of 
+            {{coupon.orderTotalMinimum | currency}} or More ----</span>
+        </span>
+    </marquee>
     <span class="spacer"></span>
     <span class=user *ngIf="this.accountService.getCurrentUser() | async as user">Welcome, {{user.fname}}</span>
 </mat-toolbar>

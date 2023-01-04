@@ -2,7 +2,9 @@
     <mat-toolbar class="mat-elevation-z8" color="primary">
         <span>Coupon Manager</span>
         <span class="spacer"></span>
-        <button mat-raised-button color="accent" (click)="this.openCreateDialog()">New Coupon</button>
+        <button mat-raised-button color="accent" (click)="this.couponService.showMarquee = false" *ngIf="this.couponService.showMarquee">Disable Coupon Scroll</button>
+        <button mat-raised-button color="accent" (click)="this.couponService.showMarquee = true" *ngIf="!this.couponService.showMarquee">Enable Coupon Scroll</button>
+        <button mat-raised-button color="accent" (click)="this.openCreateDialog()" style="margin-left: 10px;">New Coupon</button>
     </mat-toolbar>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="id">

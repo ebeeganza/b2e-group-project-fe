@@ -7,13 +7,7 @@ import { Coupon } from '../data/coupon';
   providedIn: 'root'
 })
 export class CouponsService {
-
-  // public id: number,
-  // public couponCode: string,
-  // public Discount: number,
-  // public StartDate: Date,
-  // public EndDate : Date,
-  // public orderTotalMin: number,
+  public showMarquee: boolean = false
 
   public couponSubject: BehaviorSubject<Coupon[]> = new BehaviorSubject<Coupon[]>([])
 
