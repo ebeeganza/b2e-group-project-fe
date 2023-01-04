@@ -7,9 +7,11 @@
         *ngIf="this.accountService.isLoggedIn"><mat-icon>logout</mat-icon></button>
     <button mat-icon-button matTooltip="Login" (click)="ui.showLogin()"
         *ngIf="!this.accountService.isLoggedIn"><mat-icon>login</mat-icon></button>
-    <button *ngIf="accountService.currentUser.getValue().role != 1 && accountService.currentUser.getValue().role != 2" (click)="ui.showCart()" mat-icon-button matTooltip="My Cart"><mat-icon matBadge={{totalItem}}  matBadgeSize="small"
-            matBadgeColor="warn">shopping_cart</mat-icon></button>
-    <button *ngIf="accountService.currentUser.getValue().role != -1" (click)="ui.showAccount()" mat-icon-button matTooltip="View Account Details"><mat-icon>settings</mat-icon></button>
+    <button *ngIf="accountService.currentUser.getValue().role != 1 && accountService.currentUser.getValue().role != 2"
+        (click)="ui.showCart()" mat-icon-button matTooltip="My Cart"><mat-icon matBadge={{totalItem}}
+            matBadgeSize="small" matBadgeColor="warn">shopping_cart</mat-icon></button>
+    <button *ngIf="accountService.currentUser.getValue().role != -1" (click)="ui.showAccount()" mat-icon-button
+        matTooltip="View Account Details"><mat-icon>settings</mat-icon></button>
 </mat-toolbar>
 <mat-toolbar color="accent" style="height: 20px;">
     <span id="date"></span>
@@ -23,20 +25,23 @@
             <span class="spacer"></span>
             <button mat-icon-button><mat-icon>account_box</mat-icon></button>
         </mat-toolbar>
-        <h2><button mat-button (click)="ui.showProducts()">View All Products</button></h2>
         <!-- DEFAULT NAVIGATION -->
-        <h2>Shop by Category</h2>
-        <div *ngFor="let category of this.ui.getCategories() | async">
-            <button mat-button (click)="ui.filterProducts(category)">{{category.name}}</button>
-        </div>
+        <ul>
+            <button mat-button (click)="ui.showProducts()"><h2>View All Products</h2></button>
+            <h2>Shop by Category</h2>
+            <li *ngFor="let category of this.ui.getCategories() | async">
+                <button mat-button (click)="this.ui.filterProducts(category)">{{category.name}}</button>
+            </li>
+        </ul>
         <!-- SHOPKEEPER NAVIGATION HERE -->
-        <div *ngIf="this.accountService.currentUser.value.role === 1" style="display: grid;">
-            <h2 >Store Management</h2>
-            <button mat-button (click)="this.ui.showCategories()">Manage Categories</button>
-            <button mat-button>Manage Products</button>
-            <button mat-button (click)="this.ui.showCoupons()">Manage Coupons</button>
-            <button mat-button>Manage Sales</button>
-
+        <div *ngIf="this.accountService.currentUser.value.role === 1">
+            <ul>
+                <h2>Store Management</h2>
+                <li><button mat-button (click)="this.ui.showCategories()">Manage Categories</button></li>
+                <li><button mat-button (click)="this.ui.showCoupons()">Manage Coupons</button></li>
+                <li><button mat-button>Manage Products</button></li>
+                <li><button mat-button>Manage Sales</button></li>
+            </ul>
         </div>
         <!-- ADMIN NAVIGATION HERE -->
         <div *ngIf="this.accountService.currentUser.value.role === 2">
