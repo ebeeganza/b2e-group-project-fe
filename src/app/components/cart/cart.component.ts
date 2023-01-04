@@ -22,9 +22,27 @@ export class CartComponent implements OnInit{
     this.cart.getProducts()
     .subscribe(x => {
     this.products = x;
-    this.grandTotal=this.cart.getTotalPrice();
     });
 
+    for(const product of this.products){
+      this.grandTotal =- product.price;
+    }
   }
+
+  validateInput(event:any, i:number){
+    const qty = +event.target.value;
+    if(qty <1){
+      event.target.value = this.products[i].quantity;
+      return;
+    }
+    this.QtyUpdated(qty,i)
+  }
+  
+  private QtyUpdated(quantity:number,i:number){
+    this.products[i].quantity=quantity;
+    this.cart.setProduct(this.products);
+  }
+
+
 }
 
