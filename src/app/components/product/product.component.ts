@@ -65,9 +65,7 @@ export class ProductComponent implements OnInit {
       this.saleDs.data = this.product.scheduledSales
       this.mapDs.data = this.product.scheduledMaps
       this.shipmentDs.data = this.product.shipments
-      if(this.productService.getCurrentShipment(this.product) != null){
-        this.product.discontinued = false;
-      }
+      this.productService.getCurrentShipment(this.product)
     }
   }
 
@@ -77,11 +75,9 @@ export class ProductComponent implements OnInit {
       this.defaultPrice = this.productService.getDefaultPrice(this.product);
       this.pricesDs.data = this.product.scheduledPrices
       this.saleDs.data = this.product.scheduledSales
-      this.mapDs.data = this.product.scheduledMAPS
+      this.mapDs.data = this.product.scheduledMaps
       this.shipmentDs.data = this.product.shipments
-      if(this.productService.getCurrentShipment(this.product) != null){
-        this.product.discontinued = false;
-      }
+      this.productService.getCurrentShipment(this.product)
     }
   }
 
