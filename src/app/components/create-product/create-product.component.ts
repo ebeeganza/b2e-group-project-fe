@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Categories } from 'src/app/data/categories';
+import { AccountService } from 'src/app/services/account.service';
 import { ProductService } from 'src/app/services/product.service';
 import { UiService } from 'src/app/services/ui.service';
 
@@ -18,10 +19,10 @@ export class CreateProductComponent {
   public category = null
   public MAP = 0
 
-  constructor(public productService: ProductService, public ui : UiService){}
+  constructor(public productService: ProductService, public ui : UiService, private accountService : AccountService){}
 
   createProduct(){
-    this.productService.createProduct(this.name, this.available, this.description, this.price, this.imageURL, this.category, this.MAP);
+    this.productService.createProduct(this.accountService.currentUser.getValue(), this.name, this.available, this.description, this.price, this.imageURL, this.category, this.MAP);
   }
 
 }
