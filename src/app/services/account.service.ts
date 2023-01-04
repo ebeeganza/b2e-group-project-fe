@@ -209,8 +209,11 @@ export class AccountService {
   }
 
   deleteAccountById(id: number): void {
+    let queryParams = new HttpParams()
+    queryParams = queryParams.append("email", this.currentUser.value.email)
+    queryParams = queryParams.append("password", this.currentUser.value.password)
     this.http
-      .delete(`http://localhost:8080/users/${id}`)
+      .delete(`http://localhost:8080/users/${id}`, { params: queryParams })
       .pipe(take(1))
       .subscribe({
         next: () => {

@@ -68,7 +68,7 @@ export class ProductService {
           this.products = products;
         },
         error: (error) => {
-          this.showError("Failed to update product.")
+          this.showError("Failed to update products.")
         }
       })
   }

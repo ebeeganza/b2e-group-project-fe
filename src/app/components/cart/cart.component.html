@@ -23,22 +23,25 @@
                                 <td>{{product.name}}</td>
                                 <td><img src ={{product.image}} style="width: 100px; height: 100px"></td>
                                 <th>{{productService.getCurrentPrice(product) | currency}}</th>
-                                <td>{{product.shipQuantity}}</td>
-                                <td>{{product.total}}</td>
+                                <td></td>
+                                <td>{{productService.getCurrentPrice(product) | currency}}</td>
                                 <td><button mat-button color="primary" ><mat-icon>edit</mat-icon> </button> <button mat-button  color="warn" (click)="cart.removeCartItem(product)"><mat-icon>delete</mat-icon></button></td>
                             </tr>
                             <tr>
-                                <td colspan ="4"></td>
-                                <td><label for="coupon-code">Coupon code: </label></td>
+                                <td colspan ="5"></td>
+                                <td><label for="coupon-code"></label></td>
                                 <td><input type="text" [(ngModel)]="couponCode"></td>
                                 <td><button mat-raised-button color="primary" type="submit">Apply Coupon</button></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6"></td>
+                                <td><strong>Subtotal: {{cart.getTotalPrice()| currency}}</strong></td>
                             </tr>
                             <tr> 
                                 <td colspan="4"></td>
                                 <td><button mat-raised-button color="warn" (click)="cart.removeAllCart()"> Empty Cart</button></td>
                                 <td><button mat-raised-button color="basic" (click)="ui.showProducts()"> Shop More</button></td>
                                 <td><button mat-raised-button color="primary"> Checkout</button></td>
-                                <td> <strong></strong></td>
                             </tr>
                             <td colspan="6"></td>
                             <td><div class="table table-responsive"><button mat-raised-button color="accent" (click)="ui.showProducts()">Go back </button></div></td>  

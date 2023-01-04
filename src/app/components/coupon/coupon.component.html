@@ -2,7 +2,7 @@
     <mat-toolbar class="mat-elevation-z8" color="primary">
         <span>Coupon Manager</span>
         <span class="spacer"></span>
-        <button mat-raised-button color="accent" (click)="this.openDialog()">New Coupon</button>
+        <button mat-raised-button color="accent" (click)="this.openCreateDialog()">New Coupon</button>
     </mat-toolbar>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="id">
@@ -29,10 +29,14 @@
             <th mat-header-cell *matHeaderCellDef>End Date</th>
             <td mat-cell *matCellDef="let coupon">{{coupon.endDate}}</td>
         </ng-container>
-        <ng-container matColumnDef="delete">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let coupon"><button mat-icon-button matTooltip="Delete Coupon"
-                    (click)="deleteCoupon(coupon.id)"><mat-icon>delete</mat-icon></button></td>
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Edit/Delete</th>
+            <td mat-cell *matCellDef="let coupon">
+                <button mat-icon-button matTooltip="Edit Coupon"
+                    (click)="openEditDialog(coupon)"><mat-icon>edit</mat-icon></button>
+                <button mat-icon-button matTooltip="Delete Coupon"
+                    (click)="deleteCoupon(coupon.id)"><mat-icon>delete</mat-icon></button>
+            </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let myRowData; columns:columnsToDisplay"></tr>

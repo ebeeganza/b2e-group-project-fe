@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Input } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AccountService } from './account.service';
 import { ProductService } from './product.service';
@@ -10,7 +10,7 @@ import { ProductService } from './product.service';
 export class CartServiceService {
 
  productList = new BehaviorSubject<any>([]);
- cartItemList: any=[]
+ @Input() cartItemList: any[]=[]
 
   constructor(private http: HttpClient, private productService : ProductService) { }
 
@@ -41,10 +41,8 @@ export class CartServiceService {
     }
 
   removeCartItem(product: any){
-    this.cartItemList.map((a:any, index:any)=> {
-      if(product.id === a.id)
-        this.cartItemList.splice(index,1)
-    })
+    const index = this.cartItemList.indexOf(product);
+    this.cartItemList.splice(index,1)
     this.productList.next(this.cartItemList)
   }
   
