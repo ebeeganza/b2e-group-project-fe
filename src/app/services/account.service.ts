@@ -29,7 +29,7 @@ export class AccountService {
       var userString = localStorage.getItem("user")
       if(userString){
         var user = JSON.parse(userString)
-        this.currentUser.next(user)
+        this.tryLogin(user.email,user.password)
       }
     }
 
