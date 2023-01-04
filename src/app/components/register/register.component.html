@@ -35,8 +35,8 @@
     <div class="form-buttons">
         <button mat-raised-button type="submit" color="accent" style="margin-top: 10px;">Register</button>
         <button mat-raised-button type="button" color="primary" style="margin-top: 10px"
-            (click)="this.accountService.changeToLogin()">Have an account? Login Here</button>
+            (click)="this.ui.showLogin()">Have an account? Login Here</button>
         <button mat-raised-button type="button" style="margin-top: 10px; margin-bottom: 10px;"
-            (click)="this.accountService.resetDisplay()"> Go Back</button>
+            (click)="this.ui.showProducts()"> Go Back</button>
     </div>
 </form>
