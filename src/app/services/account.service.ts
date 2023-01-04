@@ -54,8 +54,11 @@ export class AccountService {
           this.successfulLogin(user)
         },
         error: (err) => {
-          // Demo Code
-          console.log(err);
+          if(err.status === 404){
+            this.showError("Invalid Username or Password.")
+          } else {
+            this.showError("Error logging in.")
+          }
         }
       })
 
@@ -69,7 +72,11 @@ export class AccountService {
           this.successfulLogin(user)
         },
         error: (err) => {
-          console.log("An error occured while registering account");
+          if(err.status === 400){
+            this.showError("Username already taken.")
+          } else {
+            this.showError("Error registering.")
+          }
         }
       })
   }
