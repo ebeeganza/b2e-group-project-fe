@@ -121,14 +121,6 @@ export class UiService {
     return this.categorySubject.asObservable()
   }
 
-  changeToCategories() {
-    this.resetDisplay()
-    this.displayCategories = true
-  }
-
-  resetDisplay() {
-    this.displayCategories = false
-  }
 
   filterProducts(category: Categories){
     this.resetValues();
