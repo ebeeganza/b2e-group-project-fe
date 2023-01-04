@@ -4,7 +4,7 @@ export class Coupon {
         public code: string,
         public discount: number,
         public orderTotalMinimum: number,
-        public StartDate: Date,
-        public EndDate : Date,
+        public startDate: Date,
+        public endDate : Date,
     ) {}
 }
