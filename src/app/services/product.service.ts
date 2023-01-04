@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
 import { Categories } from '../data/categories';
 import { Price } from '../data/price';
 import { Product } from '../data/product';
 import { Shipment } from '../data/shipments';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,7 @@ export class ProductService {
   public creatingProduct = false;
   public filtered = false;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) {
 
     /**
      * TODO: TEST CASE TO BE DELETED LATER
@@ -50,6 +52,10 @@ export class ProductService {
     this.products.push(product);
   }
 
+  private showError(message: string): void {
+    this._snackBar.open(message, undefined, {duration: 10000})
+  }
+
   getProducts() {
     return this.products;
   }
@@ -62,21 +68,17 @@ export class ProductService {
           this.products = products;
         },
         error: (error) => {
-
+          this.showError("Failed to update product.")
         }
       })
   }
 
   createProduct(name: string, available: Date, description: string, price: number, imageURL: string, category: Categories | null, MAP: number) {
     let product = new Product(name, false, available, description, imageURL, null, [], [], [], []);
-    if (category) {
+    if (category)
       product.category = category
-    } else {
-      //dummy step : delete later
-      // TODO: don't allow products to be created if no categories
-    }
-    product.scheduledPrices.push(new Price(null, price, available, null));
-    product.scheduledMaps.push(new Price(null, MAP, available, null));
+    product.scheduledPrices.push(new Price(Math.random(), price, available, null));
+    product.scheduledMaps.push(new Price(Math.random(), MAP, available, null));
 
     this.http.put("https://localhost:8080/products", product)
       .pipe(take(1))
@@ -86,8 +88,7 @@ export class ProductService {
           this.creatingProduct = false;
         },
         error: (error) => {
-          console.log(error)
-          //TODO: print error message
+          this.showError("Failed to create product.")
         }
       })
   }
@@ -101,7 +102,7 @@ export class ProductService {
             this.updateProducts();
           },
           error: (error) => {
-            // print error to user
+            this.showError("Failed to delete product.")
           }
         })
   }
@@ -114,7 +115,8 @@ export class ProductService {
           this.updateProducts();
         },
         error: (error) => {
-          // print error
+          this.showError("Failed to update product.")
+          this.updateProducts();
         }
       })
   }

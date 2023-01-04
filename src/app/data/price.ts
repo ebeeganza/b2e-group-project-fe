@@ -4,5 +4,6 @@ export class Price {
     public price: number,
     public startDate: Date,
     public endDate: Date | null
-    ) {}
+    ) {
+    }
 }

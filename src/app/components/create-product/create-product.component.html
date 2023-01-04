@@ -34,7 +34,7 @@
                 <input matInput [(ngModel)]="imageURL">
             </mat-form-field>
 
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" *ngIf="ui.categorySubject.getValue().length > 0">
                 <mat-label>Category</mat-label>
                 <mat-select [(ngModel)]="category">
                   <mat-option *ngFor="let cat of ui.categorySubject.getValue()" [value]="cat">
