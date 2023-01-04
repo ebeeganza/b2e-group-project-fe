@@ -49,7 +49,7 @@ export class CouponsService {
       })
   }
   // POST
-  createCoupons(newCoupon: Coupon): void {
+  createCoupon(newCoupon: Coupon): void {
     this.http.post('http://localhost:8080/coupons',newCoupon) 
       .pipe(take(1))
       .subscribe({
@@ -62,7 +62,7 @@ export class CouponsService {
     this.http.delete(`http://localhost:8080/coupons/${couponId}`)
     .pipe(take(1))
     .subscribe({
-      next: () => this.getCoupons(),
+      next: () => this.updateCoupons(),
       error: (err) => console.log(`Error deleting coupon ${couponId}`)
     })
   }
