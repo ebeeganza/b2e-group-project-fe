@@ -47,7 +47,7 @@ export class ProductService {
     product.scheduledPrices.push(defaultPrice);
     product.scheduledPrices.push(newerPrice);
     product.scheduledSales.push(salePrice);
-    product.scheduledMAPS.push(new Price(6,3.01,pastDate, null));
+    product.scheduledMaps.push(new Price(6,3.01,pastDate, null));
 
     this.products.push(product);
   }
@@ -74,12 +74,12 @@ export class ProductService {
     if (category) {
       product.category = category
     }
-    product.scheduledPrices.push(new Price(Math.random(), price, available, null));
-    product.scheduledMAPS.push(new Price(Math.random(), MAP, available, null));
+    product.scheduledPrices.push(new Price(null, price, available, null));
+    product.scheduledMaps.push(new Price(null, MAP, available, null));
 
     this.products.push(product);
     this.creatingProduct = false;
-    this.http.put("localhost:8080/products", product)
+    this.http.post("http://localhost:8080/products", product)
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -150,7 +150,7 @@ export class ProductService {
     const todayDate = new Date();
 
     let currMAPDate = product.availability // start looping through MAPS at the date the item is available
-    for (let MAP of product.scheduledMAPS) {
+    for (let MAP of product.scheduledMaps) {
       if (MAP.startDate >= currMAPDate && MAP.startDate <= todayDate) {
         defaultMAP = MAP.price; // update the product's MAP for the current date
       }
