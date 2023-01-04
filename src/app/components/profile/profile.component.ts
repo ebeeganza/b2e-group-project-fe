@@ -47,6 +47,10 @@ export class ProfileComponent {
   //   });
   // }
 
+  ngOnDestroy(): void {
+    this.accountSub.unsubscribe()
+  }
+
   showValues() {
     console.log(this.fname)
   }
