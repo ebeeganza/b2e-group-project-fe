@@ -1,7 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, catchError, Observable, Subject, take, throwError } from 'rxjs';
+import { EditAccountComponent } from '../components/edit-account/edit-account.component';
 import { User } from '../data/user';
 import { UiService } from './ui.service';
 
@@ -23,7 +25,7 @@ export class AccountService {
 
   public displayProfile: boolean = false
 
-  constructor(private http: HttpClient,
+  constructor(private http: HttpClient, public dialog: MatDialog,
     private _snackBar: MatSnackBar, private ui : UiService) {
     this.isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"))
     if(this.isLoggedIn){
@@ -194,6 +196,14 @@ export class AccountService {
       })
   }
 
+  openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(EditAccountComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
+  }
+
   getAccountByEmailandPassword(email: string, password: string): void {
     this.http
       .get<User>(`http://localhost:8080/users?email=${email}&password=${password}`)
@@ -201,6 +211,7 @@ export class AccountService {
       .subscribe({
         next: account => {
           this.accountEdit = account
+          this.openDialog('0ms', '0ms')
         },
         error: () => {
           this.showError('Failed to get account')

@@ -16,7 +16,7 @@
       </mat-card-subtitle>
     </mat-card-content>
     <mat-card-actions align="end" *ngIf="this.accountService.getCurrentUser() | async as user">
-        <button (click)="this.accountService.getAccountByEmailandPassword(user.email, user.password); openDialog('0ms', '0ms')" mat-button>Edit</button>
+        <button (click)="this.accountService.getAccountByEmailandPassword(user.email, user.password)" mat-button>Edit</button>
         <div *ngIf="this.role === 1">
           <button (click)="ui.showOrders()"mat-button>View Orders</button>
         </div>
