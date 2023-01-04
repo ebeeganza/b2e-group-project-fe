@@ -12,7 +12,7 @@
         </div>
         <p *ngIf="accountService.currentUser.getValue().role === 1">Available on {{product?.availability | date}}</p>
         <p class="description">Description: {{product?.description}}</p>
-        <p *ngIf="product?.discontinued" style="color: red">Item not available.</p>
+        <p *ngIf="product?.discontinued" style="color: red">Item out of stock.</p>
         <p>Department: {{product?.category?.name}}</p>
 
         <div *ngIf="accountService.currentUser.getValue().role === 1">
