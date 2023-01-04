@@ -32,7 +32,7 @@
         <!-- SHOPKEEPER NAVIGATION HERE -->
         <div *ngIf="this.accountService.currentUser.value.role === 1" style="display: grid;">
             <h2 >Store Management</h2>
-            <button mat-button (click)="this.ui.changeToCategories()">Manage Categories</button>
+            <button mat-button (click)="this.ui.showCategories()">Manage Categories</button>
             <button mat-button>Manage Products</button>
             <button mat-button (click)="this.ui.showCoupons()">Manage Coupons</button>
             <button mat-button>Manage Sales</button>
