@@ -63,7 +63,7 @@ export class ProductComponent implements OnInit {
       this.defaultPrice = this.productService.getDefaultPrice(this.product);
       this.pricesDs.data = this.product.scheduledPrices
       this.saleDs.data = this.product.scheduledSales
-      this.mapDs.data = this.product.scheduledMAPS
+      this.mapDs.data = this.product.scheduledMaps
       this.shipmentDs.data = this.product.shipments
       if(this.productService.getCurrentShipment(this.product) != null){
         this.product.discontinued = false;
@@ -142,7 +142,7 @@ export class ProductComponent implements OnInit {
 
   addScheduledMAP() {
     if(this.product)
-    this.product.scheduledMAPS.push(new Price(Math.random(), this.priceVal, this.dateVal, null))
+    this.product.scheduledMaps.push(new Price(Math.random(), this.priceVal, this.dateVal, null))
     this.schedMAP = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -18,6 +18,8 @@ import { MatSelectModule } from '@angular/material/select';
 import {MatSortModule} from '@angular/material/sort';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatDialogModule} from '@angular/material/dialog';
+
 
 import { ProductComponent } from './components/product/product.component';
 import { LoginComponent } from './components/login/login.component';
@@ -41,6 +43,7 @@ import { CouponComponent } from './components/coupon/coupon.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ErrorsComponent } from './components/errors/errors.component';
+import { CreateCouponComponent } from './components/create-coupon/create-coupon.component';
 
 @NgModule({
   declarations: [
@@ -60,10 +63,12 @@ import { ErrorsComponent } from './components/errors/errors.component';
     EditAccountComponent,
     CouponComponent,
     ProfileComponent,
-    ErrorsComponent
+    ErrorsComponent,
+    CreateCouponComponent
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MatToolbarModule,
@@ -82,7 +87,8 @@ import { ErrorsComponent } from './components/errors/errors.component';
     MatSelectModule,
     MatSortModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
