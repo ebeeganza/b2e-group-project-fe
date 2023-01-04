@@ -53,5 +53,9 @@ img {
 }
 
 table {
-    width: 100%;
+    margin-bottom: 30px;
   }
+
+mat-form-field {
+    margin-top: 20px;
+}

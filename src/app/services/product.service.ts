@@ -24,11 +24,9 @@ export class ProductService {
 
     const futureDate = new Date();
     futureDate.setDate(new Date().getDate() + 90)
-    console.log(futureDate);
 
     const pastDate = new Date();
     pastDate.setDate(new Date().getDate() - 90)
-    console.log(pastDate);
 
     const newerDate = new Date();
     newerDate.setDate(new Date().getDate() - 80)
@@ -73,13 +71,14 @@ export class ProductService {
     let product = new Product(name, false, available, description, imageURL, null, [], [], [], []);
     if (category) {
       product.category = category
+    } else {
+      //dummy step : delete later
+      // TODO: don't allow products to be created if no categories
     }
     product.scheduledPrices.push(new Price(null, price, available, null));
     product.scheduledMaps.push(new Price(null, MAP, available, null));
 
-    this.products.push(product);
-    this.creatingProduct = false;
-    this.http.post("http://localhost:8080/products", product)
+    this.http.put("https://localhost:8080/products", product)
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -87,6 +86,7 @@ export class ProductService {
           this.creatingProduct = false;
         },
         error: (error) => {
+          console.log(error)
           //TODO: print error message
         }
       })
