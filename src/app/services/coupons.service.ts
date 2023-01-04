@@ -40,7 +40,7 @@ export class CouponsService {
       })
   }
   // PUT
-  putCoupons(updatedCouponDetails: Coupon): void {
+  updateCoupon(updatedCouponDetails: Coupon): void {
     this.http.put('http://localhost:8080/coupons', updatedCouponDetails)
       .pipe(take(1))
       .subscribe({

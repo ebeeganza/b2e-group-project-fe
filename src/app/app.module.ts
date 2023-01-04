@@ -44,6 +44,7 @@ import { CategoryListComponent } from './components/category-list/category-list.
 import { ProfileComponent } from './components/profile/profile.component';
 import { ErrorsComponent } from './components/errors/errors.component';
 import { CreateCouponComponent } from './components/create-coupon/create-coupon.component';
+import { EditCouponComponent } from './components/edit-coupon/edit-coupon.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { CreateCouponComponent } from './components/create-coupon/create-coupon.
     CouponComponent,
     ProfileComponent,
     ErrorsComponent,
-    CreateCouponComponent
+    CreateCouponComponent,
+    EditCouponComponent
   ],
   imports: [
     BrowserModule,
