@@ -37,7 +37,6 @@ export class UiService {
     this.displayRegister = false;
     this.displayCoupons = false;
     this.productService.unfilter();
-
   }
 
   showCart() {
