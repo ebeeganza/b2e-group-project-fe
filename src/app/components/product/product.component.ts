@@ -66,7 +66,6 @@ export class ProductComponent implements OnInit {
       this.mapDs.data = this.product.scheduledMaps
       this.shipmentDs.data = this.product.shipments
       this.productService.getCurrentShipment(this.product)
-      this.product.discontinued = false;
     }
   }
 
@@ -79,7 +78,6 @@ export class ProductComponent implements OnInit {
       this.mapDs.data = this.product.scheduledMaps
       this.shipmentDs.data = this.product.shipments
       this.productService.getCurrentShipment(this.product)
-      this.product.discontinued = false;
     }
   }
 
@@ -185,7 +183,7 @@ export class ProductComponent implements OnInit {
   // save the modified product to the backend
   saveProduct() {
     if (this.product) {
-      this.productService.updateProduct(this.accountService.currentUser.getValue(),this.product);
+      this.productService.updateProduct(this.accountService.currentUser.getValue(), this.product);
       this.edit = false;
     }
   }

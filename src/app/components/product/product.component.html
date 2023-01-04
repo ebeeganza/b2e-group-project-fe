@@ -3,7 +3,7 @@
     <mat-card-content>
         <p style="font-weight: bold; font-size: 20px">{{product?.name}}</p>
 
-        <img src={{product?.image}}>
+        <img src={{product?.image}} *ngIf="product?.image != ''" alt="Product Image">
 
         <p *ngIf="currentPrice === defaultPrice">{{defaultPrice | currency}}</p>
         <div *ngIf="currentPrice != defaultPrice">

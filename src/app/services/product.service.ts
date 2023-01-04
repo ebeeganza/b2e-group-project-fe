@@ -20,7 +20,6 @@ export class ProductService {
   public filtered = false;
 
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) {
-
     /**
      * TODO: TEST CASE TO BE DELETED LATER
      
@@ -78,8 +77,10 @@ export class ProductService {
 
   createProduct(currentUser : User , name: string, available: Date, description: string, price: number, imageURL: string, category: Categories | null, MAP: number) {
     let product = new Product(name, true, available, description, imageURL, null, [], [], [], []);
+    
     if (category)
       product.category = category
+
     product.scheduledPrices.push(new Price(null, price, available, null));
     product.scheduledMaps.push(new Price(null, MAP, available, null));
 
@@ -177,15 +178,16 @@ export class ProductService {
   // returns the oldest shipment with inventory still available, or null if out of stock
   getCurrentShipment(product: Product): Shipment | null {
     let oldestShipment: Shipment | null = null;
-    let oldestDate: Date = new Date();
-    oldestDate.setDate(new Date().getDate() + Infinity);
+    let oldestDate: Date = new Date("01/01/3000");
     const todayDate = new Date();
 
     // find the oldest shipment with positive quantity
     for (let shipment of product.shipments) {
-      if (oldestDate > shipment.date && shipment.quantity > 0 && shipment.date <= todayDate) {
+      let shipDate = new Date(shipment.date)
+      if ((oldestDate > shipDate) && (shipment.quantity > 0) && (shipDate <= todayDate)) {
+        oldestDate = shipment.date;
         oldestShipment = shipment;
-        product.discontinued = false
+        product.discontinued = false;
       }
     }
     return oldestShipment;
