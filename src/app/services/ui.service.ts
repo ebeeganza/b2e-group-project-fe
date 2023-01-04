@@ -19,6 +19,7 @@ export class UiService {
   public displayLogin: boolean = false;
   public displayRegister: boolean = false;
   public displayCoupons: boolean = false;
+  public displayProfileEdit: boolean = false;
 
   public categorySubject: BehaviorSubject<Categories[]> = new BehaviorSubject<Categories[]>([])
 
@@ -36,6 +37,7 @@ export class UiService {
     this.displayLogin = false;
     this.displayRegister = false;
     this.displayCoupons = false;
+    this.displayProfileEdit = false;
     this.productService.unfilter();
 
   }

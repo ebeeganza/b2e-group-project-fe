@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, DoCheck, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/data/user';
 import { AccountService } from 'src/app/services/account.service';
+import { EditAccountComponent } from '../edit-account/edit-account.component';
 
 @Component({
   selector: 'app-account-list',
@@ -11,7 +13,7 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class AccountListComponent implements OnInit {
   
-  constructor(public accountService: AccountService){
+  constructor(public accountService: AccountService, public dialog: MatDialog){
     this.accountSub = this.accountService.whenAccountUpdated()
     .subscribe(accounts => this.dataSource.data = accounts)
   }
@@ -29,5 +31,14 @@ export class AccountListComponent implements OnInit {
     this.dataSource.data = this.accountService.account
     }
 
+  
+    openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+      this.dialog.open(EditAccountComponent, {
+        width: '250px',
+        enterAnimationDuration,
+        exitAnimationDuration,
+      });
+    }
+  
  }
 

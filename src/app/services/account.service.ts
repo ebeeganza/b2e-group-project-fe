@@ -11,6 +11,7 @@ import { UiService } from './ui.service';
 export class AccountService {
 
   public account: User[] = []
+  public accountEdit: User = new User(-1,'','','Guest','',-1)
   private accountSubject: Subject<User[]> = new Subject()
   public displayEdit: boolean = false
 
@@ -132,15 +133,28 @@ export class AccountService {
   }
 
   updateEditedAccount(updatedAccount: User): void {
-      this.http.put(`http://localhost:8080/user/${updatedAccount.id}`, updatedAccount)
+      this.http.put(`http://localhost:8080/users/${updatedAccount.id}`, updatedAccount)
         .pipe(take(1))
         .subscribe({
           next: () => {
             this.updateAccount()
           },
-          error: (err) => console.log("Error updating category")
+          error: (err) => console.log("Error updating account")
         })
   }
+
+  updateEditedProfile(updatedAccount: User): void {
+    this.http.put(`http://localhost:8080/users/${updatedAccount.id}`, updatedAccount)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.updateAccount()
+          this.isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"))
+              this.currentUser.next(updatedAccount)
+      },
+        error: (err) => console.log("Error updating account")
+      })
+}
 
   updateAccount(): void {
     this.http
@@ -162,6 +176,11 @@ export class AccountService {
     return this.accountSubject.asObservable()
   }
 
+  whenProfileUpdated(): Observable<User> {
+    return this.currentUser.asObservable()
+  }
+
+
   addAccount(profile: User): void {
     this.http
       .post('http://localhost:8080/users', profile)
@@ -171,6 +190,20 @@ export class AccountService {
         },
         error: () => {
           this.showError('Failed to add account')
+        }
+      })
+  }
+
+  getAccountByEmailandPassword(email: string, password: string): void {
+    this.http
+      .get<User>(`http://localhost:8080/users?email=${email}&password=${password}`)
+      .pipe(take(1))
+      .subscribe({
+        next: account => {
+          this.accountEdit = account
+        },
+        error: () => {
+          this.showError('Failed to get account')
         }
       })
   }
