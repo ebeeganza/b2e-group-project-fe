@@ -45,7 +45,7 @@ export class CategoryListComponent implements AfterViewInit, OnDestroy {
     this.ui.deleteCategory(id)
   }
 
-  editCategory(name: HTMLSpanElement,edit:MatIconButton, currentCategory: Categories): void {
+  editCategory(name: HTMLSpanElement, edit:MatIconButton, currentCategory: Categories): void {
     name.innerHTML = ''
     edit.disabled = true
 
