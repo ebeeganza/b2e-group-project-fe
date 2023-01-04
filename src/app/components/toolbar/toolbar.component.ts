@@ -12,6 +12,14 @@ export class ToolbarComponent implements AfterViewInit{
 
   constructor(public accountService: AccountService, public cart: CartServiceService, public ui: UiService) {
   }
+
+  //adding so cart shows total number of items when added into cart
+  public totalItem: number = 0;
+  ngOnInit():void{
+    this.cart.getProducts().subscribe(res=>{
+      this.totalItem = res.length
+    })
+  }
   
   ngAfterViewInit(): void {
     const dateElement = document.getElementById("date")

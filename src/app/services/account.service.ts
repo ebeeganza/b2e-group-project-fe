@@ -34,8 +34,8 @@ export class AccountService {
     }
 
     // TODO: dummy data
-    const user1 = new User(0, "pass", "email", "Rick", "Astley", 2)
-    this.account.push(user1)
+    // const user1 = new User(0, "pass", "email", "Rick", "Astley", 2)
+    // this.account.push(user1)
   }
 
     
@@ -117,7 +117,7 @@ export class AccountService {
   }
 
   public hideProfile() {
-    this.displayProfile = false
+    this.ui.displayAccount = false
   }
 
   displayAccountEdit() {
@@ -165,6 +165,22 @@ export class AccountService {
       .subscribe({
         next: () => {
         this.updateAccount()
+        },
+        error: () => {
+          this.showError('Failed to delete account')
+        }
+      })
+  }
+
+  deleteProfileById(id: number): void {
+    this.http
+      .delete(`http://localhost:8080/users/${id}`)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+        this.logoutUser()
+        this.hideProfile()
+        this.ui.displayProducts = true;
         },
         error: () => {
           this.showError('Failed to delete account')

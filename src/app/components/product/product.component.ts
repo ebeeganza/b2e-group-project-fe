@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { Categories } from 'src/app/data/categories';
 import { Price } from 'src/app/data/price';
 import { Product } from 'src/app/data/product';
-import { Sale } from 'src/app/data/sale';
 import { Shipment } from 'src/app/data/shipments';
 import { AccountService } from 'src/app/services/account.service';
 import { CartServiceService } from 'src/app/services/cart.service.service';
@@ -47,12 +47,24 @@ export class ProductComponent implements OnInit {
   public addIm = false;
   public addCat = false;
 
+  public priceColumns : string[] = ['price','startDate']
+  public saleColumns : string[] = ['price','startDate','endDate']
+  public shipColumns : string[] = ['quantity','cost','date']
+  public pricesDs = new MatTableDataSource<Price>();
+  public saleDs = new MatTableDataSource<Price>();
+  public mapDs = new MatTableDataSource<Price>();
+  public shipmentDs = new MatTableDataSource<Shipment>();
+
   constructor(public productService: ProductService, public accountService : AccountService, public cartService : CartServiceService, public ui : UiService) { }
 
   ngOnInit(): void {
     if(this.product){
       this.currentPrice = this.productService.getCurrentPrice(this.product);
       this.defaultPrice = this.productService.getDefaultPrice(this.product);
+      this.pricesDs.data = this.product.scheduledPrices
+      this.saleDs.data = this.product.scheduledSales
+      this.mapDs.data = this.product.scheduledMAPS
+      this.shipmentDs.data = this.product.shipments
     }
   }
 
@@ -97,8 +109,8 @@ export class ProductComponent implements OnInit {
 
       // find the price linked to the old availability date and update the price's start date
       for(let price of this.product.scheduledPrices){
-        if(price.date === oldAvailabilityDate){
-          price.date = this.available
+        if(price.startDate === oldAvailabilityDate){
+          price.startDate = this.available
         }
       }
 
@@ -120,7 +132,7 @@ export class ProductComponent implements OnInit {
 
   addScheduledMAP() {
     if(this.product)
-    this.product.scheduledMAPS.push(new Price(Math.random(), this.priceVal, this.dateVal))
+    this.product.scheduledMAPS.push(new Price(Math.random(), this.priceVal, this.dateVal, null))
     this.schedMAP = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;
@@ -128,7 +140,7 @@ export class ProductComponent implements OnInit {
 
   addScheduledPrice() {
     if(this.product)
-    this.product.scheduledPrices.push(new Price(Math.random(), this.priceVal, this.dateVal));
+    this.product.scheduledPrices.push(new Price(Math.random(), this.priceVal, this.dateVal, null));
     this.schedPrice = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;
@@ -136,7 +148,7 @@ export class ProductComponent implements OnInit {
 
   addScheduledSale() {
     if(this.product)
-    this.product.scheduledSales.push(new Sale(Math.random(), this.priceVal, this.dateVal, this.dateValEnd));
+    this.product.scheduledSales.push(new Price(Math.random(), this.priceVal, this.dateVal, this.dateValEnd));
     this.schedSale = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;
@@ -146,7 +158,7 @@ export class ProductComponent implements OnInit {
   addShipment() {
     if (this.product) {
       if (this.product.id)
-        this.product.shipments.push(new Shipment(Math.random(), this.product.id, this.shipQuantity, Math.ceil(this.shipCost / this.shipQuantity), this.dateVal));
+        this.product.shipments.push(new Shipment(Math.random(), this.product.id, this.shipQuantity, this.shipCost / this.shipQuantity, this.dateVal));
     }
     this.dateVal = this.todayDate;
     this.addShip = false;
