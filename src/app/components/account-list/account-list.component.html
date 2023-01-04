@@ -1,9 +1,4 @@
 <app-edit-account *ngIf="accountService.displayEdit"></app-edit-account>
-
-<div *ngIf="accountService.currentUser.getValue().role === 2">
-<app-account *ngFor="let accountData of accountService.account" [account]="accountData"></app-account>
-</div>
-
 <!-- Accounts table -->
 <button (click)="getData()">Button</button>
 <br>
