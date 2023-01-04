@@ -38,7 +38,7 @@ export class ProductService {
     const availDate = new Date();
     availDate.setDate(new Date().getDate() - 100);
 
-    const product = new Product("Soup", false, availDate, "Yummy savory chicken noodle soup with lots of delicious hearty herbs and spices all combined in a warm, porcelain bowl.", 'https://www.thekitchenmagpie.com/wp-content/uploads/images/2019/10/ChickenVegetableSoup2.jpg', null, [], [], [], [])
+    const product = new Product("Soup", true, availDate, "Yummy savory chicken noodle soup with lots of delicious hearty herbs and spices all combined in a warm, porcelain bowl.", 'https://www.thekitchenmagpie.com/wp-content/uploads/images/2019/10/ChickenVegetableSoup2.jpg', null, [], [], [], [])
 
     product.category = new Categories(1,"Food")
 
@@ -163,11 +163,13 @@ export class ProductService {
     let oldestShipment: Shipment | null = null;
     let oldestDate: Date = new Date();
     oldestDate.setDate(new Date().getDate() + Infinity);
+    const todayDate = new Date();
 
     // find the oldest shipment with positive quantity
     for (let shipment of product.shipments) {
-      if (oldestDate > shipment.date && shipment.quantity > 0) {
+      if (oldestDate > shipment.date && shipment.quantity > 0 && shipment.date <= todayDate) {
         oldestShipment = shipment;
+        product.discontinued = false
       }
     }
     return oldestShipment;
