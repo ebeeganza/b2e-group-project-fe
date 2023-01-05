@@ -89,7 +89,7 @@ export class ProductComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(product => {
       if (product) {
-        this.productService.updateProduct(this.accountService.currentUser.getValue(), product);
+        this.productService.updateProduct(product, this.accountService.currentUser.getValue());
       }
     })
   }
