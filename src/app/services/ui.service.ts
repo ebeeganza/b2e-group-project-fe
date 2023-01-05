@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, take } from 'rxjs';
 import { Categories } from '../data/categories';
 import { Product } from '../data/product';
+import { AccountService } from './account.service';
 import { ProductService } from './product.service';
 
 @Injectable({
@@ -23,7 +25,7 @@ export class UiService {
 
   public categorySubject: BehaviorSubject<Categories[]> = new BehaviorSubject<Categories[]>([])
 
-  constructor(private http: HttpClient, private productService : ProductService) {
+  constructor(private http: HttpClient, private productService : ProductService, private _snackBar: MatSnackBar) {
     // Real function for populating categories
      this.updateCategories()
   }
@@ -115,7 +117,13 @@ export class UiService {
       .pipe(take(1))
       .subscribe({
         next: () => this.updateCategories(),
-        error: (err) => console.log(`Error deleting category ${categoryId}`)
+        error: (err) => {
+          if(err.status === 404){
+            this.showError("Category is tied to current products.")
+          } else {
+            console.log(`Error deleting category ${categoryId}`)
+          }
+        }
       })
   }
 
@@ -130,5 +138,8 @@ export class UiService {
     this.productService.filterProducts(category)
   }
 
+  public showError(message: string): void {
+    this._snackBar.open(message, undefined, {duration: 10000})
+  }
 
 }
