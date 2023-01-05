@@ -79,7 +79,6 @@ export class ProductComponent implements OnInit {
       this.saleDs.data = this.product.scheduledSales
       this.mapDs.data = this.product.scheduledMaps
       this.shipmentDs.data = this.product.shipments
-
       this.productService.getCurrentShipment(this.product)
     }
   }
@@ -90,9 +89,13 @@ export class ProductComponent implements OnInit {
     dialogRef.afterClosed().subscribe(product => {
       if (product) {
         this.productService.updateProduct(product, this.accountService.currentUser.getValue());
+      } else {
+        this.productService.updateProducts()
       }
     })
   }
+
+  /*
 
 
 
@@ -213,6 +216,8 @@ export class ProductComponent implements OnInit {
       this.edit = false;
     }
   }
+
+  */
 
   isAvailable() {
     const today = new Date();

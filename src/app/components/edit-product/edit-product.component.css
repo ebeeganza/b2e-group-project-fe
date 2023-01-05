@@ -2,28 +2,18 @@
     margin-top: 10%;
     margin-left: auto;
     margin-right: auto;
-    width: 800px;
+    width: 1000px;
 }
 
 .content {
     display: flex;
-    flex-flow:column;
+    flex-flow: column;
+    width: 400px;
 }
-
 
 .execute-button {
     margin: 5px;
     max-width: 40px;
-}
-
-.execute-button-two {
-    margin: 5px;
-    width: 200px;
-}
-
-.inactive {
-    font-size: 14px;
-    color: grey;
 }
 
 :host {
@@ -37,26 +27,10 @@
     flex-direction: column;
 }
 
-img {
-    object-fit: cover;
-    width: 230px;
-    height: 230px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
+.edit-button {
+    margin: 5px;
+    max-width: 250px;
 }
-
-.description {
-    max-width: 400px;
-}
-
-.bold {
-    font-weight: bold;
-}
-
-table {
-    margin-bottom: 30px;
-  }
 
 mat-form-field {
     margin-top: 20px;
