@@ -12,17 +12,14 @@ import { UiService } from 'src/app/services/ui.service';
   templateUrl: './edit-product.component.html',
   styleUrls: ['./edit-product.component.css']
 })
-export class EditProductComponent implements OnInit{
-
-  public defaultPrice = 0;
-  public currentPrice = 0;
+export class EditProductComponent {
 
   public todayDate = new Date();
 
   public name = ''
   public description = ''
   public price = 0
-  public category : Categories | null = null
+  public category: Categories | null = null
   public available = this.todayDate;
   public priceVal = 0;
   public dateVal = this.todayDate;
@@ -43,19 +40,11 @@ export class EditProductComponent implements OnInit{
   public addCat = false;
 
   constructor(public dialogRef: MatDialogRef<EditProductComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Product, public productService : ProductService, public ui : UiService
+    @Inject(MAT_DIALOG_DATA) public data: Product, public productService: ProductService, public ui: UiService
   ) {
   }
 
-  ngOnInit(): void {
-    if(this.data){
-      this.currentPrice = this.productService.getCurrentPrice(this.data);
-      this.defaultPrice = this.productService.getDefaultPrice(this.data);
-      this.productService.getCurrentShipment(this.data) // set the stock based on shipment quantity
-    }
-  }
-
-  resetVals(){
+  resetVals() {
     this.changeName = false;
     this.changeDesc = false;
     this.changePrice = false;
@@ -88,54 +77,53 @@ export class EditProductComponent implements OnInit{
       this.data.availability = this.available;
 
       // find the price linked to the old availability date and update the price's start date
-      for(let price of this.data.scheduledPrices){
+      for (let price of this.data.scheduledPrices) {
         let priceDate = new Date(price.startDate)
-        if(priceDate === oldAvailabilityDate){
+        if (priceDate === oldAvailabilityDate) {
           price.startDate = this.available
         }
       }
-
       this.changeAvail = false;
     }
   }
 
   addCategory(category: Categories | null) {
-    if(this.data)
-    this.data.category = category
+    if (this.data)
+      this.data.category = category
     this.addCat = false;
   }
 
   addImage() {
-    if(this.data)
-    this.data.image = this.imageURL
+    if (this.data)
+      this.data.image = this.imageURL
     this.addIm = false;
   }
 
   addScheduledMAP() {
-    if(this.data){
-    this.data.scheduledMaps.push(new Price(null, this.priceVal, this.dateVal, null))
-    this.schedMAP = false;
-    this.priceVal = 0;
-    this.dateVal = this.todayDate;
+    if (this.data) {
+      this.data.scheduledMaps.push(new Price(null, this.priceVal, this.dateVal, null))
+      this.schedMAP = false;
+      this.priceVal = 0;
+      this.dateVal = this.todayDate;
     }
   }
 
   addScheduledPrice() {
-    if(this.data){
-    this.data.scheduledPrices.push(new Price(null, this.priceVal, this.dateVal, null));
-    this.schedPrice = false;
-    this.priceVal = 0;
-    this.dateVal = this.todayDate;
+    if (this.data) {
+      this.data.scheduledPrices.push(new Price(null, this.priceVal, this.dateVal, null));
+      this.schedPrice = false;
+      this.priceVal = 0;
+      this.dateVal = this.todayDate;
     }
   }
 
   addScheduledSale() {
-    if(this.data){
-    this.data.scheduledSales.push(new Price(null, this.priceVal, this.dateVal, this.dateValEnd));
-    this.schedSale = false;
-    this.priceVal = 0;
-    this.dateVal = this.todayDate;
-    this.dateValEnd = this.todayDate;
+    if (this.data) {
+      this.data.scheduledSales.push(new Price(null, this.priceVal, this.dateVal, this.dateValEnd));
+      this.schedSale = false;
+      this.priceVal = 0;
+      this.dateVal = this.todayDate;
+      this.dateValEnd = this.todayDate;
     }
   }
 
@@ -148,17 +136,17 @@ export class EditProductComponent implements OnInit{
     this.addShip = false;
   }
 
-  discontinueItem(){
-    if(this.data)
-    this.data.discontinued = true;
+  discontinueItem() {
+    if (this.data)
+      this.data.discontinued = true;
   }
 
-  rereleaseItem(){
-    if(this.data)
-    this.data.discontinued = false;
+  rereleaseItem() {
+    if (this.data)
+      this.data.discontinued = false;
   }
 
-  cancel(){
+  cancel() {
     this.dialogRef.close()
   }
 
