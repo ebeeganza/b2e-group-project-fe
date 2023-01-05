@@ -6,12 +6,12 @@
     class="create-button">Unfilter Products</button>
 
 <div class="container">
-    
+
     <div class="list">
-        <app-product *ngFor="let product of productService.getProducts()" [product]="product"></app-product>
+        <app-product *ngFor="let product of productService.getProducts() | async" [product]="product"></app-product>
     </div>
 
-    <div *ngIf="accountService.userIsShopkeeper() && errorExists">
+    <div *ngIf="accountService.userIsShopkeeper() && getWarnings() && errorExists">
         <mat-card class="errors">
             <mat-card-content>
                 <h2>Warning:</h2>
