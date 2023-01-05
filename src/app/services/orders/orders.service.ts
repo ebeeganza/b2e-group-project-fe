@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Order } from 'src/app/data/orders';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject, take } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, Subject, take } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AccountService } from '../account.service';
 import { Product } from 'src/app/data/product';
-import { ThisReceiver } from '@angular/compiler';
 
 
 @Injectable({
@@ -68,10 +67,7 @@ public loadOrders(): void {
   }
 
   public deleteOrder(id: number) {
-    let queryParams = new HttpParams()
-    queryParams = queryParams.append("email", this.accountService.currentUser.value.email)
-    queryParams = queryParams.append("password", this.accountService.currentUser.value.password)
-    this.http.delete(`http://localhost:8080/orders/${id}`, { params: queryParams })
+    this.http.delete(`http://localhost:8080/orders/${id}`)
     .pipe(take(1))
     .subscribe({
       next: () => {
@@ -93,16 +89,13 @@ public loadOrders(): void {
 
   // userId this.accountService.currentUser.value.id 
   addOrder(email: string, orderTotal: number, orderDate: Date, products: Product[]) {
-    let queryParams = new HttpParams()
-    queryParams = queryParams.append("email", this.accountService.currentUser.value.email)
-    queryParams = queryParams.append("password", this.accountService.currentUser.value.password)
     this.http.post('http://localhost:8080/orders', {
       id: null,
       email,
       orderTotal,
       orderDate,
       products
-    } , { params: queryParams })
+    } )
     .pipe(take(1))
     .subscribe({
       next: () => {
