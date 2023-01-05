@@ -18,12 +18,14 @@
         <mat-label> Password: </mat-label>
         <input matInput placeholder="{{password.valueOf()}}" #passwords (keyup)="updatePassword(passwords.value)" />
     </mat-form-field>
-    <mat-form-field *ngIf="role.valueOf() === 2">
+    <mat-form-field *ngIf="role.valueOf() != 2">
         <mat-label> Role: </mat-label>
         <input matInput placeholder="{{role.valueOf()}}" #roles (keyup)="updateRole(+roles.value)" />
     </mat-form-field>
 </div>
 <div mat-dialog-actions>
-    <button mat-raised-button mat-dialog-close (click)="onApply()">Apply</button>
-    <button mat-raised-button mat-dialog-close (click)="onCancel()">Cancel</button>
+    <mat-card-actions>
+        <button mat-raised-button mat-dialog-close (click)="onApply()">Apply</button>
+        <button mat-raised-button mat-dialog-close (click)="onCancel()">Cancel</button>
+    </mat-card-actions>
 </div>

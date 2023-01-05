@@ -39,14 +39,6 @@ export class ProfileComponent {
     this.role = this.account?.role
   }
 
-  // openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-  //   this.dialog.open(EditAccountComponent, {
-  //     width: '250px',
-  //     enterAnimationDuration,
-  //     exitAnimationDuration,
-  //   });
-  // }
-
   ngOnDestroy(): void {
     this.accountSub.unsubscribe()
   }
