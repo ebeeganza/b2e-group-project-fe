@@ -140,7 +140,7 @@ export class ProductComponent implements OnInit {
 
   addScheduledMAP() {
     if(this.product)
-    this.product.scheduledMaps.push(new Price(Math.random(), this.priceVal, this.dateVal, null))
+    this.product.scheduledMaps.push(new Price(null, this.priceVal, this.dateVal, null))
     this.schedMAP = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;
@@ -148,7 +148,7 @@ export class ProductComponent implements OnInit {
 
   addScheduledPrice() {
     if(this.product)
-    this.product.scheduledPrices.push(new Price(Math.random(), this.priceVal, this.dateVal, null));
+    this.product.scheduledPrices.push(new Price(null, this.priceVal, this.dateVal, null));
     this.schedPrice = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;
@@ -156,7 +156,7 @@ export class ProductComponent implements OnInit {
 
   addScheduledSale() {
     if(this.product)
-    this.product.scheduledSales.push(new Price(Math.random(), this.priceVal, this.dateVal, this.dateValEnd));
+    this.product.scheduledSales.push(new Price(null, this.priceVal, this.dateVal, this.dateValEnd));
     this.schedSale = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;
@@ -166,7 +166,7 @@ export class ProductComponent implements OnInit {
   addShipment() {
     if (this.product) {
       if (this.product.id)
-        this.product.shipments.push(new Shipment(Math.random(), this.product.id, this.shipQuantity, this.shipCost / this.shipQuantity, this.dateVal));
+        this.product.shipments.push(new Shipment(null, this.product.id, this.shipQuantity, this.shipCost / this.shipQuantity, this.dateVal));
     }
     this.dateVal = this.todayDate;
     this.addShip = false;
@@ -185,7 +185,7 @@ export class ProductComponent implements OnInit {
   // save the modified product to the backend
   saveProduct() {
     if (this.product) {
-      this.productService.updateProduct(this.product);
+      this.productService.updateProduct(this.product, this.accountService.currentUser.getValue());
       this.edit = false;
     }
   }

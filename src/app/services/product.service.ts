@@ -6,6 +6,7 @@ import { Categories } from '../data/categories';
 import { Price } from '../data/price';
 import { Product } from '../data/product';
 import { Shipment } from '../data/shipments';
+import { User } from '../data/user';
 import { AccountService } from './account.service';
 
 @Injectable({
@@ -107,8 +108,8 @@ export class ProductService {
         })
   }
 
-  updateProduct(product: Product) {
-    this.http.put("http://localhost:8080/products", product)
+  updateProduct(product: Product, user: User) {
+    this.http.put(`http://localhost:8080/products/${product.id}?email=${user.email}&password=${user.password}`, product)
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -178,14 +179,14 @@ export class ProductService {
   }
 
   // updates the product's shipments and returns true if successful, else returns false if the product is out of stock
-  attemptPurchase(product: Product) {
+  attemptPurchase(product: Product, user: User) {
     let shipment = this.getCurrentShipment(product);
     if (shipment) {
       shipment.quantity--; // remove one of the products from the shipment
       if (shipment.quantity === 0 && this.getCurrentShipment(product) === null){
         product.discontinued = true; // update the product to discontinued if there are no more shipments of it
       }
-      this.updateProduct(product); // update the product now that its shipment has changed
+      this.updateProduct(product, user); // update the product now that its shipment has changed
       return true;
     } else {
       product.discontinued = true;
