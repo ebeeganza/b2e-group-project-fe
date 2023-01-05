@@ -1,7 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, Input } from '@angular/core';
-import { BehaviorSubject, take } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { BehaviorSubject, Observable, Subject, take } from 'rxjs';
 import { Cart } from '../data/cart';
+import { Product } from '../data/product';
+import { AccountService } from './account.service';
 import { ProductService } from './product.service';
 
 @Injectable({
@@ -10,13 +13,15 @@ import { ProductService } from './product.service';
 export class CartServiceService {
 
  productList = new BehaviorSubject<any>([]);
- @Input() cartProductList: any[]=[]
- 
- public cartSubject: BehaviorSubject<Cart[]> = new BehaviorSubject<Cart[]>([])
+ cartProductList: any[]=[]
 
-  constructor(private http: HttpClient, private productService : ProductService) { 
-    this.getOnCart()
+ public userCart: Cart[] = []
+ 
+ private cartSubject: Subject<Cart[]> = new Subject()
+
+  constructor(private http: HttpClient, public accountService: AccountService,private productService : ProductService, private snackBar: MatSnackBar,) { 
     this.http = http
+  
   }
 
   //get the product
@@ -24,64 +29,78 @@ export class CartServiceService {
     return this.productList.asObservable();
   }
 
-  getOnCart(): void {
-    this.http.get<Cart[]>(`http://localhost:8080/cart`)
-      .pipe(take(1))
-      .subscribe({
-        next: (carts) => this.cartSubject.next(carts),
-        error: (err) => console.log("Error getting categories")
-      })
+  //get Carts
+  getUserCart() {
+    return this.userCart
+  }
+  CartSubject(): Observable<Cart[]> {
+    return this.cartSubject.asObservable()
   }
 
-  public addNewCart (id: number, UserId:number, Product:[]): void{
-    this.http.post(`http://localhost:8080/cart`,{
-      id: null,
-      UserId,
-      Product,
-    })
-      .pipe(take(1))
-      .subscribe({
-          next: () => {
-            console.log(id, UserId, Product)
-            console.log("Successfully deleted a Product!")
-          },
-          error:() =>{
-            console.log("Oops, something went wrong on the server side")
-        }
+  loadCart(): void {
+    if (this.accountService.currentUser.value.role == 1) {
+      this.loadUserCart()
+    }
+  }
+
+    loadUserCart(): void {
+      this.http.get<Cart[]>(`http://localhost:8080/cart=${this.accountService.currentUser.value.id}`)
+        .pipe(take(1))
+        .subscribe({
+          next: cart => {
+            this.userCart = cart
+            this.getUserCart()
+            this.cartSubject.next(this.userCart)
+            },
+          error: () => {
+            this.showError('Oops, something went wrong')
+          }
         })
-  }
+    }
 
-  updateProduct(cart: Cart) {
-    this.http.put("http://localhost:8080/products", cart)
+    addProductToCart( products: Product[]) {
+      let queryParams = new HttpParams()
+      queryParams = queryParams.append("role", this.accountService.currentUser.value.role)
+      this.http.post(`http://localhost:8080/cart`, {
+        products
+      } , { params: queryParams })
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.getOnCart();
+          this.getUserCart()
+        },
+        error: () => {
+          this.showError('Failed to add product')
+        }
+      })
+    }
+
+
+  updateCart(cart: Cart) {
+    this.http.put(`http://localhost:8080/cart`, cart)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.getUserCart();
         },
         error: (error) => {
-          this.getOnCart();
+          this.getUserCart();
         }
       })
   }
   
-  deleteOnCart(id:number){
+  deleteProductInCart(id: number) {
     this.http.delete(`http://localhost:8080/cart/${id}`)
     .pipe(take(1))
     .subscribe({
       next: () => {
-        console.log("Successfully deleted a Product!")
+
       },
       error: () => {
-        console.log("Oops, something went wrong on the server side")
+        this.showError('Failed to remove product')
       }
     })
-  }
-
-
-  setProduct(product:any){
-    this.cartProductList.push(...product);
-    this.productList.next(product);
-  }
+    }
 
   //adding product to chart
   addToCart(product: any){
@@ -115,6 +134,10 @@ export class CartServiceService {
     
   }
 
+//catch error message
+  public showError(message: string): void {
+    this.snackBar.open(message, undefined, {duration: 10000})
+  }
 
   }
 
