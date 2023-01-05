@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, catchError, Observable, Subject, take, throwError } from 'rxjs';
 import { EditAccountComponent } from '../components/edit-account/edit-account.component';
 import { User } from '../data/user';
+import { CartServiceService } from './cart.service.service';
 import { UiService } from './ui.service';
 
 @Injectable({

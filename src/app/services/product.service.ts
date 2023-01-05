@@ -7,7 +7,6 @@ import { Price } from '../data/price';
 import { Product } from '../data/product';
 import { Shipment } from '../data/shipments';
 import { User } from '../data/user';
-import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
