@@ -106,6 +106,8 @@
         <button mat-raised-button color="primary" *ngIf="accountService.userIsShopkeeper() && !edit"
             (click)="openEditProduct()" class="execute-button">Edit</button>
 
+            <!-- TODO DELETE ALL
+
         <div *ngIf="edit" class="container">
 
             <button mat-raised-button color="primary" *ngIf="!changeName" (click)="resetVals(); changeName = true"
@@ -288,6 +290,8 @@
             <button mat-raised-button color="warn" (click)="edit = false; productService.updateProducts()" class="execute-button">Cancel</button>
 
         </div>
+
+         -->
 
     </mat-card-content>
 </mat-card>
