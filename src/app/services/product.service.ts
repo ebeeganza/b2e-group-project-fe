@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { take } from 'rxjs';
+import { BehaviorSubject, take } from 'rxjs';
 import { Categories } from '../data/categories';
 import { Price } from '../data/price';
 import { Product } from '../data/product';
@@ -14,7 +14,7 @@ import { AccountService } from './account.service';
 })
 export class ProductService {
 
-  private products: Product[] = []
+  public products: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([])
 
   public creatingProduct = false;
   public filtered = false;
@@ -28,7 +28,7 @@ export class ProductService {
   }
 
   getProducts() {
-    return this.products;
+    return this.products.asObservable();
   }
 
   updateProducts() {
@@ -36,7 +36,7 @@ export class ProductService {
       .pipe(take(1))
       .subscribe({
         next: (products) => {
-          this.products = products;
+          this.products.next(products)
         },
         error: (error) => {
           this.showError("Failed to update products.")
@@ -229,13 +229,14 @@ export class ProductService {
 
   filterProducts(category: Categories) {
     this.filtered = true;
-    let backupProducts = this.products
-    this.products = []
+    let backupProducts = this.products.value
+    let products = []
     for (let product of backupProducts) {
       if (product.category === category) {
-        this.products.push(product)
+        products.push(product)
       }
     }
+    this.products.next(products)
   }
 
   unfilter() {
