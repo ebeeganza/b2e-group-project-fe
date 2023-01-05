@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Categories } from 'src/app/data/categories';
 import { Price } from 'src/app/data/price';
@@ -8,6 +9,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { CartServiceService } from 'src/app/services/cart.service.service';
 import { ProductService } from 'src/app/services/product.service';
 import { UiService } from 'src/app/services/ui.service';
+import { EditProductComponent } from '../edit-product/edit-product.component';
 
 @Component({
   selector: 'app-product',
@@ -55,7 +57,7 @@ export class ProductComponent implements OnInit {
   public mapDs = new MatTableDataSource<Price>();
   public shipmentDs = new MatTableDataSource<Shipment>();
 
-  constructor(public productService: ProductService, public accountService : AccountService, public cartService : CartServiceService, public ui : UiService) { }
+  constructor(public productService: ProductService, public accountService : AccountService, public cartService : CartServiceService, public ui : UiService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     if(this.product){
@@ -81,6 +83,18 @@ export class ProductComponent implements OnInit {
       this.productService.getCurrentShipment(this.product)
     }
   }
+
+  openEditProduct(): void {
+    let dialogRef = this.dialog.open(EditProductComponent, { width: '500px', data: this.product })
+
+    dialogRef.afterClosed().subscribe(product => {
+      if (product) {
+        this.productService.updateProduct(this.accountService.currentUser.getValue(), product);
+      }
+    })
+  }
+
+
 
   resetVals(){
     this.changeName = false;
