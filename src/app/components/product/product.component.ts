@@ -193,7 +193,7 @@ export class ProductComponent implements OnInit {
   isAvailable() {
     const today = new Date();
     if (this.product)
-      return this.product.availability <= today
+      return new Date(this.product.availability) <= today
     else return false;
   }
 
