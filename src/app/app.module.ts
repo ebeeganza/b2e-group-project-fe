@@ -42,7 +42,6 @@ import { EditAccountComponent } from './components/edit-account/edit-account.com
 import { CouponComponent } from './components/coupon/coupon.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { ErrorsComponent } from './components/errors/errors.component';
 import { CreateCouponComponent } from './components/create-coupon/create-coupon.component';
 import { EditCouponComponent } from './components/edit-coupon/edit-coupon.component';
 
@@ -64,7 +63,6 @@ import { EditCouponComponent } from './components/edit-coupon/edit-coupon.compon
     EditAccountComponent,
     CouponComponent,
     ProfileComponent,
-    ErrorsComponent,
     CreateCouponComponent,
     EditCouponComponent
   ],
