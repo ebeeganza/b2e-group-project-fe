@@ -58,7 +58,7 @@
         (click)="accountService.deleteAccountById(element.id)">
           <mat-icon aria-label="Delete">delete</mat-icon>
         </button>
-        <button (click)="openDialog('0ms', '0ms'); this.accountService.getAccountByEmailandPassword(element.email, element.password)" mat-icon-button matTooltip="Edit User" class="iconbutton">
+        <button (click)="this.accountService.getAccountByEmailandPassword(element.email, element.password)" mat-icon-button matTooltip="Edit User" class="iconbutton">
           <mat-icon aria-label="Edit">edit</mat-icon>
         </button>
     </td>

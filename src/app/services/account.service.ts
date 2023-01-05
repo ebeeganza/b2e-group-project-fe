@@ -95,8 +95,12 @@ export class AccountService {
     localStorage.setItem("user",JSON.stringify(user))
     this.isLoggedIn = true
     this.currentUser.next(user)
-    this.ui.showProducts()
-    this.resetDisplay()
+    if (this.currentUser.getValue().role === 2) {
+      this.ui.showAccount()
+    } else {
+      this.ui.showProducts()
+      this.resetDisplay()
+    }
   }
 
   getCurrentUser(){
@@ -135,7 +139,7 @@ export class AccountService {
   }
 
   updateEditedAccount(updatedAccount: User): void {
-      this.http.put(`http://localhost:8080/users/${updatedAccount.id}`, updatedAccount)
+      this.http.put(`http://localhost:8080/users/${updatedAccount.id}?email=${updatedAccount.email}&password=${updatedAccount.password}`, updatedAccount)
         .pipe(take(1))
         .subscribe({
           next: () => {
@@ -146,7 +150,7 @@ export class AccountService {
   }
 
   updateEditedProfile(updatedAccount: User): void {
-    this.http.put(`http://localhost:8080/users/${updatedAccount.id}`, updatedAccount)
+    this.http.put(`http://localhost:8080/users/${updatedAccount.id}?email=${updatedAccount.email}&password=${updatedAccount.password}`, updatedAccount)
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -236,15 +240,19 @@ export class AccountService {
       })
   }
 
-  deleteProfileById(id: number): void {
+  deleteProfileById(id: number, email: string, password: string): void {
+    let queryParams = new HttpParams()
+    queryParams = queryParams.append("email", this.currentUser.value.email)
+    queryParams = queryParams.append("password", this.currentUser.value.password)
     this.http
-      .delete(`http://localhost:8080/users/${id}`)
+      .delete(`http://localhost:8080/users/${id}`, {params: queryParams })
       .pipe(take(1))
       .subscribe({
         next: () => {
         this.logoutUser()
         this.hideProfile()
-        this.ui.displayProducts = true;
+        this.showError('Successfully deleted account')
+        this.ui.displayLogin= true;
         },
         error: () => {
           this.showError('Failed to delete account')

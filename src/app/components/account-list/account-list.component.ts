@@ -34,14 +34,6 @@ export class AccountListComponent implements OnInit, AfterViewInit {
   private accountSub: Subscription
 
 
-  openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(EditAccountComponent, {
-      width: '250px',
-      enterAnimationDuration,
-      exitAnimationDuration,
-    });
-  }
-
   getData() {
     this.accountService.updateAccount()
     this.dataSource.data = this.accountService.account
