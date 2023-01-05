@@ -2,6 +2,12 @@ import { Component, Input } from '@angular/core';
 import { User } from 'src/app/data/user';
 import { AccountService } from 'src/app/services/account.service';
 import { UiService } from 'src/app/services/ui.service';
+import { EditAccountComponent } from '../edit-account/edit-account.component';
+
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+
+
 
 @Component({
   selector: 'app-profile',
@@ -12,21 +18,37 @@ export class ProfileComponent {
 
   @Input() account: User | undefined
 
-  public id: number
-  public fname: string
-  public lname: string
-  public email: string
-  public password: string
-  public role: number
+  public accountSub: Subscription
+
+  public id: number | undefined
+  public fname: string | undefined
+  public lname: string | undefined
+  public email: string | undefined
+  public password: string | undefined
+  public role: number | undefined
 
 
-  constructor(public accountService: AccountService, public ui: UiService) {
-    this.id = this.accountService.currentUser.value.id
-    this.fname = this.accountService.currentUser.value.fname
-    this.lname = this.accountService.currentUser.value.lname
-    this.email = this.accountService.currentUser.value.email
-    this.password = this.accountService.currentUser.value.password
-    this.role = this.accountService.currentUser.value.role
+  constructor(public accountService: AccountService, public ui: UiService, public dialog: MatDialog) {
+    this.accountSub = this.accountService.whenProfileUpdated()
+    .subscribe(account => this.account = account)
+    this.id = this.account?.id
+    this.fname = this.account?.fname
+    this.lname = this.account?.lname
+    this.email = this.account?.email
+    this.password = this.account?.password
+    this.role = this.account?.role
+  }
+
+  // openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+  //   this.dialog.open(EditAccountComponent, {
+  //     width: '250px',
+  //     enterAnimationDuration,
+  //     exitAnimationDuration,
+  //   });
+  // }
+
+  ngOnDestroy(): void {
+    this.accountSub.unsubscribe()
   }
 
   showValues() {

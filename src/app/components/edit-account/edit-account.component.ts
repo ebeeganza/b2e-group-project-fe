@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { User } from 'src/app/data/user';
 import { AccountService } from 'src/app/services/account.service';
+import { UiService } from 'src/app/services/ui.service';
 
 @Component({
   selector: 'app-edit-account',
@@ -20,15 +22,15 @@ export class EditAccountComponent {
   
   private accountService: AccountService
 
-  constructor(accountService: AccountService) {
+  constructor(accountService: AccountService, public ui: UiService, public dialogRef: MatDialogRef<EditAccountComponent>) {
     this.accountService = accountService
-    this.account = this.accountService.currentUser.getValue()
-    this.id = this.accountService.currentUser.value.id
-    this.fname = this.accountService.currentUser.value.fname
-    this.lname = this.accountService.currentUser.value.lname
-    this.email = this.accountService.currentUser.value.email
-    this.password = this.accountService.currentUser.value.password
-    this.role = this.accountService.currentUser.value.role
+    this.account = this.accountService.accountEdit
+    this.id = this.accountService.accountEdit.id
+    this.fname = this.accountService.accountEdit.fname
+    this.lname = this.accountService.accountEdit.lname
+    this.email = this.accountService.accountEdit.email
+    this.password = this.accountService.accountEdit.password
+    this.role = this.accountService.accountEdit.role
   }
 
   ngOnInit(): void {
@@ -61,11 +63,18 @@ export class EditAccountComponent {
   onApply(): void {
     // {} - create a new object
     // ... - deconstruct the following thing
+    if (this.email === this.accountService.currentUser.value.email) {
+      this.accountService.updateEditedProfile( {
+        ...this.account
+      })
+    }
+
     this.accountService.updateEditedAccount(
       {
         ...this.account
       }
     )
+    this.accountService.displayEdit = false
   }
 
   // TODO: Add cancel logic

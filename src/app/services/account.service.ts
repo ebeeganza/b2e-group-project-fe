@@ -1,7 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, catchError, Observable, Subject, take, throwError } from 'rxjs';
+import { EditAccountComponent } from '../components/edit-account/edit-account.component';
 import { User } from '../data/user';
 import { UiService } from './ui.service';
 
@@ -11,6 +13,7 @@ import { UiService } from './ui.service';
 export class AccountService {
 
   public account: User[] = []
+  public accountEdit: User = new User(-1,'','','Guest','',-1)
   private accountSubject: Subject<User[]> = new Subject()
   public displayEdit: boolean = false
 
@@ -22,14 +25,14 @@ export class AccountService {
 
   public displayProfile: boolean = false
 
-  constructor(private http: HttpClient,
+  constructor(private http: HttpClient, public dialog: MatDialog,
     private _snackBar: MatSnackBar, private ui : UiService) {
     this.isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"))
     if(this.isLoggedIn){
       var userString = localStorage.getItem("user")
       if(userString){
         var user = JSON.parse(userString)
-        this.currentUser.next(user)
+        this.tryLogin(user.email,user.password)
       }
     }
 
@@ -132,15 +135,28 @@ export class AccountService {
   }
 
   updateEditedAccount(updatedAccount: User): void {
-      this.http.put(`http://localhost:8080/user/${updatedAccount.id}`, updatedAccount)
+      this.http.put(`http://localhost:8080/users/${updatedAccount.id}`, updatedAccount)
         .pipe(take(1))
         .subscribe({
           next: () => {
             this.updateAccount()
           },
-          error: (err) => console.log("Error updating category")
+          error: (err) => console.log("Error updating account")
         })
   }
+
+  updateEditedProfile(updatedAccount: User): void {
+    this.http.put(`http://localhost:8080/users/${updatedAccount.id}`, updatedAccount)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.updateAccount()
+          this.isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"))
+              this.currentUser.next(updatedAccount)
+      },
+        error: (err) => console.log("Error updating account")
+      })
+}
 
   updateAccount(): void {
     this.http
@@ -162,6 +178,11 @@ export class AccountService {
     return this.accountSubject.asObservable()
   }
 
+  whenProfileUpdated(): Observable<User> {
+    return this.currentUser.asObservable()
+  }
+
+
   addAccount(profile: User): void {
     this.http
       .post('http://localhost:8080/users', profile)
@@ -175,9 +196,35 @@ export class AccountService {
       })
   }
 
-  deleteAccountById(id: number): void {
+  openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(EditAccountComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
+  }
+
+  getAccountByEmailandPassword(email: string, password: string): void {
     this.http
-      .delete(`http://localhost:8080/users/${id}`)
+      .get<User>(`http://localhost:8080/users?email=${email}&password=${password}`)
+      .pipe(take(1))
+      .subscribe({
+        next: account => {
+          this.accountEdit = account
+          this.openDialog('0ms', '0ms')
+        },
+        error: () => {
+          this.showError('Failed to get account')
+        }
+      })
+  }
+
+  deleteAccountById(id: number): void {
+    let queryParams = new HttpParams()
+    queryParams = queryParams.append("email", this.currentUser.value.email)
+    queryParams = queryParams.append("password", this.currentUser.value.password)
+    this.http
+      .delete(`http://localhost:8080/users/${id}`, { params: queryParams })
       .pipe(take(1))
       .subscribe({
         next: () => {

@@ -7,13 +7,7 @@ import { Coupon } from '../data/coupon';
   providedIn: 'root'
 })
 export class CouponsService {
-
-  // public id: number,
-  // public couponCode: string,
-  // public Discount: number,
-  // public StartDate: Date,
-  // public EndDate : Date,
-  // public orderTotalMin: number,
+  public showMarquee: boolean = false
 
   public couponSubject: BehaviorSubject<Coupon[]> = new BehaviorSubject<Coupon[]>([])
 
@@ -40,8 +34,8 @@ export class CouponsService {
       })
   }
   // PUT
-  putCoupons(updatedCouponDetails: Coupon): void {
-    this.http.put('http://localhost:8080/coupons', updatedCouponDetails)
+  updateCoupon(updatedCouponDetails: Coupon): void {
+    this.http.put(`http://localhost:8080/coupons/${updatedCouponDetails.id}`, updatedCouponDetails)
       .pipe(take(1))
       .subscribe({
         next: () => this.updateCoupons(),

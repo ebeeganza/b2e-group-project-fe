@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { ConnectableObservable } from 'rxjs';
+import { ConnectableObservable, Subscription } from 'rxjs';
 import { Order } from 'src/app/data/orders';
 import { Product } from 'src/app/data/product';
 import { AccountService } from 'src/app/services/account.service';
@@ -14,14 +14,18 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class OrdersComponent {
 
-  constructor(public orderService: OrdersService,
-              public accountService: AccountService,
-              public productService: ProductService) {
-    this.getData;
+  constructor(
+    public orderService: OrdersService,
+    public accountService: AccountService,
+    public productService: ProductService) {
+      this.orderSub = this.orderService.orderSubjector()
+      .subscribe(orders => this.dataSource.data = orders)
   }
 
+  private orderSub: Subscription
 
-  displayedColumns: string[] = ['action','id', 'userId', 'date', 'products', 'totals'];
+
+  displayedColumns: string[] = ['action','id', 'email', 'date', 'products', 'totals'];
   displayedColumns2: string[] = ['action', 'id', 'date', 'products', 'totals'];
 
   public dataSource = new MatTableDataSource<Order>()

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Order } from 'src/app/data/orders';
-import { HttpClient } from '@angular/common/http';
-import { take } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { BehaviorSubject, Observable, Subject, take } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AccountService } from '../account.service';
 import { Product } from 'src/app/data/product';
@@ -23,6 +23,7 @@ export class OrdersService {
   public orders: Order[] = []
   public userOrders: Order[] = []
   public userRole: string | undefined
+  private orderSubject: Subject<Order[]> = new Subject()
   
   public showError(message: string): void {
     this._snackBar.open(message, undefined, {duration: 10000})
@@ -43,6 +44,7 @@ public loadOrders(): void {
         next: orders => {
           this.orders = orders
           this.getOrders()
+          this.orderSubject.next(this.orders)
         },
         error: () => {
           this.showError('Oops, something went wrong')
@@ -51,12 +53,13 @@ public loadOrders(): void {
   }
 
   public loadUserOrders(): void {
-    this.http.get<Order[]>(`http://localhost:8080/orders?userId=${this.accountService.currentUser.value.id}`)
+    this.http.get<Order[]>(`http://localhost:8080/orders?username=${this.accountService.currentUser.value.email}`)
       .pipe(take(1))
       .subscribe({
         next: orders => {
           this.userOrders = orders
           this.getUserOrders()
+          this.orderSubject.next(this.userOrders)
           },
         error: () => {
           this.showError('Oops, something went wrong')
@@ -65,7 +68,10 @@ public loadOrders(): void {
   }
 
   public deleteOrder(id: number) {
-    this.http.delete(`http://localhost:8080/orders/${id}`)
+    let queryParams = new HttpParams()
+    queryParams = queryParams.append("email", this.accountService.currentUser.value.email)
+    queryParams = queryParams.append("password", this.accountService.currentUser.value.password)
+    this.http.delete(`http://localhost:8080/orders/${id}`, { params: queryParams })
     .pipe(take(1))
     .subscribe({
       next: () => {
@@ -86,14 +92,17 @@ public loadOrders(): void {
   }
 
   // userId this.accountService.currentUser.value.id 
-  addOrder(userId: number, orderTotal: number, orderDate: Date, products: string) {
+  addOrder(email: string, orderTotal: number, orderDate: Date, products: Product[]) {
+    let queryParams = new HttpParams()
+    queryParams = queryParams.append("email", this.accountService.currentUser.value.email)
+    queryParams = queryParams.append("password", this.accountService.currentUser.value.password)
     this.http.post('http://localhost:8080/orders', {
       id: null,
-      userId,
+      email,
       orderTotal,
       orderDate,
       products
-    })
+    } , { params: queryParams })
     .pipe(take(1))
     .subscribe({
       next: () => {
@@ -103,5 +112,9 @@ public loadOrders(): void {
         this.showError('Failed to add order')
       }
     })
+  }
+
+  orderSubjector(): Observable<Order[]> {
+    return this.orderSubject.asObservable()
   }
 }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
@@ -20,10 +20,9 @@ export class ProductService {
   public filtered = false;
 
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) {
-
     /**
      * TODO: TEST CASE TO BE DELETED LATER
-     */
+     
 
     const futureDate = new Date();
     futureDate.setDate(new Date().getDate() + 90)
@@ -43,18 +42,20 @@ export class ProductService {
 
     const product = new Product("Soup", true, availDate, "Yummy savory chicken noodle soup with lots of delicious hearty herbs and spices all combined in a warm, porcelain bowl.", 'https://www.thekitchenmagpie.com/wp-content/uploads/images/2019/10/ChickenVegetableSoup2.jpg', null, [], [], [], [])
 
-    product.category = new Categories(1,"Food")
+    product.category = new Categories(1, "Food")
 
     product.scheduledPrices.push(defaultPrice);
     product.scheduledPrices.push(newerPrice);
     product.scheduledSales.push(salePrice);
-    product.scheduledMaps.push(new Price(6,3.01,pastDate, null));
+    product.scheduledMaps.push(new Price(6, 3.01, pastDate, null));
 
     this.products.push(product);
+    */
+   this.updateProducts();
   }
 
   private showError(message: string): void {
-    this._snackBar.open(message, undefined, {duration: 10000})
+    this._snackBar.open(message, undefined, { duration: 10000 })
   }
 
   getProducts() {
@@ -69,19 +70,25 @@ export class ProductService {
           this.products = products;
         },
         error: (error) => {
-          this.showError("Failed to update product.")
+          this.showError("Failed to update products.")
         }
       })
   }
 
-  createProduct(name: string, available: Date, description: string, price: number, imageURL: string, category: Categories | null, MAP: number) {
-    let product = new Product(name, false, available, description, imageURL, null, [], [], [], []);
+  createProduct(currentUser : User , name: string, available: Date, description: string, price: number, imageURL: string, category: Categories | null, MAP: number) {
+    let product = new Product(name, true, available, description, imageURL, null, [], [], [], []);
+    
     if (category)
       product.category = category
-    product.scheduledPrices.push(new Price(Math.random(), price, available, null));
-    product.scheduledMaps.push(new Price(Math.random(), MAP, available, null));
 
-    this.http.put("https://localhost:8080/products", product)
+    product.scheduledPrices.push(new Price(null, price, available, null));
+    product.scheduledMaps.push(new Price(null, MAP, available, null));
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("email", currentUser.email);
+    queryParams = queryParams.append("password", currentUser.password);
+
+    this.http.post("http://localhost:8080/products", product, { params: queryParams })
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -94,9 +101,12 @@ export class ProductService {
       })
   }
 
-  deleteProduct(product: Product | null) {
-    if (product)
-      this.http.delete("http://localhost:8080/products/${product.id}")
+  deleteProduct(currentUser : User, product: Product | null) {
+    if (product) {
+      let queryParams = new HttpParams();
+      queryParams = queryParams.append("email", currentUser.email);
+      queryParams = queryParams.append("password", currentUser.password);
+      this.http.delete(`http://localhost:8080/products/${product.id}`, { params: queryParams })
         .pipe(take(1))
         .subscribe({
           next: () => {
@@ -106,6 +116,7 @@ export class ProductService {
             this.showError("Failed to delete product.")
           }
         })
+    }
   }
 
   updateProduct(product: Product, user: User) {
@@ -164,28 +175,31 @@ export class ProductService {
   // returns the oldest shipment with inventory still available, or null if out of stock
   getCurrentShipment(product: Product): Shipment | null {
     let oldestShipment: Shipment | null = null;
-    let oldestDate: Date = new Date();
-    oldestDate.setDate(new Date().getDate() + Infinity);
+    let oldestDate: Date = new Date("01/01/3000");
     const todayDate = new Date();
 
     // find the oldest shipment with positive quantity
     for (let shipment of product.shipments) {
-      if (oldestDate > shipment.date && shipment.quantity > 0 && shipment.date <= todayDate) {
+      let shipDate = new Date(shipment.date)
+      if ((oldestDate > shipDate) && (shipment.quantity > 0) && (shipDate <= todayDate)) {
+        oldestDate = shipment.date;
         oldestShipment = shipment;
-        product.discontinued = false
+        product.discontinued = false;
       }
     }
     return oldestShipment;
   }
 
   // updates the product's shipments and returns true if successful, else returns false if the product is out of stock
+
   attemptPurchase(product: Product, user: User) {
     let shipment = this.getCurrentShipment(product);
     if (shipment) {
       shipment.quantity--; // remove one of the products from the shipment
-      if (shipment.quantity === 0 && this.getCurrentShipment(product) === null){
+      if (shipment.quantity === 0 && this.getCurrentShipment(product) === null) {
         product.discontinued = true; // update the product to discontinued if there are no more shipments of it
       }
+
       this.updateProduct(product, user); // update the product now that its shipment has changed
       return true;
     } else {
@@ -222,18 +236,18 @@ export class ProductService {
     return errorProducts;
   }
 
-  filterProducts(category : Categories){
+  filterProducts(category: Categories) {
     this.filtered = true;
     let backupProducts = this.products
     this.products = []
-    for(let product of backupProducts){
-      if(product.category === category){
+    for (let product of backupProducts) {
+      if (product.category === category) {
         this.products.push(product)
       }
     }
   }
 
-  unfilter(){
+  unfilter() {
     this.filtered = false;
     this.updateProducts();
   }

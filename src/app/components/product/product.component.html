@@ -3,7 +3,7 @@
     <mat-card-content>
         <p style="font-weight: bold; font-size: 20px">{{product?.name}}</p>
 
-        <img src={{product?.image}}>
+        <img src={{product?.image}} *ngIf="product?.image != ''" alt="Product Image">
 
         <p *ngIf="currentPrice === defaultPrice">{{defaultPrice | currency}}</p>
         <div *ngIf="currentPrice != defaultPrice">
@@ -101,7 +101,7 @@
             to Cart</button>
 
         <button mat-raised-button color="warn" *ngIf="accountService.currentUser.getValue().role === 1"
-            (click)="productService.deleteProduct(product)">Delete Product Forever</button>
+            (click)="productService.deleteProduct(accountService.currentUser.getValue(), product)">Delete Product Forever</button>
 
         <button mat-raised-button color="primary" *ngIf="accountService.currentUser.getValue().role === 1 && !edit"
             (click)="edit = true" class="execute-button">Edit</button>

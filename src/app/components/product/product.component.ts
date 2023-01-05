@@ -66,7 +66,6 @@ export class ProductComponent implements OnInit {
       this.mapDs.data = this.product.scheduledMaps
       this.shipmentDs.data = this.product.shipments
       this.productService.getCurrentShipment(this.product)
-      this.product.discontinued = false;
     }
   }
 
@@ -79,7 +78,6 @@ export class ProductComponent implements OnInit {
       this.mapDs.data = this.product.scheduledMaps
       this.shipmentDs.data = this.product.shipments
       this.productService.getCurrentShipment(this.product)
-      this.product.discontinued = false;
     }
   }
 

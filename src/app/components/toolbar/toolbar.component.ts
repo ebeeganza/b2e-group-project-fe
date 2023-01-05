@@ -2,6 +2,7 @@ import { AfterViewInit, Component } from '@angular/core';
 import { CartServiceService } from 'src/app/services/cart.service.service';
 import { AccountService } from 'src/app/services/account.service';
 import { UiService } from 'src/app/services/ui.service';
+import { CouponsService } from 'src/app/services/coupons.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -10,7 +11,7 @@ import { UiService } from 'src/app/services/ui.service';
 })
 export class ToolbarComponent implements AfterViewInit{
 
-  constructor(public accountService: AccountService, public cart: CartServiceService, public ui: UiService) {
+  constructor(public accountService: AccountService, public cart: CartServiceService, public ui: UiService, public couponService: CouponsService) {
   }
 
   //adding so cart shows total number of items when added into cart
