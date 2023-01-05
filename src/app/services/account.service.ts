@@ -251,4 +251,20 @@ export class AccountService {
         }
       })
   }
+
+  userIsGuest(){
+    return this.currentUser.getValue().role === -1;
+  }
+
+  userIsCustomer(){
+    return this.currentUser.getValue().role === 0;
+  }
+
+  userIsShopkeeper(){
+    return this.currentUser.getValue().role === 1;
+  }
+
+  userIsAdmin(){
+    return this.currentUser.getValue().role === 2;
+  }
 }

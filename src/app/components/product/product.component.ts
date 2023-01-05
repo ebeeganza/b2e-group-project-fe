@@ -65,7 +65,7 @@ export class ProductComponent implements OnInit {
       this.saleDs.data = this.product.scheduledSales
       this.mapDs.data = this.product.scheduledMaps
       this.shipmentDs.data = this.product.shipments
-      this.productService.getCurrentShipment(this.product)
+      this.productService.getCurrentShipment(this.product) // set the stock based on shipment quantity
     }
   }
 
@@ -77,6 +77,7 @@ export class ProductComponent implements OnInit {
       this.saleDs.data = this.product.scheduledSales
       this.mapDs.data = this.product.scheduledMaps
       this.shipmentDs.data = this.product.shipments
+
       this.productService.getCurrentShipment(this.product)
     }
   }
@@ -110,12 +111,13 @@ export class ProductComponent implements OnInit {
 
   updateAvail() {
     if (this.product) {
-      const oldAvailabilityDate = this.product.availability;
+      const oldAvailabilityDate = new Date(this.product.availability);
       this.product.availability = this.available;
 
       // find the price linked to the old availability date and update the price's start date
       for(let price of this.product.scheduledPrices){
-        if(price.startDate === oldAvailabilityDate){
+        let priceDate = new Date(price.startDate)
+        if(priceDate === oldAvailabilityDate){
           price.startDate = this.available
         }
       }
@@ -137,34 +139,44 @@ export class ProductComponent implements OnInit {
   }
 
   addScheduledMAP() {
-    if(this.product)
+    if(this.product){
     this.product.scheduledMaps.push(new Price(null, this.priceVal, this.dateVal, null))
+    this.mapDs.data = this.product.scheduledMaps
     this.schedMAP = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;
+    }
   }
 
   addScheduledPrice() {
-    if(this.product)
+    if(this.product){
     this.product.scheduledPrices.push(new Price(null, this.priceVal, this.dateVal, null));
+    this.pricesDs.data = this.product.scheduledPrices
     this.schedPrice = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;
+    this.defaultPrice = this.productService.getDefaultPrice(this.product)
+    this.currentPrice = this.productService.getCurrentPrice(this.product)
+    }
   }
 
   addScheduledSale() {
-    if(this.product)
+    if(this.product){
     this.product.scheduledSales.push(new Price(null, this.priceVal, this.dateVal, this.dateValEnd));
+    this.saleDs.data = this.product.scheduledSales
     this.schedSale = false;
     this.priceVal = 0;
     this.dateVal = this.todayDate;
     this.dateValEnd = this.todayDate;
+    this.currentPrice = this.productService.getCurrentPrice(this.product)
+    }
   }
 
   addShipment() {
     if (this.product) {
       if (this.product.id)
-        this.product.shipments.push(new Shipment(null, this.product.id, this.shipQuantity, this.shipCost / this.shipQuantity, this.dateVal));
+        this.product.shipments.push(new Shipment(this.product.id, this.shipQuantity, this.shipCost / this.shipQuantity, this.dateVal));
+        this.shipmentDs.data = this.product.shipments
     }
     this.dateVal = this.todayDate;
     this.addShip = false;

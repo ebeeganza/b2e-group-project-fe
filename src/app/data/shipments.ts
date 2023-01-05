@@ -5,8 +5,7 @@ export class Shipment {
     public cost: number
     public date: Date
 
-    constructor(id: number | null, productId: number, quantity: number, cost: number, date: Date) {
-        this.id = id,
+    constructor(productId: number, quantity: number, cost: number, date: Date) {
         this.productId = productId,
         this.quantity = quantity,
         this.cost = cost

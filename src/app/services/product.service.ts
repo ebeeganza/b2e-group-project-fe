@@ -20,37 +20,6 @@ export class ProductService {
   public filtered = false;
 
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) {
-    /**
-     * TODO: TEST CASE TO BE DELETED LATER
-     
-
-    const futureDate = new Date();
-    futureDate.setDate(new Date().getDate() + 90)
-
-    const pastDate = new Date();
-    pastDate.setDate(new Date().getDate() - 90)
-
-    const newerDate = new Date();
-    newerDate.setDate(new Date().getDate() - 80)
-
-    const defaultPrice = new Price(1, 5, pastDate, null);
-    const newerPrice = new Price(2, 4, newerDate, null);
-    const salePrice = new Price(1, 3, pastDate, futureDate);
-
-    const availDate = new Date();
-    availDate.setDate(new Date().getDate() - 100);
-
-    const product = new Product("Soup", true, availDate, "Yummy savory chicken noodle soup with lots of delicious hearty herbs and spices all combined in a warm, porcelain bowl.", 'https://www.thekitchenmagpie.com/wp-content/uploads/images/2019/10/ChickenVegetableSoup2.jpg', null, [], [], [], [])
-
-    product.category = new Categories(1, "Food")
-
-    product.scheduledPrices.push(defaultPrice);
-    product.scheduledPrices.push(newerPrice);
-    product.scheduledSales.push(salePrice);
-    product.scheduledMaps.push(new Price(6, 3.01, pastDate, null));
-
-    this.products.push(product);
-    */
    this.updateProducts();
   }
 
@@ -96,7 +65,15 @@ export class ProductService {
           this.creatingProduct = false;
         },
         error: (error) => {
-          this.showError("Failed to create product.")
+          if(error.status === 400){
+            this.showError("Product with id " + product.id + " already exists.")
+          } else if (error.status === 412) {
+            this.showError("The user does not have permissions to create products.")
+          } else if (error.status === 304){
+            this.showError("The user does not exist.")
+          } else {
+            this.showError("Error creating product.")
+          }
         }
       })
   }
@@ -113,7 +90,13 @@ export class ProductService {
             this.updateProducts();
           },
           error: (error) => {
-            this.showError("Failed to delete product.")
+            if(error.status === 400){
+              this.showError("User does not have permissions to delete products.")
+            } else if (error.status === 404){
+              this.showError("A product was not found with id " + product.id)
+            } else {
+              this.showError("Failed to delete product.")
+            }
           }
         })
     }
@@ -127,7 +110,15 @@ export class ProductService {
           this.updateProducts();
         },
         error: (error) => {
-          this.showError("Failed to update product.")
+          if(error.status === 401){
+            this.showError("User does not have permissions to modify products.")
+          } else if (error.status === 304){
+            this.showError("A product with id " + product.id + " does not exist.")
+          } else if (error.status === 404){
+            this.showError("Cannot modify product. A new sale interferes with an existing one.")
+          } else {
+            this.showError("Failed to update product.")
+          }
           this.updateProducts();
         }
       })
@@ -137,9 +128,10 @@ export class ProductService {
     let defaultPrice = 0;
     const todayDate = new Date();
 
-    let currPriceDate = product.availability // start looping through dates at the date the item is available
+    let currPriceDate = new Date(product.availability) // start looping through dates at the date the item is available
     for (let price of product.scheduledPrices) {
-      if (price.startDate >= currPriceDate && price.startDate <= todayDate) {
+      let priceDate = new Date(price.startDate)
+      if (priceDate >= currPriceDate && priceDate <= todayDate) {
         defaultPrice = price.price; // update the product's default price for the current date
       }
     }
@@ -152,7 +144,11 @@ export class ProductService {
 
     // if a sale is going on, return the sale price
     for (let sale of product.scheduledSales) {
-      if (sale.startDate <= todayDate && sale.endDate && sale.endDate > todayDate) {
+      let saleStartDate = new Date(sale.startDate)
+      let saleEndDate = new Date()
+      if(sale.endDate)
+        saleEndDate = new Date(sale.endDate)
+      if (saleStartDate <= todayDate && saleEndDate && saleEndDate > todayDate) {
         return sale.price
       }
     }
@@ -163,9 +159,11 @@ export class ProductService {
     let defaultMAP = 0;
     const todayDate = new Date();
 
-    let currMAPDate = product.availability // start looping through MAPS at the date the item is available
+    let currMAPDate = new Date(product.availability) // start looping through MAPS at the date the item is available
     for (let MAP of product.scheduledMaps) {
-      if (MAP.startDate >= currMAPDate && MAP.startDate <= todayDate) {
+      let mapDate = new Date(MAP.startDate)
+      if (mapDate >= currMAPDate && mapDate <= todayDate) {
+        currMAPDate = mapDate
         defaultMAP = MAP.price; // update the product's MAP for the current date
       }
     }
@@ -182,7 +180,7 @@ export class ProductService {
     for (let shipment of product.shipments) {
       let shipDate = new Date(shipment.date)
       if ((oldestDate > shipDate) && (shipment.quantity > 0) && (shipDate <= todayDate)) {
-        oldestDate = shipment.date;
+        oldestDate = shipDate;
         oldestShipment = shipment;
         product.discontinued = false;
       }
@@ -208,32 +206,25 @@ export class ProductService {
     }
   }
 
-  findLossErrors(): Product[] {
-    let errorProducts: Product[] = []
-    for (let product of this.products) {
-      let price = this.getCurrentPrice(product)
-      let shipment = this.getCurrentShipment(product)
-      if (shipment) {
-        if (shipment.cost > price) {
-          errorProducts.push(product)
-        }
-      } else {
-        // the product is out of stock!
-      }
+  findLossError(product : Product): Product | null {
+    console.log("Looking for error.")
+    let errorProduct: Product | null = null
+    let price = this.getCurrentPrice(product)
+    let shipment = this.getCurrentShipment(product)
+    if (shipment && shipment.cost > price) {
+      errorProduct = product
     }
-    return errorProducts;
+    return errorProduct;
   }
 
-  findMAPErrors(): Product[] {
-    let errorProducts: Product[] = []
-    for (let product of this.products) {
-      let price = this.getCurrentPrice(product)
-      let MAP = this.getCurrentMAP(product)
-      if (price < MAP) {
-        errorProducts.push(product)
-      }
+  findMAPError(product : Product): Product | null {
+    let errorProduct: Product | null = null
+    let price = this.getCurrentPrice(product)
+    let MAP = this.getCurrentMAP(product)
+    if (price < MAP) {
+      errorProduct = product
     }
-    return errorProducts;
+    return errorProduct;
   }
 
   filterProducts(category: Categories) {

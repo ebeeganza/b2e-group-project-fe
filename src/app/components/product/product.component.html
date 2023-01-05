@@ -1,4 +1,4 @@
-<mat-card *ngIf="accountService.currentUser.getValue().role === 1 || (accountService.currentUser.getValue().role != 2 && isAvailable())" class="product">
+<mat-card *ngIf="accountService.userIsShopkeeper() || (!accountService.userIsAdmin() && isAvailable())" class="product">
 
     <mat-card-content>
         <p style="font-weight: bold; font-size: 20px">{{product?.name}}</p>
@@ -10,12 +10,12 @@
             <p style="color: green">Sale price: {{currentPrice | currency}}</p>
             <p class="inactive">List price: <s>{{defaultPrice | currency}}</s></p>
         </div>
-        <p *ngIf="accountService.currentUser.getValue().role === 1">Available on {{product?.availability | date}}</p>
+        <p *ngIf="accountService.userIsShopkeeper()">Available on {{product?.availability | date}}</p>
         <p class="description">Description: {{product?.description}}</p>
         <p *ngIf="product?.discontinued" style="color: red">Item out of stock.</p>
-        <p>Department: {{product?.category?.name}}</p>
+        <p *ngIf="product?.category">Department: {{product?.category?.name}}</p>
 
-        <div *ngIf="accountService.currentUser.getValue().role === 1">
+        <div *ngIf="accountService.userIsShopkeeper()">
 
             <p class="bold">Scheduled Prices:</p>
             <table mat-table [dataSource]="pricesDs" class="mat-elevation-z8">
@@ -97,13 +97,13 @@
         </div>
 
         <button mat-raised-button color="primary"
-            *ngIf="(accountService.currentUser.getValue().role === 0 || accountService.currentUser.getValue().role === -1) && !product?.discontinued" (click)="cartService.addToCart(this.product)">Add
+            *ngIf="(accountService.userIsCustomer() || accountService.userIsGuest()) && !product?.discontinued" (click)="cartService.addToCart(this.product)">Add
             to Cart</button>
 
-        <button mat-raised-button color="warn" *ngIf="accountService.currentUser.getValue().role === 1"
+        <button mat-raised-button color="warn" *ngIf="accountService.userIsShopkeeper()"
             (click)="productService.deleteProduct(accountService.currentUser.getValue(), product)">Delete Product Forever</button>
 
-        <button mat-raised-button color="primary" *ngIf="accountService.currentUser.getValue().role === 1 && !edit"
+        <button mat-raised-button color="primary" *ngIf="accountService.userIsShopkeeper() && !edit"
             (click)="edit = true" class="execute-button">Edit</button>
 
         <div *ngIf="edit" class="container">
@@ -166,7 +166,7 @@
                 <button mat-raised-button (click)="addIm = false" color="warn" class="execute-button">Cancel</button>
             </div>
 
-            <button mat-raised-button color="primary" *ngIf="!addCat" (click)="resetVals(); addCat = true"
+            <button mat-raised-button color="primary" *ngIf="!addCat && ui.categorySubject.getValue().length > 0" (click)="resetVals(); addCat = true"
                 class="edit-button">Change Category</button>
             <div *ngIf="addCat" class="edit-form">
 
@@ -242,9 +242,9 @@
 
                 <mat-form-field>
                     <mat-label>End Date</mat-label>
-                    <input matInput [matDatepicker]="picker" [(ngModel)]="dateValEnd">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
+                    <input matInput [matDatepicker]="picker2" [(ngModel)]="dateValEnd">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
                 </mat-form-field>
 
                 <button mat-raised-button (click)="addScheduledSale()" color="primary"
@@ -263,7 +263,7 @@
                 </mat-form-field>
 
                 <mat-form-field>
-                    <mat-label>Cost</mat-label>
+                    <mat-label>Total Shipment Cost</mat-label>
                     <input matInput type="number" [(ngModel)]="shipCost">
                 </mat-form-field>
 
@@ -284,7 +284,7 @@
             <button mat-raised-button color="primary" *ngIf="product?.discontinued"
                 (click)="resetVals(); rereleaseItem()" class="edit-button">Rerelease Item</button>
 
-            <button mat-raised-button color="primary" (click)="saveProduct()" class="execute-button">Save</button>
+            <button mat-raised-button color="primary" (click)="saveProduct()" class="execute-button-two">Save Changes</button>
             <button mat-raised-button color="warn" (click)="edit = false; productService.updateProducts()" class="execute-button">Cancel</button>
 
         </div>

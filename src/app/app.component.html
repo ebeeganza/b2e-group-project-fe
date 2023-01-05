@@ -6,8 +6,4 @@
 <app-profile *ngIf="ui.displayAccount"></app-profile>
 <app-orders *ngIf="ui.displayOrders"></app-orders>
 <app-coupon *ngIf="this.ui.displayCoupons"></app-coupon>
-
-<div class="container" *ngIf="ui.displayProducts">
-    <app-products-list></app-products-list>
-    <app-errors *ngIf="accountService.currentUser.getValue().role === 1"></app-errors>
-</div>
+<app-products-list *ngIf="ui.displayProducts" [products]="productService.getProducts()"></app-products-list>
