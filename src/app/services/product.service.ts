@@ -102,11 +102,8 @@ export class ProductService {
     }
   }
 
-  updateProduct(currentUser : User, product: Product) {
-    let queryParams = new HttpParams();
-      queryParams = queryParams.append("email", currentUser.email);
-      queryParams = queryParams.append("password", currentUser.password);
-    this.http.put(`http://localhost:8080/products/${product.id}`, product, {params: queryParams})
+  updateProduct(product: Product, user: User) {
+    this.http.put(`http://localhost:8080/products/${product.id}?email=${user.email}&password=${user.password}`, product)
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -192,14 +189,16 @@ export class ProductService {
   }
 
   // updates the product's shipments and returns true if successful, else returns false if the product is out of stock
-  attemptPurchase(currentUser : User, product: Product) {
+
+  attemptPurchase(product: Product, user: User) {
     let shipment = this.getCurrentShipment(product);
     if (shipment) {
       shipment.quantity--; // remove one of the products from the shipment
       if (shipment.quantity === 0 && this.getCurrentShipment(product) === null) {
         product.discontinued = true; // update the product to discontinued if there are no more shipments of it
       }
-      this.updateProduct(currentUser, product); // update the product now that its shipment has changed
+
+      this.updateProduct(product, user); // update the product now that its shipment has changed
       return true;
     } else {
       product.discontinued = true;
