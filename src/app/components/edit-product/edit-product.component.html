@@ -1,120 +1,13 @@
-<mat-card *ngIf="accountService.userIsShopkeeper() || (!accountService.userIsAdmin() && isAvailable())" class="product">
-
-    <mat-card-content>
-        <p style="font-weight: bold; font-size: 20px">{{product?.name}}</p>
-
-        <img src={{product?.image}} *ngIf="product?.image != ''" alt="Product Image">
-
-        <p *ngIf="currentPrice === defaultPrice">{{defaultPrice | currency}}</p>
-        <div *ngIf="currentPrice != defaultPrice">
-            <p style="color: green">Sale price: {{currentPrice | currency}}</p>
-            <p class="inactive">List price: <s>{{defaultPrice | currency}}</s></p>
-        </div>
-        <p *ngIf="accountService.userIsShopkeeper()">Available on {{product?.availability | date}}</p>
-        <p class="description">Description: {{product?.description}}</p>
-        <p *ngIf="product?.discontinued" style="color: red">Item out of stock.</p>
-        <p *ngIf="product?.category">Department: {{product?.category?.name}}</p>
-
-        <div *ngIf="accountService.userIsShopkeeper()">
-
-            <p class="bold">Scheduled Prices:</p>
-            <table mat-table [dataSource]="pricesDs" class="mat-elevation-z8">
-              
-                <ng-container matColumnDef="price">
-                  <th mat-header-cell *matHeaderCellDef> Price </th>
-                  <td mat-cell *matCellDef="let price"> {{price.price | currency}} </td>
-                </ng-container>
-              
-                <ng-container matColumnDef="startDate">
-                  <th mat-header-cell *matHeaderCellDef> Start Date </th>
-                  <td mat-cell *matCellDef="let price"> {{price.startDate | date}} </td>
-                </ng-container>
-              
-                <tr mat-header-row *matHeaderRowDef="priceColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: priceColumns;"></tr>
-            </table>
-
-            <p class="bold">Scheduled Sales:</p>
-            <table mat-table [dataSource]="saleDs" class="mat-elevation-z8">
-              
-                <ng-container matColumnDef="price">
-                  <th mat-header-cell *matHeaderCellDef> Price </th>
-                  <td mat-cell *matCellDef="let price"> {{price.price | currency}} </td>
-                </ng-container>
-              
-                <ng-container matColumnDef="startDate">
-                  <th mat-header-cell *matHeaderCellDef> Start Date </th>
-                  <td mat-cell *matCellDef="let price"> {{price.startDate | date}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="endDate">
-                    <th mat-header-cell *matHeaderCellDef> End Date </th>
-                    <td mat-cell *matCellDef="let price"> {{price.endDate | date}} </td>
-                  </ng-container>
-              
-                <tr mat-header-row *matHeaderRowDef="saleColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: saleColumns;"></tr>
-            </table>
-
-            <p class="bold">Scheduled Minimum Advertised Prices:</p>
-            <table mat-table [dataSource]="mapDs" class="mat-elevation-z8">
-              
-                <ng-container matColumnDef="price">
-                  <th mat-header-cell *matHeaderCellDef> Price </th>
-                  <td mat-cell *matCellDef="let price"> {{price.price | currency}} </td>
-                </ng-container>
-              
-                <ng-container matColumnDef="startDate">
-                  <th mat-header-cell *matHeaderCellDef> Start Date </th>
-                  <td mat-cell *matCellDef="let price"> {{price.startDate | date}} </td>
-                </ng-container>
-              
-                <tr mat-header-row *matHeaderRowDef="priceColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: priceColumns;"></tr>
-            </table>
-
-            <p class="bold">Shipments:</p>
-            <table mat-table [dataSource]="shipmentDs" class="mat-elevation-z8">
-              
-                <ng-container matColumnDef="date">
-                  <th mat-header-cell *matHeaderCellDef> Date </th>
-                  <td mat-cell *matCellDef="let shipment"> {{shipment.date | date}} </td>
-                </ng-container>
-              
-                <ng-container matColumnDef="quantity">
-                  <th mat-header-cell *matHeaderCellDef> Quantity </th>
-                  <td mat-cell *matCellDef="let shipment"> {{shipment.quantity}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="cost">
-                    <th mat-header-cell *matHeaderCellDef> Cost/Item </th>
-                    <td mat-cell *matCellDef="let shipment"> {{shipment.cost| currency}} </td>
-                  </ng-container>
-              
-                <tr mat-header-row *matHeaderRowDef="shipColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: shipColumns;"></tr>
-            </table>
-        </div>
-
-        <button mat-raised-button color="primary"
-            *ngIf="(accountService.userIsCustomer() || accountService.userIsGuest()) && !product?.discontinued" (click)="cartService.addToCart(this.product)">Add
-            to Cart</button>
-
-        <button mat-raised-button color="warn" *ngIf="accountService.userIsShopkeeper()"
-            (click)="productService.deleteProduct(accountService.currentUser.getValue(), product)">Delete Product Forever</button>
-
-        <button mat-raised-button color="primary" *ngIf="accountService.userIsShopkeeper() && !edit"
-            (click)="openEditProduct()" class="execute-button">Edit</button>
-
-        <div *ngIf="edit" class="container">
-
-            <button mat-raised-button color="primary" *ngIf="!changeName" (click)="resetVals(); changeName = true"
+<div class="table-container">
+<mat-toolbar color="accent">Edit {{data.name}}</mat-toolbar>
+<div mat-dialog-content class="content">
+    <button mat-raised-button color="primary" *ngIf="!changeName" (click)="resetVals(); changeName = true"
                 class="edit-button">Change Product Name</button>
             <div *ngIf="changeName" class="edit-form">
 
                 <mat-form-field appearance="fill">
                     <mat-label>New Product Name</mat-label>
-                    <input matInput [(ngModel)]="name">
+                    <input matInput [(ngModel)]="data.name">
                 </mat-form-field>
 
                 <button mat-raised-button (click)="updateName()" color="primary" class="execute-button">Apply</button>
@@ -278,16 +171,14 @@
                 <button mat-raised-button (click)="addShip = false" color="warn" class="execute-button">Cancel</button>
             </div>
 
-            <button mat-raised-button color="primary" *ngIf="!product?.discontinued"
+            <button mat-raised-button color="primary" *ngIf="!data?.discontinued"
                 (click)="resetVals(); discontinueItem()" class="edit-button">Discontinue Item</button>
 
-            <button mat-raised-button color="primary" *ngIf="product?.discontinued"
+            <button mat-raised-button color="primary" *ngIf="data?.discontinued"
                 (click)="resetVals(); rereleaseItem()" class="edit-button">Rerelease Item</button>
-
-            <button mat-raised-button color="primary" (click)="saveProduct()" class="execute-button-two">Save Changes</button>
-            <button mat-raised-button color="warn" (click)="edit = false; productService.updateProducts()" class="execute-button">Cancel</button>
-
-        </div>
-
-    </mat-card-content>
-</mat-card>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data">Submit</button>
+</div>
+</div>
