@@ -3,7 +3,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { Cart } from 'src/app/data/cart';
 import { Product } from 'src/app/data/product';
-import { AccountService } from 'src/app/services/account.service';
 import { CartServiceService } from 'src/app/services/cart.service.service';
 import { CouponsService } from 'src/app/services/coupons.service';
 import { OrdersService } from 'src/app/services/orders/orders.service';
@@ -21,36 +20,46 @@ export class CartComponent implements OnInit{
   // public UserId: number,
   // public products: Product[]
 
-  public products: any = [];
+  public products: Product[] = [];
   public grandTotal : number = 0;
   couponCode: any;
 
-  constructor(public cart:CartServiceService, 
+  cartData !: MatTableDataSource<Cart>
+
+  post:any
+
+  constructor(public cartService:CartServiceService, 
               public ui: UiService, 
               public orderServces: OrdersService, 
               public productService: ProductService, 
               public couponService: CouponsService,
               ) {
-
+                this.cartSub = this.cartService.CartSubject()
+                .subscribe(carts => this.cartData.data = carts)
               }
 
+  private cartSub: Subscription
+  
+
   ngOnInit(): void {
-    this.cart.getProducts()
+    this.cartService.getProducts()
     .subscribe(x => {
     this.products = x;
     });
 
     for(const product of this.products){
-      this.grandTotal =- product.price;
+      this.grandTotal =- this.productService.getCurrentPrice(product);
     }
   }
 
-  getCart():void{
-    this.cart.getOnCart()
+  getCart() {
+    this.cartService.loadUserCart()
+
     }
 
-
-
   }
+
+
+  
 
 
