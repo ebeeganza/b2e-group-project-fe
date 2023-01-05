@@ -29,7 +29,7 @@ export class AccountListComponent implements OnInit, AfterViewInit {
   public displayNewAccount: boolean = false
   public newAccount: User = new User(-1,'', '', '', '', 0)
 
-  displayedColumns: string[] = ['action','id', 'password', 'email', 'fname', 'lname'];
+  displayedColumns: string[] = ['action','id', 'password', 'email', 'fname', 'lname', 'role'];
   public dataSource = new MatTableDataSource<User>()
   private accountSub: Subscription
 
