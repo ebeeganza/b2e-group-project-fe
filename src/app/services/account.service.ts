@@ -140,7 +140,7 @@ export class AccountService {
   }
 
   updateEditedAccount(updatedAccount: User): void {
-      this.http.put(`http://localhost:8080/users/${updatedAccount.id}?email=${updatedAccount.email}&password=${updatedAccount.password}`, updatedAccount)
+      this.http.put(`http://localhost:8080/users/${updatedAccount.id}?email=${this.currentUser.value.email}&password=${this.currentUser.value.password}`, updatedAccount)
         .pipe(take(1))
         .subscribe({
           next: () => {
@@ -151,7 +151,7 @@ export class AccountService {
   }
 
   updateEditedProfile(updatedAccount: User): void {
-    this.http.put(`http://localhost:8080/users/${updatedAccount.id}?email=${updatedAccount.email}&password=${updatedAccount.password}`, updatedAccount)
+    this.http.put(`http://localhost:8080/users/${updatedAccount.id}?email=${this.currentUser.value.email}&password=${this.currentUser.value.password}`, updatedAccount)
       .pipe(take(1))
       .subscribe({
         next: () => {
