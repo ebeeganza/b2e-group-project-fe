@@ -12,16 +12,15 @@ import { ProductService } from './product.service';
 })
 export class CartServiceService {
 
- productList = new BehaviorSubject<any>([]);
- cartProductList: any[]=[]
+  productList = new BehaviorSubject<any>([]);
+  cartProductList: any[] = []
 
- public userCart: Cart[] = []
- 
- private cartSubject: Subject<Cart[]> = new Subject()
 
-  constructor(private http: HttpClient, public accountService: AccountService,private productService : ProductService, private snackBar: MatSnackBar,) { 
+  public cartSubject: Subject<Cart> = new Subject()
+
+  constructor(private http: HttpClient, public accountService: AccountService, private productService: ProductService, private snackBar: MatSnackBar,) {
     this.http = http
-  
+
   }
 
   //get the product
@@ -29,11 +28,8 @@ export class CartServiceService {
     return this.productList.asObservable();
   }
 
-  //get Carts
-  getUserCart() {
-    return this.userCart
-  }
-  CartSubject(): Observable<Cart[]> {
+  
+  CartSubject(): Observable<Cart> {
     return this.cartSubject.asObservable()
   }
 
@@ -43,37 +39,27 @@ export class CartServiceService {
     }
   }
 
-    loadUserCart(): void {
-      this.http.get<Cart[]>(`http://localhost:8080/cart=${this.accountService.currentUser.value.id}`)
-        .pipe(take(1))
-        .subscribe({
-          next: cart => {
-            this.userCart = cart
-            this.getUserCart()
-            this.cartSubject.next(this.userCart)
-            },
-          error: () => {
-            this.showError('Oops, something went wrong')
-          }
-        })
-    }
-
-    addProductToCart( products: Product[]) {
-      let queryParams = new HttpParams()
-      queryParams = queryParams.append("role", this.accountService.currentUser.value.role)
-      this.http.post(`http://localhost:8080/cart`, {
-        products
-      } , { params: queryParams })
+  loadUserCart(): void {
+    this.http.get<Cart>(`http://localhost:8080/cart/${this.accountService.currentUser.value.id}`)
       .pipe(take(1))
       .subscribe({
-        next: () => {
-          this.getUserCart()
+        next: cart => {
+          console.log(cart)
+          this.cartSubject.next(cart)
         },
-        error: () => {
-          this.showError('Failed to add product')
+        error: (error) => {
+          if(error.status === 404){
+            let newCart = new Cart(null,this.accountService.currentUser.value.id,[])
+            
+            this.createCart(newCart)
+          } else {
+            this.showError('Oops, something went wrong')
+          }
         }
       })
-    }
+  }
+
+  
 
 
   updateCart(cart: Cart) {
@@ -81,29 +67,40 @@ export class CartServiceService {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.getUserCart();
         },
         error: (error) => {
-          this.getUserCart();
         }
       })
   }
-  
+
   deleteProductInCart(id: number) {
     this.http.delete(`http://localhost:8080/cart/${id}`)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+
+        },
+        error: () => {
+          this.showError('Failed to remove product')
+        }
+      })
+  }
+
+  createCart(cart : Cart){
+    this.http.post<Cart>("http://localhost:8080/cart", cart)
     .pipe(take(1))
     .subscribe({
-      next: () => {
-
+      next: (cart)=> {
+        this.cartSubject.next(cart)
       },
-      error: () => {
-        this.showError('Failed to remove product')
+      error: (error) => {
+        
       }
     })
-    }
+  }
 
   //adding product to chart
-  addToCart(product: any){
+  addToCart(product: any) {
     this.cartProductList.push(product)
     this.productList.next(this.cartProductList)
     this.getTotalPrice();
@@ -112,34 +109,38 @@ export class CartServiceService {
 
   getTotalPrice(): number {
     let grandTotal = 0;
-    this.cartProductList.map((a:any) => {
+    this.cartProductList.map((a: any) => {
       grandTotal += this.productService.getCurrentPrice(a);
-      })
-      return grandTotal;
-    }
+    })
+    return grandTotal;
+  }
 
-  removeCartProduct(product: any){
+  removeCartProduct(product: any) {
     const index = this.cartProductList.indexOf(product);
-    this.cartProductList.splice(index,1)
+    this.cartProductList.splice(index, 1)
     this.productList.next(this.cartProductList)
   }
-  
+
   //clear Cart if want
-  removeAllCart(){ 
+  removeAllCart() {
     this.cartProductList = [];
     this.productList.next(this.cartProductList);
   }
 
-  checkout(){
-    
+  checkout() {
+
   }
 
-//catch error message
+  //catch error message
   public showError(message: string): void {
-    this.snackBar.open(message, undefined, {duration: 10000})
+    this.snackBar.open(message, undefined, { duration: 10000 })
   }
 
+  logoutCart() {
+    this.cartSubject.next(new Cart(Math.random(),-1,[]))
   }
+
+}
 
 
 
