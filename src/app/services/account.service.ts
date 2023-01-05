@@ -43,7 +43,7 @@ export class AccountService {
   }
 
     
-  private showError(message: string): void {
+  public showError(message: string): void {
     this._snackBar.open(message, undefined, {duration: 10000})
   }
 
