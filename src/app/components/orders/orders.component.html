@@ -15,7 +15,7 @@
       <th mat-header-cell *matHeaderCellDef>Cancel Order</th>
       <td mat-cell *matCellDef="let element">
         <button mat-icon-button matTooltip="Cancel Order" class="iconbutton" color="warn"
-        (click)="orderService.deleteOrder(element.id); orderService.loadAllOrders()">
+        (click)="orderService.deleteOrder(element.id); orderService.loadAllOrders(); this.dataSource.data = this.orderService.orders">
             <mat-icon aria-label="Cancel">cancel</mat-icon>
           </button>
       </td>
@@ -74,11 +74,12 @@
         <th mat-header-cell *matHeaderCellDef>Cancel Order</th>
         <td mat-cell *matCellDef="let element">
           <button mat-icon-button matTooltip="Cancel Order" class="iconbutton" color="warn"
-          (click)="orderService.deleteOrder(element.id); orderService.loadUserOrders()">
+          (click)="orderService.deleteOrder(element.id); orderService.loadUserOrders(); this.dataSource2.data = this.orderService.userOrders">
               <mat-icon aria-label="Cancel">cancel</mat-icon>
             </button>
         </td>
       </ng-container>
+    
       
           
         <!-- id Column -->
