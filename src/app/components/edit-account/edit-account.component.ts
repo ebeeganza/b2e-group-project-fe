@@ -20,7 +20,7 @@ export class EditAccountComponent {
   public password: string 
   public role: number 
   
-  private accountService: AccountService
+  public accountService: AccountService
 
   constructor(accountService: AccountService, public ui: UiService, public dialogRef: MatDialogRef<EditAccountComponent>) {
     this.accountService = accountService
@@ -63,6 +63,10 @@ export class EditAccountComponent {
   onApply(): void {
     // {} - create a new object
     // ... - deconstruct the following thing
+    if (this.accountService.currentUser.value.role == 2) this.accountService.accountEdit
+    if (this.accountService.currentUser.value.role == 2 && this.role != 2) {
+
+    }
     if (this.email === this.accountService.currentUser.value.email) {
       this.accountService.updateEditedProfile( {
         ...this.account
