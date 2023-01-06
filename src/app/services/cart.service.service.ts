@@ -36,6 +36,10 @@ export class CartServiceService implements OnDestroy {
     }
   }
 
+  getCart(){
+    return this.cartSubject.asObservable()
+  }
+
   ngOnDestroy(): void {
     this.userSub.unsubscribe()
     }
@@ -94,12 +98,13 @@ export class CartServiceService implements OnDestroy {
 
   //adding product to chart
   addToCart(product: Product) {
-    /*
-    this.cartProductList.push(product)
-    this.productList.next(this.cartProductList)
-    this.getTotalPrice();
-    console.log(this.cartProductList)
-    */
+
+    for (let productInCart of this.cartSubject.value.products){
+      if (productInCart.id === product.id){
+        this.showError("Limit one of this product per purchase.")
+        return;
+      }
+    }
 
     let cart = this.cartSubject.value
     console.log(cart.userId);
@@ -110,6 +115,7 @@ export class CartServiceService implements OnDestroy {
       this.updateCart(cart)
     }
     else {
+      this.cartSubject.next(cart)
       localStorage.setItem('cart',JSON.stringify(cart))
     }
 
