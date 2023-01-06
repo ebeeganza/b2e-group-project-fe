@@ -181,6 +181,8 @@ export class CartServiceService implements OnDestroy {
     let orderTotal = this.getTotalPrice();
 
     this.orderService.addOrder(email,orderTotal,orderDate,products)
+
+    this.removeAllCart();
   }
 
   //catch error message
