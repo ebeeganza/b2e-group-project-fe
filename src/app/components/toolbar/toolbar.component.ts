@@ -10,21 +10,13 @@ import { CouponsService } from 'src/app/services/coupons.service';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements AfterViewInit{
+  //adding so cart shows total number of items when added into cart
+  public totalItem: number = 0;
 
   constructor(public accountService: AccountService, public ui: UiService, public couponService: CouponsService, public cartService: CartServiceService) {
     this.cartService.cartSubject.subscribe(res=>{
       this.totalItem = res.products.length
     })
-  }
-
-  //adding so cart shows total number of items when added into cart
-  public totalItem: number = 0;
-  ngOnInit():void{
-    /*
-    this.cartService.getProducts().subscribe(res=>{
-      this.totalItem = res.length
-    })
-    */
   }
   
   ngAfterViewInit(): void {

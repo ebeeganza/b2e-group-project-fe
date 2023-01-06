@@ -2,10 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject, catchError, Observable, Subject, take, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, take} from 'rxjs';
 import { EditAccountComponent } from '../components/edit-account/edit-account.component';
 import { User } from '../data/user';
-import { CartServiceService } from './cart.service.service';
 import { UiService } from './ui.service';
 
 @Injectable({
@@ -18,8 +17,6 @@ export class AccountService {
   private accountSubject: Subject<User[]> = new Subject()
   public displayEdit: boolean = false
 
-  public displayLogin: boolean = false
-  public displayRegister: boolean = false
   public isLoggedIn: boolean = false
   public guestUser: User = new User(-1,'','','Guest','',-1)
   public currentUser: BehaviorSubject<User> = new BehaviorSubject<User>(this.guestUser)
@@ -37,14 +34,8 @@ export class AccountService {
         this.tryLogin(user.email,user.password)
       }
     }
-    
-
-    // TODO: dummy data
-    // const user1 = new User(0, "pass", "email", "Rick", "Astley", 2)
-    // this.account.push(user1)
   }
 
-    
   public showError(message: string): void {
     this._snackBar.open(message, undefined, {duration: 10000})
   }
@@ -58,7 +49,6 @@ export class AccountService {
       .subscribe({
         next: (user) => {
           this.successfulLogin(user)
-          console.log("logged in as", user)
         },
         error: (err) => {
           if(err.status === 404){
@@ -99,12 +89,10 @@ export class AccountService {
     localStorage.setItem("user",JSON.stringify(user))
     this.isLoggedIn = true
     this.currentUser.next(user)
-    console.log("successful login accountService.currentUser set to",this.currentUser.value)
     if (this.currentUser.getValue().role === 2) {
       this.ui.showAccount()
     } else {
       this.ui.showProducts()
-      this.resetDisplay()
     }
   }
 
@@ -112,26 +100,11 @@ export class AccountService {
     return this.currentUser.asObservable()
   }
 
-  public changeToLogin() {
-    this.resetDisplay()
-    this.displayLogin = true
-  }
-  public changeToRegister() {
-    this.resetDisplay()
-    this.displayRegister = true
-  }
-
-  public resetDisplay() {
-    this.displayRegister = false
-    this.displayLogin = false
-  }
-
   getShowEdit() {
     this.displayEdit = true
   }
 
   public changeToProfile() {
-    this.resetDisplay()
     this.displayProfile = true
   }
 
@@ -150,7 +123,7 @@ export class AccountService {
           next: () => {
             this.updateAccount()
           },
-          error: (err) => console.log("Error updating account")
+          error: (err) => this.showError("Error updating account")
         })
   }
 
@@ -163,7 +136,7 @@ export class AccountService {
           this.isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"))
               this.currentUser.next(updatedAccount)
       },
-        error: (err) => console.log("Error updating account")
+        error: (err) => this.showError("Error updating account")
       })
 }
 
@@ -173,7 +146,6 @@ export class AccountService {
       .pipe(take(1))
       .subscribe({ 
         next: account => {
-        console.log(account)
         this.account = account
         this.accountSubject.next(this.account)
       },
