@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
 import { Cart } from 'src/app/data/cart';
 import { Product } from 'src/app/data/product';
 import { AccountService } from 'src/app/services/account.service';
@@ -15,7 +14,7 @@ import { UiService } from 'src/app/services/ui.service';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-export class CartComponent  {
+export class CartComponent {
   // Cart data
   // public id: number,
   // public UserId: number,
@@ -23,7 +22,9 @@ export class CartComponent  {
 
   public products: Product[] = [];
   public grandTotal: number = 0;
-  couponCode: any;
+  couponCode = ''
+
+  couponApplied = false
 
   cartData !: MatTableDataSource<Cart>
 
@@ -34,48 +35,62 @@ export class CartComponent  {
     public orderServces: OrdersService,
     public productService: ProductService,
     public couponService: CouponsService,
-    public accountService : AccountService
+    public accountService: AccountService
   ) {
+    
     cartService.cartSubject.subscribe((cart) => {
       this.products = cart.products
-      this.grandTotal = this.getTotal()
+      this.grandTotal = this.cartService.getTotalPrice()
     })
     
-
     accountService.currentUser.subscribe((user) => {
-      console.log("New user logged on.")
       if(accountService.userIsGuest()){
         // set cart back to empty or load from local storage
-        console.log("User is guest")
         cartService.logoutCart()
       } else if (accountService.userIsCustomer()){
         // get user cart from cartService db
-        console.log("User is customer")
-
         cartService.loadUserCart();
       }
     })
+    
   }
 
-/*
-  ngOnInit(): void {
-    this.cartService.getProducts()
-      .subscribe(x => {
-        this.products = x;
-      });
+  /*
+    ngOnInit(): void {
+      this.cartService.getProducts()
+        .subscribe(x => {
+          this.products = x;
+        });
+  
+      for (const product of this.products) {
+        this.grandTotal = - this.productService.getCurrentPrice(product);
+      }
+    }
+    */
 
-    for (const product of this.products) {
-      this.grandTotal = - this.productService.getCurrentPrice(product);
+  checkCode() {
+    let couponFound = null
+    for (let coupon of this.couponService.couponSubject.value) {
+      if (this.couponCode === coupon.code) {
+        couponFound = coupon
+      }
+    }
+    if (couponFound) {
+      if (this.grandTotal >= couponFound.orderTotalMinimum) {
+        this.couponApplied = true;
+        this.grandTotal = this.grandTotal - couponFound.discount;
+      }
+
     }
   }
-  */
 
-  getTotal() {
-    let grandTotal = 0;
-    for (const product of this.products) {
-      this.grandTotal = - this.productService.getCurrentPrice(product);
+  getProducts() {
+    this.products = this.cartService.cartSubject.value.products
+    this.grandTotal = this.cartService.getTotalPrice()
+    if (this.couponCode != '') {
+      this.checkCode()
     }
-    return grandTotal
+    return true;
   }
 
   getCart() {

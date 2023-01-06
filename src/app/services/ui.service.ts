@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, take } from 'rxjs';
 import { Categories } from '../data/categories';
 import { Product } from '../data/product';
+import { CartServiceService } from './cart.service.service';
 import { ProductService } from './product.service';
 
 @Injectable({
@@ -26,6 +27,8 @@ export class UiService {
   constructor(private http: HttpClient, private productService : ProductService) {
     // Real function for populating categories
      this.updateCategories()
+
+
   }
 
   resetValues() {

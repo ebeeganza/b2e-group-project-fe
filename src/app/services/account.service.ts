@@ -29,6 +29,7 @@ export class AccountService {
   constructor(private http: HttpClient, public dialog: MatDialog,
     private _snackBar: MatSnackBar, private ui : UiService) {
     this.isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"))
+    
     if(this.isLoggedIn){
       var userString = localStorage.getItem("user")
       if(userString){
@@ -36,6 +37,7 @@ export class AccountService {
         this.tryLogin(user.email,user.password)
       }
     }
+    
 
     // TODO: dummy data
     // const user1 = new User(0, "pass", "email", "Rick", "Astley", 2)
@@ -92,10 +94,13 @@ export class AccountService {
   }
 
   successfulLogin(user: User) {
+    console.log("TRYME")
+
     localStorage.setItem("isLoggedIn","true")
     localStorage.setItem("user",JSON.stringify(user))
     this.isLoggedIn = true
     this.currentUser.next(user)
+    console.log(this.currentUser.value.id)
     if (this.currentUser.getValue().role === 2) {
       this.ui.showAccount()
     } else {
