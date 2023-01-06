@@ -50,6 +50,7 @@ export class CartComponent {
       if (accountService.userIsCustomer()){
         // get user cart from cartService db
         cartService.loadUserCart();
+        console.log("load cart from cart component constructor")
       }
     })
     
@@ -97,6 +98,7 @@ export class CartComponent {
 
   getCart() {
     this.cartService.loadUserCart()
+    console.log("loaded cart from cartComponent.getCart")
   }
 
 }

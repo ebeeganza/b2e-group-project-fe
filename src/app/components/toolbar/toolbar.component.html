@@ -8,7 +8,7 @@
     <button mat-icon-button matTooltip="Login" (click)="ui.showLogin()"
         *ngIf="!this.accountService.isLoggedIn"><mat-icon>login</mat-icon></button>
     <button *ngIf="accountService.currentUser.getValue().role != 1 && accountService.currentUser.getValue().role != 2"
-        (click)="ui.showCart(); cartService.loadUserCart()" mat-icon-button matTooltip="My Cart"><mat-icon matBadge={{totalItem}}
+        (click)="ui.showCart(); cartService.loadUserCart();" mat-icon-button matTooltip="My Cart"><mat-icon matBadge={{totalItem}}
             matBadgeSize="small" matBadgeColor="warn">shopping_cart</mat-icon></button>
     <button *ngIf="accountService.currentUser.getValue().role != -1" (click)="ui.showAccount()" mat-icon-button
         matTooltip="View Account Details"><mat-icon>settings</mat-icon></button>

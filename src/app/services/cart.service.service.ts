@@ -1,9 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, Input } from '@angular/core';
+import { Injectable, Input, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject, Observable, Subject, take } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription, take } from 'rxjs';
 import { Cart } from '../data/cart';
 import { Product } from '../data/product';
+import { User } from '../data/user';
 import { AccountService } from './account.service';
 import { CouponsService } from './coupons.service';
 import { ProductService } from './product.service';
@@ -12,16 +13,19 @@ import { UiService } from './ui.service';
 @Injectable({
   providedIn: 'root'
 })
-export class CartServiceService {
+export class CartServiceService implements OnDestroy {
 
   //productList = new BehaviorSubject<any>([]);
   cartProductList: any[] = []
+  currentUser: User = this.accountService.guestUser
+  userSub: Subscription
 
   public cartSubject: BehaviorSubject<Cart> = new BehaviorSubject<Cart>(new Cart(Math.random(),-1,[]))
 
   constructor(private http: HttpClient, public accountService: AccountService, private productService: ProductService, private snackBar: MatSnackBar, private couponService : CouponsService) {
     this.http = http
-    if(!this.accountService.isLoggedIn) {
+    this.userSub = this.accountService.getCurrentUser().subscribe((user) => {this.currentUser = user; console.log("updated user", user); this.loadUserCart()})
+  if(!this.accountService.isLoggedIn) {
       var cartString = localStorage.getItem("cart")
       if(cartString){
         var cart = JSON.parse(cartString)
@@ -31,16 +35,16 @@ export class CartServiceService {
       }
     }
   }
+
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe()
+    }
   
-  /*
-  CartSubject(): Observable<Cart> {
-    return this.cartSubject.asObservable()
-  }
-  */
 
   loadUserCart(): void {
+    console.log("about to load a cart with user", this.currentUser)
     if(this.accountService.isLoggedIn && this.accountService.userIsCustomer()) {
-      this.http.get<Cart>(`http://localhost:8080/cart?userId=${this.accountService.currentUser.value.id}`)
+    this.http.get<Cart>(`http://localhost:8080/cart?userId=${this.currentUser.id}`)
       .pipe(take(1))
       .subscribe({
         next: cart => {
@@ -59,14 +63,13 @@ export class CartServiceService {
   }
 
   updateCart(cart: Cart) {
-    console.log(cart.id)
-    console.log(cart)
     if(this.accountService.isLoggedIn) {
       this.http.put("http://localhost:8080/cart", cart)
       .pipe(take(1))
       .subscribe({
         next: () => {
           this.loadUserCart()
+          console.log("loaded cart from cartService.updateCart")
         },
         error: (error) => {
           console.log(error)
@@ -90,7 +93,7 @@ export class CartServiceService {
   }
 
   //adding product to chart
-  addToCart(product: any) {
+  addToCart(product: Product) {
     /*
     this.cartProductList.push(product)
     this.productList.next(this.cartProductList)
@@ -102,7 +105,6 @@ export class CartServiceService {
     console.log(cart.userId);
     
     cart.products.push(product)
-    this.cartSubject.next(cart)
 
     if (this.accountService.userIsCustomer()) {
       this.updateCart(cart)
