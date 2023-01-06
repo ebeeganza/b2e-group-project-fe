@@ -20,9 +20,11 @@ export class ToolbarComponent implements AfterViewInit{
   //adding so cart shows total number of items when added into cart
   public totalItem: number = 0;
   ngOnInit():void{
+    /*
     this.cartService.getProducts().subscribe(res=>{
       this.totalItem = res.length
     })
+    */
   }
   
   ngAfterViewInit(): void {

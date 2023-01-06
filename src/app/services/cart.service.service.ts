@@ -3,44 +3,33 @@ import { Injectable, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, Subject, take } from 'rxjs';
 import { Cart } from '../data/cart';
-import { Product } from '../data/product';
 import { AccountService } from './account.service';
+import { CouponsService } from './coupons.service';
 import { ProductService } from './product.service';
+import { UiService } from './ui.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartServiceService {
 
-  productList = new BehaviorSubject<any>([]);
+  //productList = new BehaviorSubject<any>([]);
   cartProductList: any[] = []
 
+  public cartSubject: BehaviorSubject<Cart> = new BehaviorSubject<Cart>(new Cart(Math.random(),-1,[]))
 
-  public cartSubject: Subject<Cart> = new Subject()
-
-  constructor(private http: HttpClient, public accountService: AccountService, private productService: ProductService, private snackBar: MatSnackBar,) {
+  constructor(private http: HttpClient, public accountService: AccountService, private productService: ProductService, private snackBar: MatSnackBar, private couponService : CouponsService) {
     this.http = http
-
   }
-
-  //get the product
-  getProducts() {
-    return this.productList.asObservable();
-  }
-
   
+  /*
   CartSubject(): Observable<Cart> {
     return this.cartSubject.asObservable()
   }
-
-  loadCart(): void {
-    if (this.accountService.currentUser.value.role == 1) {
-      this.loadUserCart()
-    }
-  }
+  */
 
   loadUserCart(): void {
-    this.http.get<Cart>(`http://localhost:8080/cart/${this.accountService.currentUser.value.id}`)
+    this.http.get<Cart>(`http://localhost:8080/cart?userId=${this.accountService.currentUser.value.id}`)
       .pipe(take(1))
       .subscribe({
         next: cart => {
@@ -48,40 +37,24 @@ export class CartServiceService {
           this.cartSubject.next(cart)
         },
         error: (error) => {
-          if(error.status === 404){
+          if(error.status === 404 && this.accountService.userIsCustomer()){
             let newCart = new Cart(null,this.accountService.currentUser.value.id,[])
-            
             this.createCart(newCart)
-          } else {
-            this.showError('Oops, something went wrong')
           }
         }
       })
   }
 
-  
-
-
   updateCart(cart: Cart) {
-    this.http.put(`http://localhost:8080/cart`, cart)
+    console.log(cart.id)
+    this.http.put("http://localhost:8080/cart", cart)
       .pipe(take(1))
       .subscribe({
         next: () => {
+          this.loadUserCart()
         },
         error: (error) => {
-        }
-      })
-  }
-
-  deleteProductInCart(id: number) {
-    this.http.delete(`http://localhost:8080/cart/${id}`)
-      .pipe(take(1))
-      .subscribe({
-        next: () => {
-
-        },
-        error: () => {
-          this.showError('Failed to remove product')
+          console.log(error)
         }
       })
   }
@@ -101,30 +74,38 @@ export class CartServiceService {
 
   //adding product to chart
   addToCart(product: any) {
+    /*
     this.cartProductList.push(product)
     this.productList.next(this.cartProductList)
     this.getTotalPrice();
     console.log(this.cartProductList)
+    */
+
+    let cart = this.cartSubject.value
+    cart.products.push(product)
+    this.cartSubject.next(cart)
+
+    if (this.accountService.userIsCustomer()) {
+      this.updateCart(cart)
+    }
+
   }
 
   getTotalPrice(): number {
     let grandTotal = 0;
-    this.cartProductList.map((a: any) => {
+    this.cartSubject.value.products.map((a: any) => {
       grandTotal += this.productService.getCurrentPrice(a);
     })
     return grandTotal;
   }
 
   removeCartProduct(product: any) {
-    const index = this.cartProductList.indexOf(product);
-    this.cartProductList.splice(index, 1)
-    this.productList.next(this.cartProductList)
+    this.cartSubject.value.products.splice(this.cartSubject.value.products.indexOf(product), 1)
   }
 
   //clear Cart if want
   removeAllCart() {
-    this.cartProductList = [];
-    this.productList.next(this.cartProductList);
+    this.cartSubject.value.products = [];
   }
 
   checkout() {

@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, take } from 'rxjs';
 import { Categories } from '../data/categories';
 import { Product } from '../data/product';
+import { CartServiceService } from './cart.service.service';
 import { AccountService } from './account.service';
 import { ProductService } from './product.service';
 
@@ -28,6 +29,8 @@ export class UiService {
   constructor(private http: HttpClient, private productService : ProductService, private _snackBar: MatSnackBar) {
     // Real function for populating categories
      this.updateCategories()
+
+
   }
 
   resetValues() {
