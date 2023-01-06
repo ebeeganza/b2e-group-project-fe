@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, take } from 'rxjs';
 import { Coupon } from '../data/coupon';
 
@@ -8,21 +9,12 @@ import { Coupon } from '../data/coupon';
 })
 export class CouponsService {
   public showMarquee: boolean = false
-
   public couponSubject: BehaviorSubject<Coupon[]> = new BehaviorSubject<Coupon[]>([])
 
-  //Temporary - donot know how to insert new date inside the coupon array
-  public couponList: Coupon[] = [
-    // new Coupon(0,'abc123',20,2023/01/02,1,1),
-    // new Coupon(1,'abc321',15,1,1,1),
-  ]
-
-  constructor(private http:HttpClient) { 
+  constructor(private http:HttpClient, private _snackBar: MatSnackBar) { 
     this.updateCoupons()
 
   }
-
-  //Creating CRUD for coupons so shopkeep can use
 
   //GET
   updateCoupons(): void {
@@ -30,7 +22,7 @@ export class CouponsService {
       .pipe(take(1))
       .subscribe({
         next: (coupons) => this.couponSubject.next(coupons),
-        error: (err) => console.log("Error getting categories")
+        error: (err) => this.showError("Error getting categories")
       })
   }
   // PUT
@@ -39,7 +31,7 @@ export class CouponsService {
       .pipe(take(1))
       .subscribe({
         next: () => this.updateCoupons(),
-        error: (err) => console.log("Error updating coupons")
+        error: (err) => this.showError("Error updating coupons")
       })
   }
   // POST
@@ -48,7 +40,7 @@ export class CouponsService {
       .pipe(take(1))
       .subscribe({
         next: () => this.updateCoupons(),
-        error: (err) => console.log("Error creating coupon") 
+        error: (err) => this.showError("Error creating coupon") 
       })
   }
   // DELETE
@@ -57,12 +49,16 @@ export class CouponsService {
     .pipe(take(1))
     .subscribe({
       next: () => this.updateCoupons(),
-      error: (err) => console.log(`Error deleting coupon ${couponId}`)
+      error: (err) => this.showError(`Error deleting coupon ${couponId}`)
     })
   }
 
   getCoupons(): Observable<Coupon[]> {
     return this.couponSubject.asObservable()
+  }
+
+  public showError(message: string): void {
+    this._snackBar.open(message, undefined, {duration: 10000})
   }
 
 

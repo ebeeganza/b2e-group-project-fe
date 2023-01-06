@@ -44,10 +44,6 @@ export class EditAccountComponent {
     this.account.lname = lname
   }
 
-  // updateTime(time: string): void {
-  //   this.appointment.time = time
-  // }
-
   updateEmail(email: string): void {
     this.account.email = email
   }
@@ -81,7 +77,6 @@ export class EditAccountComponent {
     this.accountService.displayEdit = false
   }
 
-  // TODO: Add cancel logic
   onCancel(): void {
     this.accountService.displayEdit = false
   }

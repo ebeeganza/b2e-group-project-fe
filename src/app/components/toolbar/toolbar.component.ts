@@ -10,6 +10,8 @@ import { CouponsService } from 'src/app/services/coupons.service';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements AfterViewInit{
+  //adding so cart shows total number of items when added into cart
+  public totalItem: number = 0;
 
   public totalItem: number = 0;
 

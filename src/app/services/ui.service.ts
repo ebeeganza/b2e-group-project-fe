@@ -91,7 +91,7 @@ export class UiService {
       .pipe(take(1))
       .subscribe({
         next: (categories) => this.categorySubject.next(categories),
-        error: (err) => console.log("Error getting categories")
+        error: (err) => this.showError("Error getting categories")
       })
   }
   // PUT
@@ -100,7 +100,7 @@ export class UiService {
       .pipe(take(1))
       .subscribe({
         next: () => this.updateCategories(),
-        error: (err) => console.log("Error updating category")
+        error: (err) => this.showError("Error updating category")
       })
   }
   // POST
@@ -109,7 +109,7 @@ export class UiService {
       .pipe(take(1))
       .subscribe({
         next: () => this.updateCategories(),
-        error: (err) => console.log("Error creating category")
+        error: (err) => this.showError("Error creating category")
       })
   }
   // DELETE
@@ -122,7 +122,7 @@ export class UiService {
           if(err.status === 404){
             this.showError("Category is tied to current products.")
           } else {
-            console.log(`Error deleting category ${categoryId}`)
+            this.showError(`Error deleting category ${categoryId}`)
           }
         }
       })
