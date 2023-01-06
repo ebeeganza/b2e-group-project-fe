@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Product } from 'src/app/data/product';
 import { AccountService } from 'src/app/services/account.service';
+import { CartServiceService } from 'src/app/services/cart.service.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -18,14 +19,15 @@ export class ProductsListComponent implements OnInit {
   public lossProducts: Product[] = []
   public mapProducts: Product[] = []
 
-  constructor(public productService: ProductService, public accountService: AccountService) {
+  constructor(public productService: ProductService, public accountService: AccountService, public cartService : CartServiceService) {
     this.productSubscription = productService.getProducts().subscribe((products) => {
       this.products = products
     })
   }
 
   ngOnInit() {
-    this.productService.getProducts()
+    this.cartService.loadUserCart();
+    this.productService.getProducts();
     this.getWarnings();
   }
 

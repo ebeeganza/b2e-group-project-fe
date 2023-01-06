@@ -1,5 +1,5 @@
 <!-- show this when there something in cart "products.length !=0"-->
-<ng-container *ngIf="products.length != 0"> 
+<ng-container *ngIf="getProducts() && products.length != 0"> 
     <div class="card">
         <div class="container">
             <div class ="card-table" >
@@ -25,17 +25,19 @@
                                 <th>{{productService.getCurrentPrice(product) | currency}}</th>
                                 <td></td>
                                 <td>{{productService.getCurrentPrice(product) | currency}}</td>
-                                <td><button mat-button color="primary" ><mat-icon>edit</mat-icon> </button> <button mat-button  color="warn" (click)="cartService.removeCartProduct(product)"><mat-icon>delete</mat-icon></button></td>
+                                <td><button mat-button  color="warn" (click)="cartService.removeCartProduct(product)"><mat-icon>delete</mat-icon></button></td>
                             </tr>
                             <tr>
+                                <div *ngIf="!couponApplied">
                                 <td colspan ="5"></td>
                                 <td><label for="coupon-code"></label></td>
                                 <td><input type="text" [(ngModel)]="couponCode"></td>
-                                <td><button mat-raised-button color="primary" type="submit">Apply Coupon</button></td>
+                                <td><button mat-raised-button color="primary" type="submit" (click)="checkCode()">Apply Coupon</button></td>
+                                </div>
                             </tr>
                             <tr>
                                 <td colspan="6"></td>
-                                <td><strong>Subtotal: {{cartService.getTotalPrice()| currency}}</strong></td>
+                                <td><strong>Subtotal: {{grandTotal| currency}}</strong></td>
                             </tr>
                             <tr> 
                                 <td colspan="4"></td>
