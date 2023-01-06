@@ -25,20 +25,25 @@ export class CartServiceService implements OnDestroy {
   constructor(private http: HttpClient, public accountService: AccountService, private productService: ProductService, private snackBar: MatSnackBar, private couponService : CouponsService) {
     this.http = http
     this.userSub = this.accountService.getCurrentUser().subscribe((user) => {this.currentUser = user; console.log("updated user", user); this.loadUserCart()})
+  if(!this.accountService.isLoggedIn) {
+      var cartString = localStorage.getItem("cart")
+      if(cartString){
+        var cart = JSON.parse(cartString)
+        this.cartSubject.next(cart)
+        console.log(this.cartSubject.value.products);
+        
+      }
+    }
   }
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe()
-  }
+    }
   
-  /*
-  CartSubject(): Observable<Cart> {
-    return this.cartSubject.asObservable()
-  }
-  */
 
   loadUserCart(): void {
     console.log("about to load a cart with user", this.currentUser)
+    if(this.accountService.isLoggedIn && this.accountService.userIsCustomer()) {
     this.http.get<Cart>(`http://localhost:8080/cart?userId=${this.currentUser.id}`)
       .pipe(take(1))
       .subscribe({
@@ -53,11 +58,13 @@ export class CartServiceService implements OnDestroy {
           }
         }
       })
+    }
+    
   }
 
   updateCart(cart: Cart) {
-    console.log("product-list.updateCart",cart)
-    this.http.put("http://localhost:8080/cart", cart)
+    if(this.accountService.isLoggedIn) {
+      this.http.put("http://localhost:8080/cart", cart)
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -68,6 +75,8 @@ export class CartServiceService implements OnDestroy {
           console.log(error)
         }
       })
+    }
+    
   }
 
   createCart(cart : Cart){
@@ -93,10 +102,15 @@ export class CartServiceService implements OnDestroy {
     */
 
     let cart = this.cartSubject.value
+    console.log(cart.userId);
+    
     cart.products.push(product)
 
     if (this.accountService.userIsCustomer()) {
       this.updateCart(cart)
+    }
+    else {
+      localStorage.setItem('cart',JSON.stringify(cart))
     }
 
   }
@@ -109,13 +123,25 @@ export class CartServiceService implements OnDestroy {
     return grandTotal;
   }
 
-  removeCartProduct(product: any) {
-    this.cartSubject.value.products.splice(this.cartSubject.value.products.indexOf(product), 1)
+  removeCartProduct(product: Product) {
+    let products = this.cartSubject.value.products
+    products.splice(this.cartSubject.value.products.indexOf(product), 1)
+    let cart = this.cartSubject.value
+    cart.products = products
+    localStorage.removeItem("cart")
+    localStorage.setItem("cart",JSON.stringify(cart))
+    this.cartSubject.next(cart)
+
+    // this.cartSubject.value.products.splice(this.cartSubject.value.products.indexOf(product), 1)
   }
 
   //clear Cart if want
   removeAllCart() {
-    this.cartSubject.value.products = [];
+    let cart = this.cartSubject.value
+    cart.products = []
+    this.cartSubject.next(cart)
+    this.updateCart(cart)
+    localStorage.removeItem("cart")
   }
 
   checkout() {

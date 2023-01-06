@@ -44,10 +44,10 @@ export class CartComponent {
     })
     
     accountService.currentUser.subscribe((user) => {
-      if(accountService.userIsGuest()){
-        // set cart back to empty or load from local storage
-        cartService.logoutCart()
-      } else if (accountService.userIsCustomer()){
+      // if(accountService.userIsGuest()){
+      //   // set cart back to empty or load from local storage
+      //   cartService.logoutCart()
+      if (accountService.userIsCustomer()){
         // get user cart from cartService db
         cartService.loadUserCart();
         console.log("load cart from cart component constructor")
@@ -87,6 +87,8 @@ export class CartComponent {
 
   getProducts() {
     this.products = this.cartService.cartSubject.value.products
+    console.log(this.products);
+    
     this.grandTotal = this.cartService.getTotalPrice()
     if (this.couponCode != '') {
       this.checkCode()
