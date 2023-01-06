@@ -7,6 +7,7 @@ import { Product } from '../data/product';
 import { User } from '../data/user';
 import { AccountService } from './account.service';
 import { CouponsService } from './coupons.service';
+import { OrdersService } from './orders/orders.service';
 import { ProductService } from './product.service';
 import { UiService } from './ui.service';
 
@@ -22,7 +23,7 @@ export class CartServiceService implements OnDestroy {
 
   public cartSubject: BehaviorSubject<Cart> = new BehaviorSubject<Cart>(new Cart(Math.random(),-1,[]))
 
-  constructor(private http: HttpClient, public accountService: AccountService, private productService: ProductService, private snackBar: MatSnackBar, private couponService : CouponsService) {
+  constructor(private http: HttpClient, public accountService: AccountService, private productService: ProductService, private snackBar: MatSnackBar, private orderService : OrdersService) {
     this.http = http
     this.userSub = this.accountService.getCurrentUser().subscribe((user) => {this.currentUser = user; console.log("updated user", user); this.loadUserCart()})
   if(!this.accountService.isLoggedIn) {
@@ -151,7 +152,35 @@ export class CartServiceService implements OnDestroy {
   }
 
   checkout() {
+    let cart = this.cartSubject.value
 
+    for(let product of cart.products){
+      let shipment = this.productService.getCurrentShipment(product)
+      if(!shipment){
+        this.showError("Sorry, one or more items is currently unavailable.")
+        return;
+      }
+    }
+
+    for(let product of cart.products){
+      console.log(product)
+      if(!this.productService.attemptPurchase(product, this.currentUser)){
+        this.showError("Internal error.")
+        return;
+      }
+    }
+
+    let products = ''
+
+    cart.products.map((p)=> {
+      products += p.id + ','
+    })
+
+    let email = this.accountService.currentUser.value.email
+    let orderDate = new Date()
+    let orderTotal = this.getTotalPrice();
+
+    this.orderService.addOrder(email,orderTotal,orderDate,products)
   }
 
   //catch error message

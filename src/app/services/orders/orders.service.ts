@@ -88,7 +88,7 @@ public loadOrders(): void {
   }
 
   // userId this.accountService.currentUser.value.id 
-  addOrder(email: string, orderTotal: number, orderDate: Date, products: Product[]) {
+  addOrder(email: string, orderTotal: number, orderDate: Date, products: String) {
     this.http.post('http://localhost:8080/orders', {
       id: null,
       email,

@@ -43,7 +43,7 @@
                                 <td colspan="4"></td>
                                 <td><button mat-raised-button color="warn" (click)="cartService.removeAllCart()"> Empty Cart</button></td>
                                 <td><button mat-raised-button color="basic" (click)="ui.showProducts()"> Shop More</button></td>
-                                <td><button mat-raised-button color="primary" > Checkout</button></td>
+                                <td><button mat-raised-button color="primary" (click)="cartService.checkout()"> Checkout</button></td>
                             </tr>
                             <td colspan="6"></td>
                             <td><div class="table table-responsive"><button mat-raised-button color="accent" (click)="ui.showProducts()">Go back </button></div></td>  

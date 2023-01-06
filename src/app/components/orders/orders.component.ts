@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { MAT_RANGE_DATE_SELECTION_MODEL_PROVIDER } from '@angular/material/datepicker';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ConnectableObservable, Subscription } from 'rxjs';
 import { Order } from 'src/app/data/orders';
@@ -28,7 +29,7 @@ export class OrdersComponent {
 
 
   displayedColumns: string[] = ['action','id', 'email', 'date', 'products', 'totals'];
-  displayedColumns2: string[] = ['action', 'id', 'date', 'products', 'totals'];
+  displayedColumns2: string[] = ['action','id', 'date', 'products', 'totals'];
 
   public dataSource = new MatTableDataSource<Order>()
   public dataSource2 = new MatTableDataSource<Order>() //this.orderService.getUserOrders()
@@ -50,6 +51,7 @@ export class OrdersComponent {
   }
 
   getData() {
+
     this.orderService.loadAllOrders()
     this.dataSource.data = this.orderService.orders
 
