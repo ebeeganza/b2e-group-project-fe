@@ -1,19 +1,19 @@
 <mat-card *ngIf="accountService.userIsShopkeeper() || (!accountService.userIsAdmin() && isAvailable())" class="product">
 
     <mat-card-content>
-        <p style="font-weight: bold; font-size: 20px">{{product?.name}}</p>
+        <p style="font-weight: bold; font-size: 20px">{{product.name}}</p>
 
-        <img src={{product?.image}} *ngIf="product?.image != ''" alt="Product Image">
+        <img src={{product.image}} *ngIf="product.image != ''" alt="Product Image">
 
         <p *ngIf="currentPrice === defaultPrice">{{defaultPrice | currency}}</p>
         <div *ngIf="currentPrice != defaultPrice">
             <p style="color: green">Sale price: {{currentPrice | currency}}</p>
             <p class="inactive">List price: <s>{{defaultPrice | currency}}</s></p>
         </div>
-        <p *ngIf="accountService.userIsShopkeeper()">Available on {{product?.availability | date}}</p>
-        <p class="description">Description: {{product?.description}}</p>
-        <p *ngIf="product?.discontinued" style="color: red">Item out of stock.</p>
-        <p *ngIf="product?.category">Department: {{product?.category?.name}}</p>
+        <p *ngIf="accountService.userIsShopkeeper()">Available on {{product.availability | date}}</p>
+        <p class="description">Description: {{product.description}}</p>
+        <p *ngIf="product.discontinued" style="color: red">Item out of stock.</p>
+        <p *ngIf="product.category">Department: {{product.category.name}}</p>
 
         <div *ngIf="accountService.userIsShopkeeper()">
 
@@ -97,7 +97,7 @@
         </div>
 
         <button mat-raised-button color="primary"
-            *ngIf="(accountService.userIsCustomer() || accountService.userIsGuest()) && !product?.discontinued" (click)="cartService.addToCart(this.product)">Add
+            *ngIf="(accountService.userIsCustomer() || accountService.userIsGuest()) && !product.discontinued" (click)="cartService.addToCart(product)">Add
             to Cart</button>
 
         <button mat-raised-button color="warn" *ngIf="accountService.userIsShopkeeper()"

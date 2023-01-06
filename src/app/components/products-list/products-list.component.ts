@@ -26,7 +26,8 @@ export class ProductsListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cartService.loadUserCart();
+    console.log("load user cart from product-list component OnInit")
+    // this.cartService.loadUserCart();
     this.productService.getProducts();
     this.getWarnings();
   }

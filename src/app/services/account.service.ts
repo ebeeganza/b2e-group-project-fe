@@ -58,6 +58,7 @@ export class AccountService {
       .subscribe({
         next: (user) => {
           this.successfulLogin(user)
+          console.log("logged in as", user)
         },
         error: (err) => {
           if(err.status === 404){
@@ -94,13 +95,11 @@ export class AccountService {
   }
 
   successfulLogin(user: User) {
-    console.log("TRYME")
-
     localStorage.setItem("isLoggedIn","true")
     localStorage.setItem("user",JSON.stringify(user))
     this.isLoggedIn = true
     this.currentUser.next(user)
-    console.log(this.currentUser.value.id)
+    console.log("successful login accountService.currentUser set to",this.currentUser.value)
     if (this.currentUser.getValue().role === 2) {
       this.ui.showAccount()
     } else {

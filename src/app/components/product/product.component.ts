@@ -18,7 +18,7 @@ import { EditProductComponent } from '../edit-product/edit-product.component';
 })
 export class ProductComponent implements OnInit {
 
-  @Input() product: Product | null = null;
+  @Input() product: Product = new Product("",false,new Date(),"","",null,[],[],[],[]);
 
   public defaultPrice = 0;
   public currentPrice = 0;
