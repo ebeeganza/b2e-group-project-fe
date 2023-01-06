@@ -1,6 +1,6 @@
 <app-edit-account *ngIf="accountService.displayEdit"></app-edit-account>
 <!-- Accounts table -->
-<button (click)="getData()">Button</button>
+<button mat-raised-button style="margin-top: 10px; margin-bottom: 10px;" color="accent" (click)="getData()">Load Accounts</button>
 <br>
 <mat-form-field style="margin-top: 10px;">
     <mat-label>Filter</mat-label>

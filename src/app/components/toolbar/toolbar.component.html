@@ -47,10 +47,5 @@
                 <li><button mat-button (click)="this.ui.showCoupons()">Manage Coupons</button></li>
             </ul>
         </div>
-        <!-- ADMIN NAVIGATION HERE -->
-        <div *ngIf="this.accountService.currentUser.value.role === 2">
-            <h2>Admin Functions</h2>
-            <button mat-button>Manage Accounts</button>
-        </div>
     </mat-drawer>
 </mat-drawer-container>
