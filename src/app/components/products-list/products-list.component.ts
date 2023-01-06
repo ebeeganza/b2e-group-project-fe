@@ -1,9 +1,8 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Product } from 'src/app/data/product';
 import { AccountService } from 'src/app/services/account.service';
 import { ProductService } from 'src/app/services/product.service';
-import { UiService } from 'src/app/services/ui.service';
 
 @Component({
   selector: 'app-products-list',
@@ -46,5 +45,12 @@ export class ProductsListComponent implements OnInit {
       this.errorExists = true;
     }
     return true
+  }
+
+  filterProducts(): Product[] {
+    if (this.productService.categoryFilter === '') {
+      return this.products
+    }
+    return this.products.filter((p) => p.category?.name === this.productService.categoryFilter)
   }
 }

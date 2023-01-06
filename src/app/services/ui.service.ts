@@ -40,7 +40,7 @@ export class UiService {
     this.displayRegister = false;
     this.displayCoupons = false;
     this.displayProfileEdit = false;
-    this.productService.unfilter();
+    this.productService.setFilter('');
     this.productService.updateProducts();
   }
 
@@ -135,7 +135,7 @@ export class UiService {
   filterProducts(category: Categories){
     this.resetValues();
     this.displayProducts = true;
-    this.productService.filterProducts(category)
+    this.productService.setFilter(category.name)
   }
 
   public showError(message: string): void {

@@ -16,7 +16,7 @@ export class ProductService {
   public products: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([])
 
   public creatingProduct = false;
-  public filtered = false;
+  public categoryFilter = '';
 
   constructor(private http: HttpClient, private _snackBar: MatSnackBar) {
    this.updateProducts();
@@ -226,21 +226,6 @@ export class ProductService {
     return errorProduct;
   }
 
-  filterProducts(category: Categories) {
-    this.filtered = true;
-    let backupProducts = this.products.value
-    let products = []
-    for (let product of backupProducts) {
-      if (product.category === category) {
-        products.push(product)
-      }
-    }
-    this.products.next(products)
-  }
-
-  unfilter() {
-    this.filtered = false;
-    this.updateProducts();
-  }
+  setFilter(category: string) {this.categoryFilter = category}
 
 }

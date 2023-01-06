@@ -2,13 +2,13 @@
     (click)="productService.creatingProduct = true" class="create-button">Create New Product</button>
 <app-create-product *ngIf="productService.creatingProduct"></app-create-product>
 
-<button mat-raised-button color="warn" *ngIf="productService.filtered" (click)="productService.unfilter()"
+<button mat-raised-button color="warn" *ngIf="productService.categoryFilter !== ''" (click)="productService.setFilter('')"
     class="create-button">Unfilter Products</button>
 
 <div class="container">
 
     <div class="list">
-        <app-product *ngFor="let product of productService.getProducts() | async" [product]="product"></app-product>
+        <app-product *ngFor="let product of filterProducts()" [product]="product"></app-product>
     </div>
 
     <div *ngIf="accountService.userIsShopkeeper() && getWarnings() && errorExists">
