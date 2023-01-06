@@ -3,6 +3,7 @@ import { Injectable, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, Subject, take } from 'rxjs';
 import { Cart } from '../data/cart';
+import { Product } from '../data/product';
 import { AccountService } from './account.service';
 import { CouponsService } from './coupons.service';
 import { ProductService } from './product.service';
@@ -20,6 +21,15 @@ export class CartServiceService {
 
   constructor(private http: HttpClient, public accountService: AccountService, private productService: ProductService, private snackBar: MatSnackBar, private couponService : CouponsService) {
     this.http = http
+    if(!this.accountService.isLoggedIn) {
+      var cartString = localStorage.getItem("cart")
+      if(cartString){
+        var cart = JSON.parse(cartString)
+        this.cartSubject.next(cart)
+        console.log(this.cartSubject.value.products);
+        
+      }
+    }
   }
   
   /*
@@ -29,7 +39,8 @@ export class CartServiceService {
   */
 
   loadUserCart(): void {
-    this.http.get<Cart>(`http://localhost:8080/cart?userId=${this.accountService.currentUser.value.id}`)
+    if(this.accountService.isLoggedIn && this.accountService.userIsCustomer()) {
+      this.http.get<Cart>(`http://localhost:8080/cart?userId=${this.accountService.currentUser.value.id}`)
       .pipe(take(1))
       .subscribe({
         next: cart => {
@@ -43,11 +54,15 @@ export class CartServiceService {
           }
         }
       })
+    }
+    
   }
 
   updateCart(cart: Cart) {
     console.log(cart.id)
-    this.http.put("http://localhost:8080/cart", cart)
+    console.log(cart)
+    if(this.accountService.isLoggedIn) {
+      this.http.put("http://localhost:8080/cart", cart)
       .pipe(take(1))
       .subscribe({
         next: () => {
@@ -57,6 +72,8 @@ export class CartServiceService {
           console.log(error)
         }
       })
+    }
+    
   }
 
   createCart(cart : Cart){
@@ -82,11 +99,16 @@ export class CartServiceService {
     */
 
     let cart = this.cartSubject.value
+    console.log(cart.userId);
+    
     cart.products.push(product)
     this.cartSubject.next(cart)
 
     if (this.accountService.userIsCustomer()) {
       this.updateCart(cart)
+    }
+    else {
+      localStorage.setItem('cart',JSON.stringify(cart))
     }
 
   }
@@ -99,13 +121,25 @@ export class CartServiceService {
     return grandTotal;
   }
 
-  removeCartProduct(product: any) {
-    this.cartSubject.value.products.splice(this.cartSubject.value.products.indexOf(product), 1)
+  removeCartProduct(product: Product) {
+    let products = this.cartSubject.value.products
+    products.splice(this.cartSubject.value.products.indexOf(product), 1)
+    let cart = this.cartSubject.value
+    cart.products = products
+    localStorage.removeItem("cart")
+    localStorage.setItem("cart",JSON.stringify(cart))
+    this.cartSubject.next(cart)
+
+    // this.cartSubject.value.products.splice(this.cartSubject.value.products.indexOf(product), 1)
   }
 
   //clear Cart if want
   removeAllCart() {
-    this.cartSubject.value.products = [];
+    let cart = this.cartSubject.value
+    cart.products = []
+    this.cartSubject.next(cart)
+    this.updateCart(cart)
+    localStorage.removeItem("cart")
   }
 
   checkout() {
