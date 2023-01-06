@@ -43,6 +43,7 @@ export class CartComponent {
       this.grandTotal = this.cartService.getTotalPrice()
     })
     
+    /*
     accountService.currentUser.subscribe((user) => {
       // if(accountService.userIsGuest()){
       //   // set cart back to empty or load from local storage
@@ -53,6 +54,7 @@ export class CartComponent {
         console.log("load cart from cart component constructor")
       }
     })
+    */
     
   }
 

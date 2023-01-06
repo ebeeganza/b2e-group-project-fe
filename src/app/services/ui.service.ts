@@ -29,8 +29,6 @@ export class UiService {
   constructor(private http: HttpClient, private productService : ProductService, private _snackBar: MatSnackBar) {
     // Real function for populating categories
      this.updateCategories()
-
-
   }
 
   resetValues() {
