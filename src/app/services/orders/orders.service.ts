@@ -52,7 +52,7 @@ public loadOrders(): void {
   }
 
   public loadUserOrders(): void {
-    this.http.get<Order[]>(`http://localhost:8080/orders?username=${this.accountService.currentUser.value.email}`)
+    this.http.get<Order[]>(`http://localhost:8080/orders?email=${this.accountService.currentUser.value.email}`)
       .pipe(take(1))
       .subscribe({
         next: orders => {

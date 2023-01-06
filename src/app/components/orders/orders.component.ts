@@ -6,6 +6,7 @@ import { Product } from 'src/app/data/product';
 import { AccountService } from 'src/app/services/account.service';
 import { OrdersService } from 'src/app/services/orders/orders.service';
 import { ProductService } from 'src/app/services/product.service';
+import { UiService } from 'src/app/services/ui.service';
 
 @Component({
   selector: 'app-orders',
@@ -17,7 +18,8 @@ export class OrdersComponent {
   constructor(
     public orderService: OrdersService,
     public accountService: AccountService,
-    public productService: ProductService) {
+    public productService: ProductService,
+    public ui: UiService) {
       this.orderSub = this.orderService.orderSubjector()
       .subscribe(orders => this.dataSource.data = orders)
   }
